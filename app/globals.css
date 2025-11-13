@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* main dark green color #547A52 */
+/* medium green color #D6DE75 */
+/* light green color #E5EAE4 */
+/* black  #1E2429 */
+/* text-> stone-800 */
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
