@@ -1,18 +1,38 @@
-import mongoose from "mongoose";
+import mongoose, { Connection } from "mongoose";
 
-const connectDb = async () => {
-	let connection;
+class DBConnect {
+	private static connection: Connection;
+	private constructor() {}
 
-	try {
-		if (!connection) {
-			connection = await mongoose.connect(process.env.MONGO_URI ?? "");
-			console.log("connected to db");
+	private static async connect(uri: string): Promise<Connection> {
+		if (this.connection) return this.connection; // already connected
+
+		try {
+			const { connection } = await mongoose.connect(uri);
+			this.connection = connection;
+
+			console.log("Connected to MongoDB");
+
+			this.connection?.on("disconnected", () => {
+				console.warn("MongoDB disconnected");
+			});
+
+			this.connection?.on("error", (err) => {
+				console.error("MongoDB connection error:", err);
+			});
+		} catch (error) {
+			console.error("Failed to connect to MongoDB:", (error as Error).message);
+			process.exit(1);
 		}
-	} catch (error) {
-		console.error("mongo db connection error:", error);
+
+		return this.connection;
 	}
 
-	return connection;
-};
+	static async getConnection(): Promise<Connection> {
+		const uri = process.env.MONGO_URI;
+		if (!uri) throw new Error("MONGO_URI is missing");
+		return await this.connect(uri);
+	}
+}
 
-export { connectDb as DB };
+export { DBConnect as DB };
