@@ -9,7 +9,7 @@ export interface IUserRepository {
 @injectable()
 class UserRepository {
 	async getAll(): Promise<IUser[]> {
-		await DB();
+		await DB.getConnection();
 		return await UserModel.find();
 	}
 }
