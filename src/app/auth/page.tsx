@@ -181,7 +181,7 @@ const AuthPage = () => {
         <p>sign up to get started with Ecosphere</p>
         <motion.button
           onClick={() => setActive(active === "login" ? "register" : "login")}
-          className="cursor-pointer bg-white text-[#527b50]  p-3 rounded-full transition duration-400 hover:scale-102 flex justify-center items-center text-lg gap-2 hover:outline-2 hover:outline-white hover:outline-offset-4 "
+          className="cursor-pointer  text-white border-2  p-3 rounded-full transition duration-400 hover:scale-102 flex justify-center items-center text-lg gap-2 hover:outline-2 hover:outline-white hover:bg-white hover:text-[#527b50] hover:outline-offset-4 "
         >
           Sign Up
         </motion.button>
@@ -197,7 +197,7 @@ const AuthPage = () => {
         <p>we are happy to see you back</p>
         <motion.button
           onClick={() => setActive(active === "login" ? "register" : "login")}
-          className="cursor-pointer bg-white text-[#527b50]  p-3 rounded-full transition duration-400 hover:scale-102 flex justify-center items-center text-lg gap-2 hover:outline-2 hover:outline-white hover:outline-offset-4 "
+          className="cursor-pointer  text-white border-2  p-3 rounded-full transition duration-400 hover:scale-102 flex justify-center items-center text-lg gap-2 hover:outline-2 hover:outline-white  hover:bg-white hover:text-[#527b50] hover:outline-offset-4 "
         >
           Sign In
         </motion.button>
