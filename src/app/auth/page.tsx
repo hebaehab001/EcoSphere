@@ -66,7 +66,7 @@ const AuthPage = () => {
   };
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden bg-background">
       <div className="w-[80%] m-auto">
         <div className="flex justify-between items-center min-h-screen ">
           {/* register form */}
