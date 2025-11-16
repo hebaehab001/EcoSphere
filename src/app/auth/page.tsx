@@ -35,8 +35,8 @@ const AuthPage = () => {
     // sm screen < 768
     if (width < 768) {
       return {
-        loginX: -1400,
-        registerX: 330,
+        loginX: -1350,
+        registerX: 360,
 
         loginImgX: -350,
         loginImgY: 200,
@@ -343,7 +343,7 @@ const AuthPage = () => {
         width={300}
         height={350}
         alt="login"
-        className="sm:absolute sm:block hidden absolute bottom-50 right-0 md:-right-10 lg:right-10 xl:right-0 xl:w-[350px] "
+        className="sm:absolute sm:block hidden absolute bottom-50 right-0 sm:-right-2 md:-right-10 lg:right-10 xl:-right-10 xl:w-[350px] "
         variants={imgLoginVariants}
         initial={false}
         animate={active}
@@ -362,16 +362,16 @@ const AuthPage = () => {
       />
       {/* to sign up */}
       <motion.div
-        className="hidden sm:absolute top-30 left-0 md:left-30 lg:left-10  min-w-60  sm:flex flex-col gap-5 p-5 justify-center text-center text-white  "
+        className="hidden sm:absolute top-30 left-0 md:left-30 lg:left-20  min-w-60  sm:flex flex-col gap-5 p-5 justify-center text-center text-white  "
         variants={toSignUpVariants}
         animate={active}
         initial={false}
         transition={{ duration: 2, delay: 0.5 }}
       >
-        <h2 className="text-2xl lg:text-4xl xl:text-5xl font-extrabold">
+        <h2 className="text-2xl lg:text-2xl xl:text-3xl font-extrabold">
           New to Ecosphere?
         </h2>
-        <p className="text-sm lg:text-xl xl:text-2xl">
+        <p className="text-base lg:text-lg xl:text-xl">
           sign up to get started with Ecosphere
         </p>
         <motion.button
@@ -389,7 +389,7 @@ const AuthPage = () => {
         initial={false}
         transition={{ duration: 2, delay: 0.5 }}
       >
-        <h2 className="text-2xl lg:text-4xl xl:text-5xl font-extrabold">
+        <h2 className="text-2xl lg:text-xl xl:text-5xl font-extrabold">
           One Of Us?
         </h2>
         <p className="text-sm lg:text-xl xl:text-2xl">we are happy to see you back</p>
