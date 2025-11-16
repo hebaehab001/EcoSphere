@@ -178,7 +178,7 @@ body {
 
 .dark {
 
-  --background: oklch(0.145 0 0);
+  --background: oklch(20% 0.015 45);
 
   --foreground: oklch(0.985 0 0);
 
