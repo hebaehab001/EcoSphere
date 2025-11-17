@@ -1,5 +1,5 @@
 import React from 'react'
-import { Calendar, Home, ShoppingBag, Recycle, Store, ShoppingCart, Heart, LogIn, Info } from "lucide-react"
+import { Gamepad2 , Calendar, Home, ShoppingBag, Recycle, Store, ShoppingCart, Heart, LogIn, Newspaper , Info } from "lucide-react"
 import {
     Sidebar,
     SidebarContent,
@@ -39,9 +39,19 @@ const items = [
         icon: Recycle,
     },
     {
+        title: "News",
+        url: "/news",
+        icon: Newspaper,
+    },
+    {
         title: "Store",
         url: "/store",
         icon: Store,
+    },
+    {
+        title: "Game",
+        url: "/game",
+        icon: Gamepad2,
     },
     {
         title: "About",
