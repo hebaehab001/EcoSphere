@@ -11,3 +11,13 @@ export const GET = async (
 	const result = await controller.getById(id);
 	return NextResponse.json({ message: "hello after db connection", result });
 };
+
+export const DELETE = async (
+	_req: NextRequest,
+	context: { params: Promise<{ id: string }> }
+) => {
+	const { id } = await context.params;
+	const controller = rootContainer.resolve(UserController);
+	const result = await controller.deleteById(id);
+	return NextResponse.json({ message: "hello after db connection", result });
+};

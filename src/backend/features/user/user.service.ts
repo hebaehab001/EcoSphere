@@ -7,6 +7,7 @@ import { User } from "@/generated/prisma/client";
 export interface IUserService {
 	getAll(): Promise<User[]>;
 	getById(id: string): Promise<User | null>;
+	deleteById(id: string): Promise<User | null>;
 }
 
 @injectable()
@@ -21,6 +22,9 @@ class UserService {
 
 	async getById(id: string): Promise<User | null> {
 		return await this.userRepository.getById(id);
+	}
+	async deleteById(id: string): Promise<User | null> {
+		return await this.userRepository.deleteById(id);
 	}
 }
 

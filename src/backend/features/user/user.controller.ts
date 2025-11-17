@@ -18,6 +18,10 @@ class UserController {
 		const user = await this.userService.getById(id);
 		return user;
 	}
+	async deleteById(id: string): Promise<User | null> {
+		const user = await this.userService.deleteById(id);
+		return user;
+	}
 }
 
 export default UserController;

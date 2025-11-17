@@ -6,6 +6,7 @@ import { User } from "@/generated/prisma/client";
 export interface IUserRepository {
   getAll(): Promise<User[]>;
   getById(id: string): Promise<User | null>;
+  deleteById(id: string): Promise<User | null>;
 }
 
 @injectable()
@@ -15,6 +16,13 @@ class UserRepository {
   }
   async getById(id: string): Promise<User | null> {
     return await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+  async deleteById(id: string): Promise<User | null> {
+    return await prisma.user.delete({
       where: {
         id,
       },
