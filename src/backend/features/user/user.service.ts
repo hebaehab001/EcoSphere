@@ -1,10 +1,14 @@
 import { inject, injectable } from "tsyringe";
 import type { IUserRepository } from "./user.repository";
-import { IUser } from "./user.model";
+import { Prisma, User } from "@/generated/prisma/client";
+
 
 
 export interface IUserService {
-	getAll(): Promise<IUser[]>;
+	getAll(): Promise<User[]>;
+	getById(id: string): Promise<User | null>;
+	updateById(id: string, data: Prisma.UserUpdateInput): Promise<User | null>;
+	deleteById(id: string): Promise<User | null>;
 }
 
 @injectable()
@@ -13,9 +17,23 @@ class UserService {
 		@inject("IUserRepository") private readonly userRepository: IUserRepository
 	) {}
 
-	async getAll(): Promise<IUser[]> {
+	async getAll(): Promise<User[]> {
 		return await this.userRepository.getAll();
 	}
+
+	async getById(id: string): Promise<User | null> {
+		return await this.userRepository.getById(id);
+	}
+
+	// Needs to Updated later when we have Avatar Upload functionality
+	async updateById(id: string, data: Prisma.UserUpdateInput): Promise<User | null> {
+		return await this.userRepository.updateById(id, data);
+	}
+
+	async deleteById(id: string): Promise<User | null> {
+		return await this.userRepository.deleteById(id);
+	}
 }
+
 
 export default UserService;
