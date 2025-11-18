@@ -1,39 +1,44 @@
 import { inject, injectable } from "tsyringe";
 import type { IUserRepository } from "./user.repository";
 import { Prisma, User } from "@/generated/prisma/client";
-
-
+import { OMIT } from "@/backend/utils/helpers";
 
 export interface IUserService {
-	getAll(): Promise<User[]>;
-	getById(id: string): Promise<User | null>;
-	updateById(id: string, data: Prisma.UserUpdateInput): Promise<User | null>;
-	deleteById(id: string): Promise<User | null>;
+  getAll(): Promise<Omit<User, "password">[]>;
+  getById(id: string): Promise<Omit<User, "password"> | null>;
+  updateById(
+    id: string,
+    data: Prisma.UserUpdateInput
+  ): Promise<Omit<User, "password"> | null>;
+  deleteById(id: string): Promise<Omit<User, "password"> | null>;
 }
 
 @injectable()
 class UserService {
-	constructor(
-		@inject("IUserRepository") private readonly userRepository: IUserRepository
-	) {}
+  constructor(
+    @inject("IUserRepository") private readonly userRepository: IUserRepository
+  ) {}
 
-	async getAll(): Promise<User[]> {
-		return await this.userRepository.getAll();
-	}
+  async getAll(): Promise<Omit<User, "password">[]> {
+    const users = await this.userRepository.getAll();
+    return users;
+  }
 
-	async getById(id: string): Promise<User | null> {
-		return await this.userRepository.getById(id);
-	}
+  async getById(id: string): Promise<Omit<User, "password"> | null> {
+    return await this.userRepository.getById(id);
+  }
 
-	// Needs to Updated later when we have Avatar Upload functionality
-	async updateById(id: string, data: Prisma.UserUpdateInput): Promise<User | null> {
-		return await this.userRepository.updateById(id, data);
-	}
+  // Needs to Updated later when we have Avatar Upload functionality
+  async updateById(
+    id: string,
+    data: Prisma.UserUpdateInput
+  ): Promise<Omit<User, "password"> | null> {
+    return await this.userRepository.updateById(id, data);
+  }
 
-	async deleteById(id: string): Promise<User | null> {
-		return await this.userRepository.deleteById(id);
-	}
+  async deleteById(id: string): Promise<Omit<User, "password"> | null> {
+    return await this.userRepository.deleteById(id);
+  }
 }
-
 
 export default UserService;
