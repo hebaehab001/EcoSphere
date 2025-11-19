@@ -15,7 +15,7 @@ export const POST = async (
   const controller = rootContainer.resolve(AuthController);
 
   try {
-    const result = await controller.Register(body);
+    const result = await controller.register(body);
     return handleControllerResponse(
       result,
       "User registered successfully",

@@ -15,7 +15,7 @@ export const POST = async (
   const controller = rootContainer.resolve(AuthController);
 
   try {
-    const result = await controller.LogIn(body);
+    const result = await controller.login(body);
     return handleControllerResponse(
       result,
       "Login successful",

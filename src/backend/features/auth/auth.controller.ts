@@ -10,13 +10,13 @@ class AuthController {
     @inject("IAuthService") private readonly IAuthService: IAuthService
   ) { }
 
-  async LogIn(
+  async login(
     loginDto: LoginDto
   ): Promise<{ token: string; user: Omit<User, "password"> } | null> {
     return await this.IAuthService.login(loginDto);
   }
 
-  async Register(
+  async register(
     registerDto: RegisterDto
   ): Promise<{ token: string; user: Omit<User, "password"> } | null> {
     return await this.IAuthService.register(registerDto);
