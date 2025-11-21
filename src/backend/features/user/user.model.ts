@@ -31,7 +31,11 @@ const userSchema = new Schema<IUserDocument>(
 		birthDate: { type: String, required: true },
 		gender: { type: String, enum: Object.values(Gender), required: true },
 		points: { type: Number, default: 1000 },
-		role: { type: String, enum: Object.values(UserRole), default: UserRole.CUSTOMER },
+		role: {
+			type: String,
+			enum: Object.values(UserRole),
+			default: UserRole.CUSTOMER,
+		},
 		favoritesIds: { type: [String], default: [] },
 		reviewsIds: { type: [String], default: [] },
 	},

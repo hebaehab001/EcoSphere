@@ -8,6 +8,15 @@ import RestaurantService from "../features/resturant/resturant.service";
 import RestaurantRepository from "../features/resturant/resturant.repository";
 import ReviewRepository from "../features/review/review.repository";
 import ReviewService from "../features/review/review.service";
+import { RegistrationFactory } from "../features/auth/registration/RegistrationStrategyFactory";
+import { EndUserRegistration } from "../features/auth/registration/EndUserRegistration";
+import { RegistrationService } from "../features/auth/registration/RegistrationService";
+import { ShopRegistration } from "../features/auth/registration/ShopRegistration";
+import { OrganizerRegistration } from "../features/auth/registration/OrganizerRegistration";
+import { LoginFactory } from "../features/auth/login/login.strategy.factory";
+import { LoginService } from "../features/auth/login/login.service";
+import { UserLoginStrategy } from "../features/auth/login/user.login";
+import { ShopLoginStrategy } from "../features/auth/login/shop.login";
 
 // you will register any
 container.registerSingleton("IUserRepository", UserRepository);
@@ -18,5 +27,14 @@ container.registerSingleton("IRestaurantService", RestaurantService);
 container.registerSingleton("IRestaurantRepository", RestaurantRepository);
 container.registerSingleton("IReviewRepository", ReviewRepository);
 container.registerSingleton("IReviewService", ReviewService);
+container.registerSingleton("RegistrationService", RegistrationService);
+container.registerSingleton("RegistrationFactory", RegistrationFactory);
+container.registerSingleton("EndUserRegistration", EndUserRegistration);
+container.registerSingleton("ShopRegistration", ShopRegistration);
+container.registerSingleton("OrganizerRegistration", OrganizerRegistration);
+container.registerSingleton("LoginService", LoginService);
+container.registerSingleton("LoginFactory", LoginFactory);
+container.registerSingleton("UserLoginStrategy", UserLoginStrategy);
+container.registerSingleton("ShopLoginStrategy", ShopLoginStrategy);
 
 export { container as rootContainer } from "tsyringe";
