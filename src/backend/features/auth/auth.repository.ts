@@ -18,7 +18,7 @@ export interface IAuthRepository {
 		phoneNumber: string
 	): Promise<User>;
 	existsByEmail(email: string): Promise<{ _id: ObjectId } | null>;
-	saveNewUser(data: RegisterRequestDTO): Promise<Partial<IUser>>;
+	saveNewUser(data: RegisterRequestDTO): Promise<IUser>;
 	findByEmail(email: string): Promise<IUser | null>;
 	me(): Promise<User[]>;
 }
@@ -68,7 +68,7 @@ class AuthRepository {
 		return await UserModel.exists({ email }).lean().exec();
 	}
 
-	async saveNewUser(data: RegisterRequestDTO): Promise<Partial<IUser>> {
+	async saveNewUser(data: RegisterRequestDTO): Promise<IUser> {
 		const savedUser = await UserModel.create(data);
 		return savedUser;
 	}
