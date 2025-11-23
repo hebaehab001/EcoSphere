@@ -1,9 +1,8 @@
 import { inject, injectable } from "tsyringe";
-import type { IRegistrationFactory } from "./RegistrationStrategyFactory";
-import { IUser } from "../../user/user.model";
+import type { IRegistrationFactory } from "./registration.strategy.factory";
 
 interface IRegistrationStrategy {
-	register<T, V>(data: T): Promise<V> | null;
+	register(data: any): Promise<any>;
 }
 
 @injectable()
@@ -13,7 +12,8 @@ class RegistrationService {
 		private readonly strategyFactory: IRegistrationFactory
 	) {}
 
-	async register<T extends IUser>(data: T) {
+	async register(data: any) {
+		console.log(data);
 		const strategy = this.strategyFactory.getStrategy(data.userType);
 		return await strategy.register(data);
 	}
