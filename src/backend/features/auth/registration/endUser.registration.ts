@@ -3,6 +3,7 @@ import { IRegistrationStrategy } from "./registration.service";
 import type { IAuthRepository } from "../auth.repository";
 import { generateToken } from "@/backend/utils/helpers";
 import { RegisterRequestDTO, RegisterResponseDTO } from "../dto/user.dto";
+import { mapUserToPublicProfile } from "../mappers";
 
 @injectable()
 class EndUserRegistration implements IRegistrationStrategy {
@@ -15,13 +16,14 @@ class EndUserRegistration implements IRegistrationStrategy {
 		if (isUserExists) throw new Error("email already exists.");
 		const savedUser = await this.authRepository.saveNewUser(data);
 
-		const token = generateToken({
-			id: savedUser._id!,
-			lastName: savedUser.lastName!,
-			email: savedUser.email!,
-			role: savedUser.role!,
-		});
-		return { token, user: { id: savedUser._id!, ...savedUser._doc } };
+		// create a user data object for token generation and response
+		const userData = mapUserToPublicProfile(savedUser);
+
+		const token = generateToken(userData);
+		return {
+			token,
+			user: userData,
+		};
 	}
 }
 
