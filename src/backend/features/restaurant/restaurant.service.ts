@@ -1,6 +1,5 @@
 import { inject, injectable } from "tsyringe";
 import type { IRestaurantRepository } from "./restaurant.repository";
-import { Prisma, Restaurant } from "@/generated/prisma/client";
 
 export interface IRestaurantService {
 	create(

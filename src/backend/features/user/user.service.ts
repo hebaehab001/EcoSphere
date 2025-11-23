@@ -1,6 +1,5 @@
 import { inject, injectable } from "tsyringe";
 import type { IUserRepository } from "./user.repository";
-import { Prisma, User } from "@/generated/prisma/client";
 import type { IRestaurantRepository } from "../restaurant/restaurant.repository";
 
 export interface IUserService {

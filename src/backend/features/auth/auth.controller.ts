@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-import { User } from "@/generated/prisma/client";
 import type { LoginRequestDTO, RegisterRequestDTO } from "./dto/user.dto";
 import type { IRegistrationStrategy } from "./registration/registration.service";
 import type { ILoginStrategy } from "./login/login.service";

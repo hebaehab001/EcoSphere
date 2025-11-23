@@ -1,6 +1,5 @@
 import { inject, injectable } from "tsyringe";
 import type { IRestaurantService } from "./restaurant.service";
-import { Prisma, Restaurant } from "@/generated/prisma/client";
 import "reflect-metadata";
 
 @injectable()

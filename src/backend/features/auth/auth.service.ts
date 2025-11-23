@@ -6,7 +6,6 @@ import {
 	hashPassword,
 	OMIT,
 } from "../../utils/helpers";
-import { Gender, User } from "@/generated/prisma/client";
 import type {
 	LoginRequestDTO,
 	RegisterRequestDTO,
@@ -34,7 +33,7 @@ class AuthService {
 		email,
 		password,
 	}: LoginRequestDTO): Promise<LoginResponseDTO | null> {
-		const user = await this.authRepository.findByEmail(email);
+		const user = await this.authRepository.findUserByEmail(email);
 		if (user) {
 			const isMatch = await comparePassword(password, user.password);
 			if (isMatch) {
@@ -66,7 +65,7 @@ class AuthService {
 		gender,
 		phoneNumber,
 	}: RegisterRequestDTO): Promise<{ token: string; user: User } | null> {
-		const existingUser = await this.authRepository.findByEmail(email);
+		const existingUser = await this.authRepository.findUserByEmail(email);
 		if (!existingUser) {
 			const hashed = await hashPassword(password);
 			const userGender = Gender[gender as keyof typeof Gender];
