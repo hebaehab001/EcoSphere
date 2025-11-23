@@ -33,6 +33,15 @@ export const mapRegisterResultToDto = (
 	};
 };
 
+export const mapUserToPublicProfile = (user: IUser) => {
+	return {
+		id: user._id!.toString(),
+		email: user.email,
+		lastName: user.lastName,
+		role: user.role,
+	};
+};
+
 const mapStringToEnum = <T extends { [key: string]: string | number }>(
 	enumObj: T,
 	value: string
