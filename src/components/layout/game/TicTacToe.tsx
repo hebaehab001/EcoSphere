@@ -156,7 +156,7 @@ export default function TicTacToe() {
   // -------------------------
   useEffect(() => {
     if (isAiTurn && !winner) {
-      const timer = setTimeout(() => aiMove(), 1500);
+      const timer = setTimeout(() => aiMove(), 1000);
       return () => clearTimeout(timer);
     }
   }, [isAiTurn, winner, aiMove]);
