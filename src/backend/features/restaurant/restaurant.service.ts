@@ -1,24 +1,25 @@
 import { inject, injectable } from "tsyringe";
-import type { IRestaurantRepository } from "./resturant.repository";
-import { Prisma, Restaurant } from "@/generated/prisma/client";
+import type { IRestaurantRepository } from "./restaurant.repository";
+import { IRestaurant } from "./restaurant.model";
 
 export interface IRestaurantService {
   create(
+    email: string,
+    password: string,
     location: string,
-    rating: number,
     name: string,
     workingHours: string,
     phoneNumber: string,
     avatar: string,
     description: string
-  ): Promise<Restaurant>;
-  getAll(): Promise<Restaurant[]>;
-  getById(id: string): Promise<Restaurant | null>;
+  ): Promise<IRestaurant>;
+  getAll(): Promise<IRestaurant[]>;
+  getById(id: string): Promise<IRestaurant>;
   updateById(
     id: string,
-    data: Prisma.RestaurantUpdateInput
-  ): Promise<Restaurant | null>;
-  deleteById(id: string): Promise<Restaurant | null>;
+    data: Partial<IRestaurant>
+  ): Promise<IRestaurant>;
+  deleteById(id: string): Promise<IRestaurant>;
 }
 
 @injectable()
@@ -28,29 +29,39 @@ class RestaurantService {
     private readonly restaurantRepository: IRestaurantRepository
   ) {}
   async create(
+    email: string,
+    password: string,
     location: string,
-    rating: number,
     name: string,
     workingHours: string,
     phoneNumber: string,
     avatar: string,
     description: string
-  ): Promise<Restaurant> {
-    return await this.restaurantRepository.create(location, rating, name, workingHours, phoneNumber, avatar, description);
+  ): Promise<IRestaurant> {
+    return await this.restaurantRepository.create(
+      email,
+      password,
+      location,
+      name,
+      workingHours,
+      phoneNumber,
+      avatar,
+      description
+    );
   }
-  async getAll(): Promise<Restaurant[]> {
+  async getAll(): Promise<IRestaurant[]> {
     return await this.restaurantRepository.getAll();
   }
-  async getById(id: string): Promise<Restaurant | null> {
+  async getById(id: string): Promise<IRestaurant> {
     return await this.restaurantRepository.getById(id);
   }
   async updateById(
     id: string,
-    data: Prisma.RestaurantUpdateInput
-  ): Promise<Restaurant | null> {
+    data: Partial<IRestaurant>
+  ): Promise<IRestaurant> {
     return await this.restaurantRepository.updateById(id, data);
   }
-  async deleteById(id: string): Promise<Restaurant | null> {
+  async deleteById(id: string): Promise<IRestaurant> {
     return await this.restaurantRepository.deleteById(id);
   }
 }
