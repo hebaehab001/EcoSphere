@@ -18,6 +18,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from 'next/link'
 import ThemeBtn from '../ThemeBtn/ThemeBtn'
 import UserBtn from '../UserBtn/UserBtn'
+import GetFavCount from '@/frontend/hooks/getFavCount'
 // Menu items.
 const items = [
     {
@@ -95,8 +96,8 @@ export default function SideBar() {
                             <SidebarMenuButton asChild >
                                 <Link href="/fav">
                                     <Heart />
-                                    <span>Favourite</span>
-                                    <SidebarMenuBadge>24</SidebarMenuBadge>
+                                    <span>Favorite</span>
+                                    <SidebarMenuBadge><GetFavCount /></SidebarMenuBadge>
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
