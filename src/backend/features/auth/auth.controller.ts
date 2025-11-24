@@ -16,13 +16,13 @@ class AuthController {
     @inject("LoginService") private readonly loginService: ILoginStrategy
   ) {}
 
-  async login(loginDto: LoginRequestDTO): Promise<LoginResponseDTO | null> {
+  async login(loginDto: LoginRequestDTO): Promise<LoginResponseDTO> {
     return await this.loginService.login(loginDto);
   }
 
   async register(
     registerDto: RegisterRequestDTO
-  ): Promise<RegisterResponseDTO | null> {
+  ): Promise<RegisterResponseDTO> {
     return await this.registrationService.register(registerDto);
   }
 }
