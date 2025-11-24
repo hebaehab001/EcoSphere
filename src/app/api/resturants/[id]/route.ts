@@ -9,8 +9,8 @@ export const GET = async (
   context: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<IRestaurant>>> => {
   const { id } = await context.params;
+  const controller = rootContainer.resolve(RestaurantController);
   try {
-    const controller = rootContainer.resolve(RestaurantController);
     const result = await controller.getById(id);
     return ok(result);
   } catch (error) {
@@ -25,8 +25,8 @@ export const PUT = async (
 ): Promise<NextResponse<ApiResponse<IRestaurant>>> => {
   const { id } = await context.params;
   const body = await req.json();
+  const controller = rootContainer.resolve(RestaurantController);
   try {
-    const controller = rootContainer.resolve(RestaurantController);
     const result = await controller.updateById(id, body);
     return ok(result);
   } catch (error) {
@@ -40,8 +40,8 @@ export const DELETE = async (
   context: { params: Promise<{ id: string }> }
 ) => {
   const { id } = await context.params;
+  const controller = rootContainer.resolve(RestaurantController);
   try {
-    const controller = rootContainer.resolve(RestaurantController);
     const result = await controller.deleteById(id);
     return ok(result);
   } catch (error) {
