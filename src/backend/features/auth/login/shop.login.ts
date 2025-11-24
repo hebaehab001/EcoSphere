@@ -2,7 +2,10 @@ import { inject, injectable } from "tsyringe";
 import { ILoginStrategy } from "./login.service";
 import { LoginRequestDTO, LoginResponseDTO } from "../dto/user.dto";
 import type { IAuthRepository } from "../auth.repository";
-import { mapShopToPublicProfile } from "../mappers";
+import {
+	mapRestaurantToTokenPayload,
+	mapShopToPublicProfile,
+} from "../mappers";
 import { generateToken } from "@/backend/utils/helpers";
 
 @injectable()
@@ -17,12 +20,10 @@ class ShopLoginStrategy implements ILoginStrategy {
 		if (!(await shop.comparePassword(date.password)))
 			throw new Error("Invalid email or password");
 
-		const shopData = mapShopToPublicProfile(shop);
-
-		const token = generateToken(shopData);
+		const token = generateToken(mapRestaurantToTokenPayload(shop));
 		return {
 			token,
-			user: shopData,
+			user: mapShopToPublicProfile(shop),
 		};
 	}
 }

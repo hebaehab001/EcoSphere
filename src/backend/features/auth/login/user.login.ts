@@ -3,7 +3,7 @@ import { ILoginStrategy } from "./login.service";
 import { type IAuthRepository } from "../auth.repository";
 import type { LoginRequestDTO, LoginResponseDTO } from "../dto/user.dto";
 import { generateToken } from "@/backend/utils/helpers";
-import { mapUserToPublicProfile } from "../mappers";
+import { mapUserAsEndUser, mapUserToTokenPayload } from "../mappers";
 @injectable()
 class UserLoginStrategy implements ILoginStrategy {
 	constructor(
@@ -16,9 +16,9 @@ class UserLoginStrategy implements ILoginStrategy {
 		if (!(await user.comparePassword(data.password)))
 			throw new Error("Invalid email or password");
 
-		const userData = mapUserToPublicProfile(user);
+		const userData = mapUserAsEndUser(user);
 
-		const token = generateToken(userData);
+		const token = generateToken(mapUserToTokenPayload(user));
 		return {
 			token,
 			user: userData,
