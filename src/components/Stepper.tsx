@@ -142,7 +142,7 @@ export default function Stepper({
               )}
               <button
                 onClick={isLastStep ? handleComplete : handleNext}
-                className="duration-350 flex items-center justify-center rounded-full bg-primary py-1.5 px-3.5 font-medium tracking-tight  text-primary-foreground cursor-pointer transition hover:bg-primary/80 hover:scale-105"
+                className="duration-350 flex items-center justify-center rounded-full bg-primary py-3 px-7 font-medium tracking-tight  text-primary-foreground cursor-pointer transition hover:bg-primary/80 hover:scale-105"
                 {...nextButtonProps}
               >
                 {isLastStep ? 'Complete' : nextButtonText}
