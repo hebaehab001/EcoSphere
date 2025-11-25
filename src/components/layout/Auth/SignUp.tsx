@@ -20,12 +20,12 @@ const SignUp = () => {
         <Step>
           <Step1 />
         </Step>
-        {selectedType === "user" && (
+        {(selectedType === "user" || selectedType === "eventOrganizer") && (
           <Step>
             <UStep2 />
           </Step>
         )}
-        {selectedType === "user" && (
+        {(selectedType === "user" || selectedType === "eventOrganizer") && (
           <Step>
             <UStep3 />
           </Step>
