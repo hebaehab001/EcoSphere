@@ -31,3 +31,12 @@ export type RegisterResponseDTO = {
 };
 
 export type LoginTypes = UserRole | "shop";
+
+export type FoundedUser = {
+	_id: string;
+	email: string;
+	name: string;
+	password: string;
+	role: string;
+	comparePassword?: (password: string) => Promise<boolean>;
+};
