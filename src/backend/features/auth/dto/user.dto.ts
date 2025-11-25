@@ -4,12 +4,13 @@ import { UserRole } from "../../user/user.model";
 export type LoginRequestDTO = {
 	email: string;
 	password: string;
-	loginType: LoginTypes;
 };
 
-export type LoginResponseDTO = {
-	token: string;
-	user: TokenPayload;
+export type LoginResponse = {
+	id: string;
+	email: string;
+	name: string;
+	role: string;
 };
 
 export type RegisterRequestDTO = {

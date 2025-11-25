@@ -3,13 +3,13 @@ import { rootContainer } from "@/backend/config/container";
 import AuthController from "@/backend/features/auth/auth.controller";
 import type {
   LoginRequestDTO,
-  LoginResponseDTO,
+  LoginResponse,
 } from "@/backend/features/auth/dto/user.dto";
 import { ApiResponse, ok, serverError } from "@/types/api-helpers";
 
 export const POST = async (
   request: NextRequest
-): Promise<NextResponse<ApiResponse<LoginResponseDTO>>> => {
+): Promise<NextResponse<ApiResponse<LoginResponse>>> => {
   const body = (await request.json()) as LoginRequestDTO;
   const controller = rootContainer.resolve(AuthController);
 
