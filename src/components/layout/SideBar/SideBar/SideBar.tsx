@@ -20,7 +20,7 @@ import { RxDashboard } from "react-icons/rx";
 import Link from 'next/link'
 import ThemeBtn from '../ThemeBtn/ThemeBtn'
 import UserBtn from '../UserBtn/UserBtn'
-import GetFavCount from '@/frontend/Actions/getFavCount'
+import GetFavCount from '@/frontend/Actions/GetFavCount'
 // Menu items.
 const items = [
     {
