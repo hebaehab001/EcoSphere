@@ -44,7 +44,7 @@ export default function KeyPillars() {
                 <Reveal>
                     {/* Header Section */}
                     <div className="text-center max-w-3xl mx-auto mb-16">
-                        <span className="text-xs font-bold tracking-[0.2em] text-primary uppercase mb-3 block">
+                        <span className="text-xl font-bold tracking-[0.2em] text-primary uppercase mb-3 block">
                             Our Standards
                         </span>
                         <h2 className="text-3xl md:text-5xl font-bold text-foreground leading-tight">

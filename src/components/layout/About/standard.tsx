@@ -16,7 +16,7 @@ export default function Standard() {
             {/* LEFT COLUMN: Content */}
             <div className="flex flex-col space-y-8">
               <div className="space-y-4">
-                <span className="text-xs font-bold tracking-widest text-primary uppercase flex items-center gap-2">
+                <span className="text-xl font-bold tracking-widest text-primary uppercase flex items-center gap-2">
                   <motion.span initial={{ opacity: 0, x: -6 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} className="inline-flex items-center">
                     <ClipboardCheck className="w-4 h-4" />
                   </motion.span>
@@ -24,7 +24,7 @@ export default function Standard() {
                 </span>
                 <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
                   The EcoSphere <br />
-                  <span className="text-primary">Standard.</span>
+                  <span className="text-primary">Verification.</span>
                 </h2>
               </div>
 
