@@ -20,7 +20,7 @@ import { RxDashboard } from "react-icons/rx";
 import Link from 'next/link'
 import ThemeBtn from '../ThemeBtn/ThemeBtn'
 import UserBtn from '../UserBtn/UserBtn'
-import GetFavCount from '@/frontend/hooks/getFavCount'
+import GetFavCount from '@/frontend/Actions/getFavCount'
 // Menu items.
 const items = [
     {
@@ -135,7 +135,7 @@ export default function SideBar() {
                                 <Link href="/fav">
                                     <Heart />
                                     <span>Favorite</span>
-                                    <SidebarMenuBadge><GetFavCount /></SidebarMenuBadge>
+                                    <GetFavCount />
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>

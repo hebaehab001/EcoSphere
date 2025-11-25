@@ -1,11 +1,10 @@
 "use client";
-
-import { RootState } from "@/Redux/Store";
+import { RootState } from "@/frontend/Redux/store";
 import { useSelector } from "react-redux";
-
+import {SidebarMenuBadge} from "@/components/ui/sidebar"
 const GetFavCount = () => {
   const { favProducts } = useSelector((state: RootState) => state.fav);
-  return favProducts.length;
+  return <SidebarMenuBadge >{favProducts.length}</SidebarMenuBadge>;
 };
 
 export default GetFavCount;
