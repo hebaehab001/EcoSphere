@@ -16,7 +16,7 @@ export interface IEvent extends Document {
   locate: string;
   ticketPrice: number;
   avatar: string;
-  viewers: string[];
+  attenders: string[];
   capacity: number;
   sections: ISection[];
 }
@@ -60,7 +60,7 @@ export const eventSchema = new Schema<IEvent>(
     locate: { type: String, required: true },
     ticketPrice: { type: Number, required: true },
     avatar: { type: String, required: true },
-    viewers: { type: [String], default: [] },
+    attenders: { type: [String], default: [] },
     capacity: { type: Number, required: true },
     sections: { type: [sectionsSchema], default: [] },
   },
@@ -104,7 +104,6 @@ userSchema.pre("save", async function (next): Promise<void> {
 userSchema.methods.comparePassword = async function (
   candidatePassword: string
 ): Promise<boolean> {
-  console.log(candidatePassword);
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
