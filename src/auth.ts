@@ -38,19 +38,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 		strategy: "jwt",
 	},
 	callbacks: {
-		// async signIn({ user, account, profile }) {
-		//   const controller = rootContainer.resolve(AuthController);
-		//   switch (account?.provider) {
-		//     case "google":
-		//       // You can add additional logic here for Google sign-ins if needed
-		//       return true;
-		//     case "credentials":
-		//       // You can add additional logic here for Credentials sign-ins if needed
-		//       return true;
-		//     default:
-		//       return true;
-		//   }
-		// },
+		async signIn({ user, account, profile }) {
+			const controller = rootContainer.resolve(AuthController);
+			switch (account?.provider) {
+				case "google":
+					// You can add additional logic here for Google sign-ins if needed
+					return true;
+				case "credentials":
+					// You can add additional logic here for Credentials sign-ins if needed
+					return true;
+				default:
+					return true;
+			}
+		},
 		async jwt({ token, user }) {
 			if (user) {
 				token.role = user.role;
@@ -66,9 +66,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 		},
 	},
 
-	// pages: {
-	// 	signIn: "/auth",
-	// },
+	pages: {
+		signIn: "/auth",
+	},
 
 	// Add these important NextAuth v5 configs
 	trustHost: true, // Important for development
