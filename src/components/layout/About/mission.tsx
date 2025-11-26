@@ -61,11 +61,10 @@ export default function Mission() {
                 initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.7 }}>
                 <div className="relative w-full h-full min-h-80 md:min-h-[500px]">
                   <Image
-                    src="/mission.png"
+                    src="/Mission.png"
                     alt="EcoSphere Mission"
                     fill
                     className="object-contain"
-                    onError={() => { /* no-op fallback: keep source as-is; public image expected */ }}
                   />
                 </div>
               </motion.div>
