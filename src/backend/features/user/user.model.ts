@@ -27,12 +27,13 @@ export interface IUser extends Document {
   firstName: string;
   lastName: string;
   password: string;
-  phoneNumber: string;
-  birthDate: string;
-  gender: Gender;
+  phoneNumber?: string;
+  birthDate?: string;
+  gender?: Gender;
   points: number;
   role: UserRole;
   subscribed?: boolean;
+  accountProvider?: string;
   subscriptionPeriod?: Date;
   address?: string;
   avatar?: string;
@@ -51,7 +52,7 @@ export const sectionsSchema = new Schema<ISection>(
     subtitle: { type: String, required: true },
     description: { type: String, required: true },
   },
-  { _id: false }
+  { _id: false },
 );
 
 export const eventSchema = new Schema<IEvent>(
@@ -64,7 +65,7 @@ export const eventSchema = new Schema<IEvent>(
     capacity: { type: Number, required: true },
     sections: { type: [sectionsSchema], default: [] },
   },
-  { _id: true }
+  { _id: true },
 );
 
 const userSchema = new Schema<IUser>(
@@ -72,15 +73,16 @@ const userSchema = new Schema<IUser>(
     email: { type: String, required: true, unique: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    password: { type: String, required: true, select: false },
-    phoneNumber: { type: String, required: true },
-    address: { type: String, required: true },
+    password: { type: String, required: false, select: false },
+    phoneNumber: { type: String, required: false },
+    address: { type: String, required: false },
     avatar: { type: String, required: false },
-    birthDate: { type: String, required: true },
-    gender: { type: String, enum: ["male", "female"], required: true },
+    birthDate: { type: String, required: false },
+    gender: { type: String, enum: ["male", "female"], required: false },
     subscribed: { type: Boolean, default: false },
     subscriptionPeriod: { type: Date, required: false, default: Date.now() },
     points: { type: Number, default: 1000 },
+    accountProvider: { type: String, required: false },
     role: {
       type: String,
       enum: ["customer", "organizer", "admin"],
@@ -91,7 +93,7 @@ const userSchema = new Schema<IUser>(
     paymentHistory: { type: [String], default: [] },
     events: { type: [eventSchema], default: [] },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 userSchema.pre("save", async function (next): Promise<void> {
@@ -102,7 +104,7 @@ userSchema.pre("save", async function (next): Promise<void> {
 });
 
 userSchema.methods.comparePassword = async function (
-  candidatePassword: string
+  candidatePassword: string,
 ): Promise<boolean> {
   return await bcrypt.compare(candidatePassword, this.password);
 };
