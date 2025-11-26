@@ -4,7 +4,6 @@ import React from "react";
 import Reveal from "@/components/ui/reveal";
 import { Leaf, Handshake, Globe, Users} from "lucide-react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 export default function Values() {
     const values = [
@@ -32,13 +31,7 @@ export default function Values() {
 
     return (
            <section className="relative py-20 bg-card text-card-foreground overflow-hidden">
-            {/* Decorative Corner Leaves - using placeholder images to match the vibe */}
-                        <div className="absolute top-0 left-0 w-32 md:w-48 opacity-20 -translate-x-10 -translate-y-10 rotate-180 pointer-events-none mix-blend-multiply">
-                            <Image src="https://img.freepik.com/free-vector/green-leaves-branch-vector-illustration_53876-113063.jpg?w=740&t=st=1709490000~exp=1709490600~hmac=transparent" alt="" fill className="object-cover" unoptimized/>
-                        </div>
-                        <div className="absolute top-0 right-0 w-32 md:w-48 opacity-20 translate-x-10 -translate-y-10 pointer-events-none mix-blend-multiply">
-                            <Image src="https://img.freepik.com/free-vector/green-leaves-branch-vector-illustration_53876-113063.jpg?w=740&t=st=1709490000~exp=1709490600~hmac=transparent" alt="" fill className="object-cover" unoptimized/>
-                        </div>
+
 
             <div className="mx-auto max-w-[80%] px-4 relative z-10">
                 <Reveal>
@@ -60,7 +53,7 @@ export default function Values() {
                                 viewport={{ once: true, amount: 0.18 }}
                                 transition={{ duration: 0.6, delay: i * 0.08 }}
                                 whileHover={{ translateY: -4 }}
-                                className="bg-card rounded-2xl p-8 text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group border border-transparent hover:border-theme"
+                                className="bg-card rounded-2xl p-8 text-center shadow-lg duration-300 group border border-transparent hover:border-theme transform hover:scale-[1.02] ring-2 ring-primary/30 dark:ring-primary/60 dark:shadow-primary/30"
                             >
                                 {/* Icon Circle */}
                                 <motion.div whileTap={{ scale: 0.98 }} className="mx-auto w-20 h-20 bg-[var(--primary-foreground)/0.08] rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">

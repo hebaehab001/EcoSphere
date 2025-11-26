@@ -48,7 +48,7 @@ export default function KeyPillars() {
                             Our Standards
                         </span>
                         <h2 className="text-3xl md:text-5xl font-bold text-foreground leading-tight">
-                            Key Vetting Pillars
+                            Key Pillars
                         </h2>
                         <p className="mt-4 text-muted max-w-2xl mx-auto">
                             We don&apos;t just take a brand&apos;s word for it. We rigorously evaluate every partner against these four non-negotiable standards.
@@ -65,7 +65,7 @@ export default function KeyPillars() {
                                 viewport={{ once: true, amount: 0.16 }}
                                 transition={{ duration: 0.6, delay: i * 0.06 }}
                                 whileHover={{ translateY: -4 }}
-                                className="bg-card rounded-2xl p-8 text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group border border-transparent hover:border-theme flex flex-col items-center"
+                                className="bg-card rounded-2xl p-8 text-center shadow-lg duration-300 group border border-transparent hover:border-theme transform hover:scale-[1.02] ring-2 ring-primary/30 dark:ring-primary/60 dark:shadow-primary/30 flex flex-col items-center"
                             >
                                 {/* Icon Circle */}
                                 <motion.div whileTap={{ scale: 0.98 }} className="w-20 h-20 bg-[var(--primary-foreground)/0.08] rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">

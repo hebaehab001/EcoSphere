@@ -18,7 +18,7 @@ export default function Mission() {
               <div className="space-y-4">
                 <span className="text-xl font-bold tracking-widest text-primary uppercase flex items-center gap-2">
                   <motion.span initial={{ opacity: 0, x: -6 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} className="inline-flex items-center">
-                    <Target className="w-4 h-4" />
+                    <Target className="w-6 h-6" />
                   </motion.span>
                   Our Mission
                 </span>
@@ -53,20 +53,18 @@ export default function Mission() {
               {/* Primary color decorative sidebar line similar to first component */}
               <div className="absolute left-0 top-10 bottom-10 w-1.5 rounded-full hidden md:block" style={{ background: 'var(--primary)' }} />
 
-              {/* Decorative circular lines overlay */}
               <div className="absolute -top-6 -right-6 z-0 opacity-10">
-                <div className="w-32 h-32 rounded-full border-4 border-dashed animate-spin-slow" style={{ borderColor: 'var(--primary)' }} />
               </div>
 
               {/* Main Image Container */}
-              <motion.div className="relative z-10 overflow-hidden rounded-xl shadow-2xl transform transition-transform hover:scale-[1.01] duration-500"
+              <motion.div className="relative z-10 overflow-hidden rounded-xl p-4 bg-card/50 border border-theme shadow-lg transform transition-transform hover:scale-[1.02] duration-500 ring-2 ring-primary/40 dark:ring-primary/60 dark:shadow-primary/30"
                 initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.7 }}>
-                <div className="relative w-full md:min-h-[500px] h-80">
+                <div className="relative w-full h-full min-h-80 md:min-h-[500px]">
                   <Image
                     src="/mission.png"
                     alt="EcoSphere Mission"
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     onError={() => { /* no-op fallback: keep source as-is; public image expected */ }}
                   />
                 </div>

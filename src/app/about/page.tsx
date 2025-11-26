@@ -3,7 +3,7 @@ import Story from "@/components/layout/About/story";
 import Values from "@/components/layout/About/values";
 import Mission from "@/components/layout/About/mission";
 import Vision from "@/components/layout/About/vision";
-import Standard from "@/components/layout/About/standard";
+import Verification from "@/components/layout/About/verification";
 import KeyPillars from "@/components/layout/About/keyPillars";
 
 
@@ -18,7 +18,7 @@ return (
 <Values />
 <Mission />
 <Vision />
-<Standard />
+<Verification />
 <KeyPillars />
 </div>
 );
