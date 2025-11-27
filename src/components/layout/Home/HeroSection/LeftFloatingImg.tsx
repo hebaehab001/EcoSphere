@@ -11,7 +11,7 @@ const LeftFloatingImg = () => {
         initial={{ scale: 0, opacity: 0 }}
         whileInView={{ scale: [0,1.5,1], opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
         style={{ transformOrigin: "center" }}
       >
         {/* SVG BORDER ANIMATION */}
@@ -49,7 +49,7 @@ const LeftFloatingImg = () => {
               fill="freeze"
               calcMode="spline"
               keySplines="0 0 0.58 1"
-              begin="0.8s"
+              begin="0.5s"
             />
           </circle>
         </svg>
@@ -66,7 +66,7 @@ const LeftFloatingImg = () => {
         initial={{ scale: 0, opacity: 0 }}
         whileInView={{ scale: [0,1.5,1], opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
         style={{ transformOrigin: "center" }}
       >
         {/* SVG BORDER ANIMATION */}
@@ -104,7 +104,7 @@ const LeftFloatingImg = () => {
               fill="freeze"
               calcMode="spline"
               keySplines="0 0 0.58 1"
-              begin="1s"
+              begin="0.7s"
             />
           </circle>
         </svg>
@@ -121,7 +121,7 @@ const LeftFloatingImg = () => {
         initial={{ scale: 0, opacity: 0 }}
         whileInView={{ scale: [0,1.5,1], opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
         style={{ transformOrigin: "center" }}
       >
         {/* SVG BORDER ANIMATION */}
@@ -159,7 +159,7 @@ const LeftFloatingImg = () => {
               fill="freeze"
               calcMode="spline"
               keySplines="0 0 0.58 1"
-              begin="1.2s"
+              begin="0.9s"
             />
           </circle>
         </svg>
