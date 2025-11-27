@@ -9,7 +9,7 @@ const LeftFloatingImg = () => {
       <motion.div
         className="absolute left-[7%] bottom-[50%] lg:bottom-auto lg:top-[20%] lg:left-[40%] w-[35%] rounded-full aspect-square z-20"
         initial={{ scale: 0, opacity: 0 }}
-        whileInView={{ scale: 1, opacity: 1 }}
+        whileInView={{ scale: [0,1.5,1], opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         style={{ transformOrigin: "center" }}
@@ -64,7 +64,7 @@ const LeftFloatingImg = () => {
       <motion.div
         className="absolute left-[20%] bottom-[20%] lg:bottom-auto lg:top-[45%] lg:left-[5%] w-[35%] rounded-full aspect-square z-20"
         initial={{ scale: 0, opacity: 0 }}
-        whileInView={{ scale: 1, opacity: 1 }}
+        whileInView={{ scale: [0,1.5,1], opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
         style={{ transformOrigin: "center" }}
@@ -119,7 +119,7 @@ const LeftFloatingImg = () => {
       <motion.div
         className="absolute left-[60%] bottom-[1%] lg:bottom-auto lg:top-[60%] lg:left-[55%] w-[35%] rounded-full aspect-square z-20"
         initial={{ scale: 0, opacity: 0 }}
-        whileInView={{ scale: 1, opacity: 1 }}
+        whileInView={{ scale: [0,1.5,1], opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
         style={{ transformOrigin: "center" }}
