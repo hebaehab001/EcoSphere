@@ -1,13 +1,18 @@
 import React from "react";
-import HomeHero from "../HomeHero";
+import HomeHero from "./HomeHero";
+import LeftFloatingImg from "./LeftFloatingImg";
 
 const HomeHeroLayout = () => {
   return (
     <div className="min-h-screen relative">
       <HomeHero />
       <div className="absolute inset-0 gap-5 h-screen w-full hidden md:grid md:grid-cols-2 lg:grid-cols-3">
-        <div className="bg-amber-600"></div>
+        {/* left */}
+        <div className="">
+          <LeftFloatingImg />
+        </div>
         <div className="hidden lg:block"></div>
+        {/* right */}
         <div className="bg-amber-600"></div>
       </div>
     </div>
