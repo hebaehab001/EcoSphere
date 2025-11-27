@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEventHandler, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MdDoNotDisturbAlt } from "react-icons/md";
 import { BiSolidLeaf } from "react-icons/bi";
 import { RiRobot3Line } from "react-icons/ri";
@@ -26,7 +26,9 @@ export default function TicTacToe() {
   useEffect(() => {
     const savedScores = localStorage.getItem("tictactoe_scores");
     if (savedScores) {
-      setScores(JSON.parse(savedScores));
+      setTimeout(() => {
+        setScores(JSON.parse(savedScores));
+      }, 500);
     }
   }, []);
 
