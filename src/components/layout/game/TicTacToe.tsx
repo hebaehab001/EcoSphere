@@ -304,6 +304,14 @@ export default function TicTacToe() {
 
   return (
     <div className="min-h-screen  relative overflow-hidden">
+      <audio src="/Audio/game.mp3" loop autoPlay hidden>
+        <track
+          kind="captions"
+          label="English"
+          src="/Audio/game.captions.vtt"
+          default
+        ></track>
+      </audio>{" "}
       {/* Decorative Background Elements */}
       <div className="absolute top-10 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
       <div
@@ -314,7 +322,6 @@ export default function TicTacToe() {
         className="absolute top-1/2 left-1/4 w-24 h-24 bg-primary/5 rounded-full blur-2xl animate-pulse"
         style={{ animationDelay: "2s" }}
       ></div>
-
       <div className="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 p-6 lg:p-12 relative z-10">
         {/* Right Section - Game Board */}
         <div className="w-fit lg:w-auto shrink-0">
