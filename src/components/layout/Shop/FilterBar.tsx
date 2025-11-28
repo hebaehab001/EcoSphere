@@ -10,8 +10,6 @@ interface FilterBarProps {
 
 export default function FilterBar({
   onSortChange,
-  onSearch,
-  isSorting,
 }: FilterBarProps) {
   const [selectedSort, setSelectedSort] = useState("Default");
 
@@ -21,10 +19,6 @@ export default function FilterBar({
   const handleSortChange = (value: string) => {
     setSelectedSort(value);
     onSortChange(value); // Calls the handler passed down from ShopSection
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onSearch(e.target.value);
   };
 
   return (
