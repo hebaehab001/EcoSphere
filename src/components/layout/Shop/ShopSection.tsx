@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useState } from "react";
 import ShopCard from "./ShopCard";
 import FilterBar from "./FilterBar";
 import { motion } from "framer-motion";
