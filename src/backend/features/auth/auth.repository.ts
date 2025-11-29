@@ -8,7 +8,8 @@ import { IRestaurant, RestaurantModel } from "../restaurant/restaurant.model";
 export interface IAuthRepository {
   register(
     email: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     password: string,
     birthDate: string,
     address: string,
@@ -28,7 +29,8 @@ export interface IAuthRepository {
 class AuthRepository {
   async register(
     email: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     password: string,
     birthDate: string,
     address: string,
@@ -39,7 +41,8 @@ class AuthRepository {
     await DBInstance.getConnection();
     return await UserModel.create({
       email,
-      name,
+      firstName,
+      lastName,
       password,
       birthDate,
       address,

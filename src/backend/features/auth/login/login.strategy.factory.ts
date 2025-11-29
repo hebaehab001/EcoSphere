@@ -13,8 +13,12 @@ class LoginFactory implements ILoginFactory {
 	getStrategy(userType: string): ILoginStrategy {
 		switch (userType) {
 			case "user":
+			case "customer":
+			case "organizer":
+			case "admin":
 				return this.userStrategy;
 			case "shop":
+			case "restaurant":
 				return this.shopStrategy;
 			default:
 				throw new Error(`Unknown type, ${userType}`);

@@ -1,11 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { setUser, UserState } from "./UserSlice";
 
 interface ISecondUserStep {
   firstName: string;
   lastName: string;
   birthDate: string;
-  phoneNumber: number;
+  phoneNumber: string;
   gender: string;
+  address: string;
 }
 
 interface ISecondShopStep {
@@ -30,6 +32,8 @@ interface IFourthStep {
 interface AuthState {
   active: "login" | "register";
   selectedType: "user" | "eventOrganizer" | "shop";
+  loading: boolean;
+  error: string | null;
 
   step2Data: ISecondUserStep | ISecondShopStep;
   step3Data: IThirdShopStep;
@@ -47,6 +51,8 @@ interface AuthState {
 const initialState: AuthState = {
   active: "login",
   selectedType: "user",
+  loading: false,
+  error: null,
   step2Data: {} as ISecondUserStep,
   step3Data: {} as IThirdShopStep,
   step4Data: {} as IFourthStep,
@@ -58,6 +64,70 @@ const initialState: AuthState = {
     step4: false,
   },
 };
+
+// Real Login Thunk
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async (credentials: any, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...credentials,
+          loginType: "customer", // Default to customer, can be enhanced later
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return rejectWithValue(data.message || "Login failed");
+      }
+
+      // Assuming the API returns { success: true, data: { token: "...", user: { ... } } }
+      // Adjust based on actual API response structure from mappers.ts
+      const userData = data.data.user;
+      
+      // You might want to store the token in localStorage here or in a middleware
+      localStorage.setItem("token", data.data.token);
+
+      dispatch(setUser({ ...userData, isLoggedIn: true }));
+      return userData;
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Login failed");
+    }
+  }
+);
+
+// Real Register Thunk
+export const registerUser = createAsyncThunk(
+  "auth/registerUser",
+  async (registrationData: any, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(registrationData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return rejectWithValue(data.message || "Registration failed");
+      }
+
+      const userData = data.data.user;
+      localStorage.setItem("token", data.data.token);
+
+      dispatch(setUser({ ...userData, isLoggedIn: true }));
+      return userData;
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Registration failed");
+    }
+  }
+);
+
 type StepKey = "step1" | "step2" | "step3" | "step4";
 
 const AuthSlice = createSlice({
@@ -93,6 +163,31 @@ const AuthSlice = createSlice({
 
       state.stepsValidation[key] = valid;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 

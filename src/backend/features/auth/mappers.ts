@@ -47,15 +47,18 @@ export const mapRestaurantToTokenPayload = (user: IRestaurant) => {
 export const mapUserAsEndUser = (user: IUser) => {
 	return {
 		_id: user._id,
+		id: user._id,
 		email: user.email,
+		firstName: user.firstName,
 		lastName: user.lastName,
 		address: user.address || "",
 		avatar: user.avatar || "",
 		birthDate: user.birthDate,
 		phoneNumber: user.phoneNumber,
-		role: "endUser",
+		gender: user.gender,
+		role: "customer",
 		points: user.points || 0,
-		favePlaces: user.favoritesIds,
+		favoritesIds: user.favoritesIds,
 		cart: user.cart,
 		paymentHistory: user.paymentHistory,
 	};
@@ -64,13 +67,18 @@ export const mapUserAsEndUser = (user: IUser) => {
 export const mapUserAsOrganizer = (user: IUser) => {
 	return {
 		_id: user._id,
+		id: user._id,
 		email: user.email,
+		firstName: user.firstName,
 		lastName: user.lastName,
 		phoneNumber: user.phoneNumber,
+		address: user.address || "",
+		avatar: user.avatar || "",
+		birthDate: user.birthDate,
+		gender: user.gender,
 		role: "organizer",
 		subscriptionPeriod: user.subscriptionPeriod,
 		subscribed: user.subscribed,
-		avatar: user.avatar || "",
 		events: user.events,
 	};
 };
@@ -90,5 +98,28 @@ export const mapShopToPublicProfile = (shop: IRestaurant) => {
 		reviews: shop.restaurantRating,
 		subscribed: shop.subscribed,
 		subscriptionPeriod: shop.subscriptionPeriod,
+	};
+};
+
+export const mapUserToPublicProfile = (user: IUser) => {
+	return {
+		_id: user._id,
+		id: user._id,
+		email: user.email,
+		firstName: user.firstName,
+		lastName: user.lastName,
+		phoneNumber: user.phoneNumber,
+		address: user.address || "",
+		avatar: user.avatar || "",
+		birthDate: user.birthDate,
+		gender: user.gender,
+		role: user.role,
+		points: user.points || 0,
+		favoritesIds: user.favoritesIds,
+		cart: user.cart,
+		paymentHistory: user.paymentHistory,
+		subscribed: user.subscribed,
+		subscriptionPeriod: user.subscriptionPeriod,
+		events: user.events,
 	};
 };

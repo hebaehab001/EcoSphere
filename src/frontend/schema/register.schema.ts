@@ -14,6 +14,9 @@ export const Step2UserSchema = Z.object({
     .nonempty({ message: "Phone number is required" })
     .regex(/^\d{11}$/, { message: "Phone number must be 11 digits" }),
   gender: Z.enum(["male", "female"]),
+  address: Z.string()
+    .min(5)
+    .nonempty({ message: "Address is required" }),
 });
 
 export const LastStepSchema = Z.object({

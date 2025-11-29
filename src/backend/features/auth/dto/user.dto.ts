@@ -14,11 +14,12 @@ export type LoginResponseDTO = {
 
 export type RegisterRequestDTO = {
 	email: string;
-	name: string;
+	firstName: string;
+	lastName: string;
 	password: string;
 	birthDate: string;
 	address: string;
-	avatar: string;
+	avatar?: string;
 	gender: string;
 	phoneNumber: string;
 	role: LoginTypes;

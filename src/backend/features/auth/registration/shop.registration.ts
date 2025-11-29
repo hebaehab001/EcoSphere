@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+// Force rebuild
 import { IRegistrationStrategy } from "./registration.service";
 import { RegisterRequestDTO, RegisterResponseDTO } from "../dto/user.dto";
 import type { IAuthRepository } from "../auth.repository";
@@ -8,7 +9,7 @@ import { generateToken } from "@/backend/utils/helpers";
 @injectable()
 class ShopRegistration implements IRegistrationStrategy {
 	constructor(
-		@inject("AuthRepository") private readonly authRepo: IAuthRepository
+		@inject("IAuthRepository") private readonly authRepo: IAuthRepository
 	) {}
 	async register(data: RegisterRequestDTO): Promise<RegisterResponseDTO> {
 		const isShopExists = await this.authRepo.existsByEmail(data.email);
