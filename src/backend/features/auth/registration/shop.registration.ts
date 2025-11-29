@@ -18,7 +18,7 @@ class ShopRegistration implements IRegistrationStrategy {
 		const token = generateToken(mapRestaurantToTokenPayload(savedShop));
 		return {
 			token,
-			user: mapShopToPublicProfile(savedShop),
+			user: await mapShopToPublicProfile(savedShop),
 		};
 	}
 }

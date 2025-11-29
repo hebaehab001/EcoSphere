@@ -22,7 +22,7 @@ export interface IEvent extends Document {
 }
 
 export interface IUser extends Document {
-  _id: string;
+  _id: mongoose.Types.ObjectId;
   email: string;
   firstName: string;
   lastName: string;
@@ -35,7 +35,10 @@ export interface IUser extends Document {
   subscribed?: boolean;
   subscriptionPeriod?: Date;
   address?: string;
-  avatar?: string;
+  avatar?: {
+    key: string;
+    url?: string;
+  };
   favoritesIds?: string[];
   cart?: string[];
   paymentHistory?: string[];
@@ -75,7 +78,9 @@ const userSchema = new Schema<IUser>(
     password: { type: String, required: true, select: false },
     phoneNumber: { type: String, required: true },
     address: { type: String, required: true },
-    avatar: { type: String, required: false },
+    avatar: {
+      key: { type: String, required: false },
+    },
     birthDate: { type: String, required: true },
     gender: { type: String, enum: ["male", "female"], required: true },
     subscribed: { type: Boolean, default: false },

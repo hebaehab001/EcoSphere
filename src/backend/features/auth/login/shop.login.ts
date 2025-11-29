@@ -17,7 +17,7 @@ class ShopLoginStrategy implements ILoginStrategy {
 		if (!(await shop.comparePassword(date.password)))
 			throw new Error("Invalid email or password");
 
-		const shopData = mapShopToPublicProfile(shop);
+		const shopData = await mapShopToPublicProfile(shop);
 
 		const token = generateToken(shopData);
 		return {

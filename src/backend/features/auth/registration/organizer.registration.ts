@@ -20,7 +20,7 @@ class OrganizerRegistration implements IRegistrationStrategy {
 
 		return {
 			token,
-			user: mapUserAsOrganizer(organizer),
+			user: await mapUserAsOrganizer(organizer),
 		};
 	}
 }

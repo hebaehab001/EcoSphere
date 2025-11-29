@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/frontend/redux/store";
-import { updateUserProfile } from "@/frontend/redux/Slice/UserSlice";
+import { updateUserProfile, updateProfile } from "@/frontend/redux/Slice/UserSlice";
+import ImageUpload from "@/components/common/ImageUpload";
 
 export default function CustomerProfile() {
     const user = useSelector((state: RootState) => state.user);
@@ -46,6 +47,10 @@ export default function CustomerProfile() {
         }
     };
 
+    const handleImageUpdate = (newUrl: string) => {
+        dispatch(updateProfile({ avatar: newUrl }));
+    };
+
     return (
         <div className="space-y-6">
             {/* Hero Section */}
@@ -57,19 +62,11 @@ export default function CustomerProfile() {
                     Edit Profile
                 </button>
                 <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center overflow-hidden">
-                        {user.avatar ? (
-                            <img
-                                src={user.avatar}
-                                alt="Avatar"
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <span className="text-2xl text-muted-foreground">
-                                {user.firstName?.[0]}
-                                {user.lastName?.[0]}
-                            </span>
-                        )}
+                    <div className="flex-shrink-0">
+                        <ImageUpload
+                            currentImageUrl={user.avatar}
+                            onImageUpdate={handleImageUpdate}
+                        />
                     </div>
                     <div>
                         <h1 className="text-2xl font-bold text-card-foreground">

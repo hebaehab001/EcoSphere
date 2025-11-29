@@ -18,7 +18,7 @@ class EndUserRegistration implements IRegistrationStrategy {
 		const token = generateToken(mapUserToTokenPayload(savedUser));
 		return {
 			token,
-			user: mapUserAsEndUser(savedUser),
+			user: await mapUserAsEndUser(savedUser),
 		};
 	}
 }

@@ -1,13 +1,20 @@
 "use client";
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/frontend/redux/store";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/frontend/redux/store";
+import { updateProfile } from "@/frontend/redux/Slice/UserSlice";
+import ImageUpload from "@/components/common/ImageUpload";
 
 export default function RestaurantProfile() {
     const user = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch<AppDispatch>();
 
     const handleChangePassword = () => {
         alert("Change Password feature coming soon!");
+    };
+
+    const handleImageUpdate = (newUrl: string) => {
+        dispatch(updateProfile({ avatar: newUrl }));
     };
 
     return (
@@ -15,18 +22,11 @@ export default function RestaurantProfile() {
             {/* Restaurant Identity */}
             <div className="bg-card shadow rounded-lg p-6 border border-border">
                 <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center overflow-hidden">
-                        {user.avatar ? (
-                            <img
-                                src={user.avatar}
-                                alt="Restaurant Logo"
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <span className="text-2xl text-muted-foreground">
-                                {user.name?.[0] || "R"}
-                            </span>
-                        )}
+                    <div className="flex-shrink-0">
+                        <ImageUpload
+                            currentImageUrl={user.avatar}
+                            onImageUpdate={handleImageUpdate}
+                        />
                     </div>
                     <div>
                         <h1 className="text-2xl font-bold text-card-foreground">{user.name || "Restaurant Name"}</h1>

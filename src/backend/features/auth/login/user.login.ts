@@ -16,7 +16,7 @@ class UserLoginStrategy implements ILoginStrategy {
 		if (!(await user.comparePassword(data.password)))
 			throw new Error("Invalid email or password");
 
-		const userData = mapUserToPublicProfile(user);
+		const userData = await mapUserToPublicProfile(user);
 
 		const token = generateToken(userData);
 		return {
