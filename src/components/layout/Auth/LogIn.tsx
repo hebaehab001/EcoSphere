@@ -15,6 +15,7 @@ const LogIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginType, setLoginType] = useState<"customer" | "organizer" | "shop">("customer");
 
   const handleToggle = () => {
     dispatch(toggleAuthView())
@@ -23,7 +24,7 @@ const LogIn = () => {
   const handleLogin = async () => {
     if (!email || !password) return;
 
-    const resultAction = await dispatch(loginUser({ email, password }));
+    const resultAction = await dispatch(loginUser({ email, password, loginType }));
     if (loginUser.fulfilled.match(resultAction)) {
       router.push('/profile');
     }
@@ -36,6 +37,43 @@ const LogIn = () => {
       </p>
 
       {error && <p className="text-red-500 text-center">{error}</p>}
+
+      {/* Login Type Selector */}
+      <div className="flex justify-center gap-4 mb-4">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name="loginType"
+            value="customer"
+            checked={loginType === "customer"}
+            onChange={() => setLoginType("customer")}
+            className="accent-primary"
+          />
+          <span className="text-sm text-secondary-foreground">Customer</span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name="loginType"
+            value="organizer"
+            checked={loginType === "organizer"}
+            onChange={() => setLoginType("organizer")}
+            className="accent-primary"
+          />
+          <span className="text-sm text-secondary-foreground">Organizer</span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name="loginType"
+            value="shop"
+            checked={loginType === "shop"}
+            onChange={() => setLoginType("shop")}
+            className="accent-primary"
+          />
+          <span className="text-sm text-secondary-foreground">Shop/Restaurant</span>
+        </label>
+      </div>
 
       <input
         type="email"

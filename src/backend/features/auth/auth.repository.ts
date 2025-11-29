@@ -64,7 +64,11 @@ class AuthRepository {
   }
   async saveNewShop(data: RegisterRequestDTO): Promise<IRestaurant> {
     await DBInstance.getConnection();
-    return await RestaurantModel.create(data);
+    const shopData: any = { ...data };
+    if (data.avatar && typeof data.avatar === "string") {
+      shopData.avatar = { key: data.avatar };
+    }
+    return await RestaurantModel.create(shopData);
   }
 
   async findUserByEmail(email: string): Promise<IUser> {

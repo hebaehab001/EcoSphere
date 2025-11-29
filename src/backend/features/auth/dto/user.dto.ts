@@ -23,6 +23,41 @@ export type RegisterRequestDTO = {
 	gender: string;
 	phoneNumber: string;
 	role: LoginTypes;
+    // Shop specific
+    location?: string;
+    workingHours?: string;
+    description?: string;
+    hotline?: string;
+    name?: string;
+};
+
+// Type for the mapped user profile (what the frontend receives)
+export type PublicUserProfile = {
+    _id: string;
+    id: string;
+    email: string;
+    firstName?: string;
+    lastName?: string;
+    name?: string; // For restaurants
+    phoneNumber?: string;
+    address?: string;
+    location?: string; // For restaurants
+    avatar: string; // Always a string URL, not an object
+    birthDate?: string;
+    gender?: string;
+    role: string;
+    points?: number;
+    favoritesIds?: string[];
+    cart?: any[];
+    paymentHistory?: any[];
+    subscriptionPeriod?: Date | string;
+    subscribed?: boolean;
+    events?: any[];
+    workingHours?: string; // For restaurants
+    description?: string; // For restaurants
+    menu?: any[];
+    reviews?: any[];
+    hotline?: number;
 };
 
 export type RegisterResponseDTO = {

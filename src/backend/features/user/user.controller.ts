@@ -2,6 +2,8 @@ import { inject, injectable } from "tsyringe";
 import type { IUserService } from "./user.service";
 import { IUser } from "./user.model";
 import "reflect-metadata";
+import { mapUserAsEndUser, mapUserAsOrganizer } from "../auth/mappers";
+import { PublicUserProfile } from "../auth/dto/user.dto";
 
 @injectable()
 class UserController {
@@ -18,9 +20,14 @@ class UserController {
     const user = await this.userService.getById(id);
     return user;
   }
-  async updateById(id: string, data: Partial<IUser>): Promise<IUser> {
+  async updateById(id: string, data: Partial<IUser>): Promise<PublicUserProfile> {
     const user = await this.userService.updateById(id, data);
-    return user;
+    // Map the avatar object to a string URL
+    if (user.role === "organizer") {
+      return await mapUserAsOrganizer(user);
+    } else {
+      return await mapUserAsEndUser(user);
+    }
   }
   async updateFavorites(id: string, data: string): Promise<IUser> {
     const user = await this.userService.updateFavorites(id, data);

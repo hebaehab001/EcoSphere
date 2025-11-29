@@ -41,7 +41,7 @@ export const mapRestaurantToTokenPayload = (user: IRestaurant) => {
 	return {
 		_id: user._id.toString(),
 		email: user.email,
-		lastName: user.name,
+		name: user.name,
 		role: "shop",
 	};
 };
@@ -104,12 +104,12 @@ export const mapShopToPublicProfile = async (shop: IRestaurant) => {
 	return {
 		_id: shop._id.toString(),
 		email: shop.email,
-		lastName: shop.name,
+		name: shop.name,
 		role: "shop",
 		phoneNumber: shop.phoneNumber,
-		address: shop.location,
+		location: shop.location,
 		avatar: avatarUrl,
-		openingHours: shop.workingHours,
+		workingHours: shop.workingHours,
 		description: shop.description || "",
 		menu: shop.menus,
 		reviews: shop.restaurantRating,

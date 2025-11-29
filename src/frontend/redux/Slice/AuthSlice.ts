@@ -18,7 +18,7 @@ interface ISecondShopStep {
 }
 
 interface IThirdShopStep {
-  avatar: unknown;
+  avatar: string;
   location: string;
   workingHours: string;
 }
@@ -75,7 +75,7 @@ export const loginUser = createAsyncThunk(
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...credentials,
-          loginType: "customer", // Default to customer, can be enhanced later
+          loginType: credentials.loginType || "customer",
         }),
       });
 

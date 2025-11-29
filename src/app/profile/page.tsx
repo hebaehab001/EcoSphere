@@ -22,7 +22,9 @@ export default function ProfilePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {user.role === "customer" && <CustomerProfile />}
         {user.role === "organizer" && <OrganizerProfile />}
-        {user.role === "restaurant" && <RestaurantProfile />}
+        {(user.role === "restaurant" || user.role === "shop") && (
+          <RestaurantProfile />
+        )}
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
 export interface UserState {
   isLoggedIn: boolean;
-  role: "customer" | "organizer" | "restaurant" | null;
+  role: "customer" | "organizer" | "restaurant" | "shop" | null;
   
   // Common
   id?: string;
