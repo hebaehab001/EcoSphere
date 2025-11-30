@@ -10,21 +10,15 @@ class ShopLoginStrategy implements ILoginStrategy {
 		@inject("IAuthRepository") private readonly authRepo: IAuthRepository
 	) {}
 	async login(date: LoginRequestDTO): Promise<LoginResponseDTO> {
-		console.log(date);
 		// First fetch: just for authentication (password check)
 		const foundShop = await this.authRepo.findShopByEmail(date.email);
-		console.log("foundShop.comparePassword type:", typeof foundShop?.comparePassword);
-		console.log("foundShop constructor name:", foundShop?.constructor.name);
-		console.log("foundShop.password exists:", !!foundShop?.password);
-		console.log("foundShop keys:", foundShop ? Object.keys((foundShop as any).toObject()) : "NO SHOP");
-		
 		if (!foundShop) throw new Error("Shop not found");
 		
 		if (!foundShop.password) {
 			if (foundShop.accountProvider === 'google') {
 				throw new Error("Please login with Google");
 			}
-			throw new Error("DEBUG: Missing password");
+			throw new Error("Invalid email or password");
 		}
 
 		if (!foundShop.comparePassword || !(await foundShop.comparePassword(date.password)))
