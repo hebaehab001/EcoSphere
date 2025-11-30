@@ -30,10 +30,10 @@ export default function Values() {
     ];
 
     return (
-           <section className="relative py-20 bg-card text-card-foreground overflow-hidden">
+           <section className="relative py-20 text-card-foreground overflow-hidden">
 
 
-            <div className="mx-auto max-w-[80%] px-4 relative z-10">
+            <div className="mx-auto w-[80%] px-4 relative z-10">
                 <Reveal>
                     {/* Header Section */}
                     <div className="text-center max-w-3xl mx-auto mb-16">

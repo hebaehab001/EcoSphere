@@ -8,8 +8,8 @@ import Image from "next/image";
 
 export default function Mission() {
   return (
-    <section className="relative w-full bg-card text-card-foreground py-16 md:py-24 overflow-hidden">
-      <div className="mx-auto max-w-[80%] px-4 md:px-6">
+    <section className="relative w-full text-card-foreground py-16 md:py-24 overflow-hidden">
+      <div className="mx-auto w-[80%] px-4 md:px-6">
         <Reveal>
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
             

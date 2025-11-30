@@ -31,16 +31,16 @@ export default function KeyPillars() {
     ];
 
     return (
-        <section className="relative py-20 bg-card text-card-foreground overflow-hidden">
+        <section className="relative py-20 text-card-foreground overflow-hidden">
             {/* Decorative Corner Leaves (Rotated for variety compared to Values component) */}
-                        <div className="absolute top-0 right-0 w-48 opacity-10 translate-x-12 -translate-y-8 rotate-90 pointer-events-none mix-blend-multiply">
-                            <Image src="https://img.freepik.com/free-vector/green-leaves-branch-vector-illustration_53876-113063.jpg?w=740&t=st=1709490000~exp=1709490600~hmac=transparent" alt="" fill className="object-cover" unoptimized/>
-                        </div>
-                        <div className="absolute bottom-0 left-0 w-64 opacity-10 -translate-x-20 translate-y-20 -rotate-45 pointer-events-none mix-blend-multiply">
-                            <Image src="https://img.freepik.com/free-vector/green-leaves-branch-vector-illustration_53876-113063.jpg?w=740&t=st=1709490000~exp=1709490600~hmac=transparent" alt="" fill className="object-cover" unoptimized/>
-                        </div>
+                                    <div className="absolute top-0 right-0 w-48 opacity-10 translate-x-12 -translate-y-8 rotate-90 pointer-events-none mix-blend-multiply">
+                                        <Image src="https://img.freepik.com/free-vector/green-leaves-branch-vector-illustration_53876-113063.jpg?w=740&t=st=1709490000~exp=1709490600~hmac=transparent" alt="" fill className="object-contain" unoptimized/>
+                                    </div>
+                                    <div className="absolute bottom-0 left-0 w-64 opacity-10 -translate-x-20 translate-y-20 -rotate-45 pointer-events-none mix-blend-multiply">
+                                        <Image src="https://img.freepik.com/free-vector/green-leaves-branch-vector-illustration_53876-113063.jpg?w=740&t=st=1709490000~exp=1709490600~hmac=transparent" alt="" fill className="object-contain" unoptimized/>
+                                    </div>
 
-            <div className="mx-auto max-w-[80%] px-4 relative z-10">
+            <div className="mx-auto w-[80%] px-4 relative z-10">
                 <Reveal>
                     {/* Header Section */}
                     <div className="text-center max-w-3xl mx-auto mb-16">

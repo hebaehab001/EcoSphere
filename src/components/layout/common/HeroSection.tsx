@@ -7,27 +7,29 @@ interface IProps {
   title: string;
   subTitle: string;
 }
+
 const HeroSection = ({ imgUrl, subTitle, title }: IProps) => {
   return (
-    <section>
-      <div>
-        <Image
-          src={imgUrl}
-          width={1000}
-          height={1000}
-          alt="hero"
-          className=" w-full object-cover h-[450px] relative"
-        />
+    <section className="mb-20 md:mb-28 lg:mb-10">
+      <div className="relative w-full">
+        <div className="relative w-full h-[450px] md:h-[520px] lg:h-[600px]">
+          <Image
+            src={imgUrl}
+            alt="hero"
+            fill
+            className="object-contain"
+            unoptimized
+          />
+        </div>
 
-        {/* Overlay Box */}
+        {/* Overlay Box: placed below the image */}
         <motion.div
-          className="relative left-1/2 -translate-x-1/2 -translate-y-1/3 w-[80%] bg-primary/70  dark:bg-primary/50 backdrop-blur-lg to-transparent rounded-xl p-6 flex flex-col items-center text-center shadow-lg"
-          initial={{ y: 50, opacity: 0 }}
+          className="mt-6 mx-auto w-[80%] bg-primary/70 dark:bg-primary/50 backdrop-blur-lg rounded-xl p-6 flex flex-col items-center text-center shadow-lg"
+          initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
-          //   viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <h1 className="lg:text-5xl md:text-4xl text-3xl font-semibold mb-3 text-primary-foreground ">
+          <h1 className="lg:text-5xl md:text-4xl text-3xl font-semibold mb-3 text-primary-foreground">
             {title}
           </h1>
 

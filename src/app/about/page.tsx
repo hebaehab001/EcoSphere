@@ -10,9 +10,9 @@ import KeyPillars from "@/components/layout/About/keyPillars";
 export default function AboutPage() {
 return (
 <div className="scroll-smooth">
-    <HeroSection   imgUrl="/m.png"
-            title="Our Store"
-            subTitle="EcoSphere is your trusted destination for eco-friendly products, sustainable gifts, and smart green choices. Browse a variety of earth-conscious items made to help you live cleaner, better, and more naturally every day."
+    <HeroSection   imgUrl="/hero.png"
+            title="Our Story"
+            subTitle="EcoSphere exists to make sustainable choices effortless. We carefully curate eco-friendly products you can trust—no guesswork, no greenwashing—just honest, responsible items designed to support a cleaner planet and a better future."
           />
 <Story />
 <Values />
