@@ -1,13 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, TargetAndTransition, VariantLabels } from "framer-motion";
 
 const BasicAnimatedWrapper = ({
   children,
   index,
+  className,
+  whileHover,
 }: {
   children: React.ReactNode;
   index?: number;
+  className?: string;
+  whileHover?: TargetAndTransition | VariantLabels;
 }) => {
   return (
     <motion.div
@@ -15,6 +19,8 @@ const BasicAnimatedWrapper = ({
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: index! * 0.1 || 0 }}
       viewport={{ once: false }}
+      whileHover={whileHover}
+      className={className}
     >
       {children}
     </motion.div>
