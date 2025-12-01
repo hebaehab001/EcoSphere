@@ -10,13 +10,13 @@ const MarketRight = () => {
         <p className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary ">
           Our Store
         </p>
-        <p>
+        <p className="">
           Shop 100% eco-friendly products and start your journey toward a more
           sustainable lifestyle. We offer a wide range of certified, toxin-free
           items carefully selected from trusted eco-friendly stores and partner
           farms across Egypt and beyond.
         </p>
-        <ul className="list-disc">
+        <ul className="list-disc text-secondary-foreground">
           <li>
             Products made from natural, biodegradable, and recycled materials.
           </li>
