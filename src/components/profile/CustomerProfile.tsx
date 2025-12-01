@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/frontend/redux/store";
 import { updateUserProfile, updateProfile } from "@/frontend/redux/Slice/UserSlice";
 import ImageUpload from "@/components/common/ImageUpload";
+import OrderHistoryEmptyState from "./OrderHistoryEmptyState";
 
 export default function CustomerProfile() {
     const user = useSelector((state: RootState) => state.user);
@@ -53,108 +54,88 @@ export default function CustomerProfile() {
 
     return (
         <div className="space-y-6">
-            {/* Hero Section */}
-            <div className="bg-card shadow rounded-lg p-6 relative border border-border">
-                <button
-                    onClick={handleEditClick}
-                    className="absolute top-6 right-6 bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition"
-                >
-                    Edit Profile
-                </button>
-                <div className="flex items-center space-x-4">
-                    <div className="flex-shrink-0">
-                        <ImageUpload
-                            currentImageUrl={user.avatar}
-                            onImageUpdate={handleImageUpdate}
-                        />
+            {/* Main Profile Section */}
+            <div className="bg-card shadow rounded-lg p-6 border border-border">
+                <div className="flex flex-col xl:flex-row items-start gap-8">
+                    {/* Left Side: Identity & Actions */}
+                    <div className="flex flex-col gap-6 w-full xl:w-auto xl:min-w-[350px]">
+                        <div className="flex items-center gap-6">
+                            <ImageUpload
+                                currentImageUrl={user.avatar}
+                                onImageUpdate={handleImageUpdate}
+                            />
+                            <div className="flex flex-col gap-3">
+                                <div>
+                                    <h1 className="text-2xl font-bold text-card-foreground">
+                                        {user.firstName} {user.lastName}
+                                    </h1>
+                                    <p className="text-muted-foreground">Customer</p>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    <button
+                                        onClick={handleEditClick}
+                                        className="bg-primary text-primary-foreground px-3 py-1.5 text-sm rounded-lg hover:bg-primary/90 transition whitespace-nowrap"
+                                    >
+                                        Edit Profile
+                                    </button>
+                                    <button
+                                        onClick={handleChangePassword}
+                                        className="bg-destructive text-destructive-foreground px-3 py-1.5 text-sm rounded-lg hover:bg-destructive/90 transition whitespace-nowrap"
+                                    >
+                                        Change Password
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h1 className="text-2xl font-bold text-card-foreground">
-                            {user.firstName} {user.lastName}
-                        </h1>
-                        <p className="text-muted-foreground">Customer</p>
+
+                    {/* Divider (Visible on XL screens) */}
+                    <div className="hidden xl:block w-px bg-border self-stretch"></div>
+
+                    {/* Right Side: Personal Information */}
+                    <div className="flex-1 w-full">
+                        <h2 className="text-xl font-semibold mb-4 text-card-foreground">Personal Information</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <p className="text-sm text-muted-foreground">Email</p>
+                                <p className="font-medium text-card-foreground">{user.email}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm text-muted-foreground">Phone Number</p>
+                                <p className="font-medium text-card-foreground">{user.phoneNumber || "N/A"}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm text-muted-foreground">Address</p>
+                                <p className="font-medium text-card-foreground">{user.address || "N/A"}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm text-muted-foreground">Birth Date</p>
+                                <p className="font-medium text-card-foreground">{user.birthDate || "N/A"}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm text-muted-foreground">Gender</p>
+                                <p className="font-medium capitalize text-card-foreground">{user.gender || "N/A"}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm text-muted-foreground">EcoPoints</p>
+                                <p className="font-medium text-card-foreground">{user.points || 0}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="mt-4">
-                    <div className="bg-secondary text-secondary-foreground px-4 py-2 rounded-lg inline-block">
-                        <span className="font-semibold">EcoPoints:</span> {user.points || 0}
-                    </div>
-                </div>
-            </div>
-
-            {/* Personal Information */}
-            <div className="bg-card shadow rounded-lg p-6 border border-border">
-                <h2 className="text-xl font-semibold mb-4 text-card-foreground">Personal Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <p className="text-sm text-muted-foreground">Email</p>
-                        <p className="font-medium text-card-foreground">{user.email}</p>
-                    </div>
-                    <div>
-                        <p className="text-sm text-muted-foreground">Phone Number</p>
-                        <p className="font-medium text-card-foreground">{user.phoneNumber || "N/A"}</p>
-                    </div>
-                    <div>
-                        <p className="text-sm text-muted-foreground">Address</p>
-                        <p className="font-medium text-card-foreground">{user.address || "N/A"}</p>
-                    </div>
-                    <div>
-                        <p className="text-sm text-muted-foreground">Birth Date</p>
-                        <p className="font-medium text-card-foreground">{user.birthDate || "N/A"}</p>
-                    </div>
-                    <div>
-                        <p className="text-sm text-muted-foreground">Gender</p>
-                        <p className="font-medium capitalize text-card-foreground">{user.gender || "N/A"}</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Security */}
-            <div className="bg-card shadow rounded-lg p-6 border border-border">
-                <h2 className="text-xl font-semibold mb-4 text-card-foreground">Security</h2>
-                <button
-                    onClick={handleChangePassword}
-                    className="bg-destructive text-destructive-foreground px-6 py-2 rounded-lg hover:bg-destructive/90 transition"
-                >
-                    Change Password
-                </button>
-            </div>
-
-            {/* My Favorites */}
-            <div className="bg-card shadow rounded-lg p-6 border border-border">
-                <h2 className="text-xl font-semibold mb-4 text-card-foreground">My Favorites</h2>
-                {user.favoritesIds && user.favoritesIds.length > 0 ? (
-                    <p className="text-muted-foreground">
-                        You have {user.favoritesIds.length} favorite restaurant(s).
-                    </p>
-                ) : (
-                    <p className="text-muted-foreground">No favorites yet.</p>
-                )}
-            </div>
-
-            {/* My Cart */}
-            <div className="bg-card shadow rounded-lg p-6 border border-border">
-                <h2 className="text-xl font-semibold mb-4 text-card-foreground">My Cart</h2>
-                {user.cart && user.cart.length > 0 ? (
-                    <p className="text-muted-foreground">
-                        You have {user.cart.length} item(s) in your cart.
-                    </p>
-                ) : (
-                    <p className="text-muted-foreground">Your cart is empty.</p>
-                )}
             </div>
 
             {/* Order History */}
-            <div className="bg-card shadow rounded-lg p-6 border border-border">
-                <h2 className="text-xl font-semibold mb-4 text-card-foreground">Order History</h2>
-                {user.paymentHistory && user.paymentHistory.length > 0 ? (
+            {user.paymentHistory && user.paymentHistory.length > 0 ? (
+                <div className="bg-card shadow rounded-lg p-6 border border-border">
+                    <h2 className="text-xl font-semibold mb-4 text-card-foreground">Order History</h2>
                     <p className="text-muted-foreground">
                         You have {user.paymentHistory.length} past order(s).
                     </p>
-                ) : (
-                    <p className="text-muted-foreground">No orders yet.</p>
-                )}
-            </div>
+                </div>
+            ) : (
+                <OrderHistoryEmptyState />
+            )}
 
             {/* Edit Modal */}
             {isEditing && (

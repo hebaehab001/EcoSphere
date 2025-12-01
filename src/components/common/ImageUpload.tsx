@@ -9,12 +9,14 @@ interface ImageUploadProps {
     currentImageUrl?: string;
     onImageUpdate: (newUrl: string) => void;
     endpoint?: string;
+    className?: string;
 }
 
 export default function ImageUpload({
     currentImageUrl,
     onImageUpdate,
     endpoint = "/api/upload/avatar",
+    className = "",
 }: ImageUploadProps) {
     const [isUploading, setIsUploading] = useState(false);
     const [previewUrl, setPreviewUrl] = useState<string | null>(currentImageUrl || null);
@@ -116,7 +118,7 @@ export default function ImageUpload({
     };
 
     return (
-        <div className="relative group w-32 h-32 mx-auto">
+        <div className={`relative group w-48 h-48 shrink-0 ${className}`}>
             <div className="w-full h-full rounded-full overflow-hidden border-4 border-background shadow-xl relative bg-muted">
                 {previewUrl ? (
                     <Image
