@@ -1,5 +1,5 @@
 "use client";
-import Stepper, { Step } from "@/components/Stepper";
+import Stepper, { Step } from "@/components/ui/Stepper";
 import { toggleAuthView } from "@/frontend/redux/Slice/AuthSlice";
 import { AppDispatch, RootState } from "@/frontend/redux/store";
 import { useDispatch, useSelector } from "react-redux";
