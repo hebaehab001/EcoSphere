@@ -19,75 +19,80 @@ import { RxDashboard } from "react-icons/rx";
 import Link from 'next/link'
 import ThemeBtn from '../ThemeBtn/ThemeBtn'
 import UserBtn from '../UserBtn/UserBtn'
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher'
 import GetFavCount from '@/frontend/Actions/GetFavCount'
+import { useTranslations } from 'next-intl';
 // Menu items.
-const items = [
-    {
-        title: "Home",
-        url: "/",
-        icon: Home,
-    },
-    {
-        title: "Shops",
-        url: "/shop",
-        icon: ShoppingBag,
-    },
-    {
-        title: "Events",
-        url: "/events",
-        icon: Calendar,
-    },
-    {
-        title: "Recycle",
-        url: "/recycle",
-        icon: Recycle,
-    },
-    {
-        title: "News",
-        url: "/news",
-        icon: Newspaper,
-    },
-    {
-        title: "Store",
-        url: "/store",
-        icon: Store,
-    },
-    {
-        title: "Game",
-        url: "/game",
-        icon: Gamepad2,
-    },
-    {
-        title: "About",
-        url: "/about",
-        icon: Info,
-    },
-]
-
-const dashboardItems=[
-    {
-        title: "OverView",
-        url: "/overview",
-        icon: RxDashboard,
-    },
-    {
-        title: "Add Event",
-        url: "/",
-        icon: MdOutlineAddToPhotos,
-    },
-    {
-        title: "Browse Events",
-        url: "/",
-        icon: MdOutlineSearch,
-    },
-    {
-        title: "Event Details",
-        url: "/",
-        icon: MdOutlineEventRepeat,
-    },
-]
-
 export default function SideBar() {
+    const t = useTranslations('Layout.Sidebar');
+
+    // Menu items.
+    const items = [
+        {
+            title: t('menu.home'),
+            url: "/",
+            icon: Home,
+        },
+        {
+            title: t('menu.shops'),
+            url: "/shop",
+            icon: ShoppingBag,
+        },
+        {
+            title: t('menu.events'),
+            url: "/events",
+            icon: Calendar,
+        },
+        {
+            title: t('menu.recycle'),
+            url: "/recycle",
+            icon: Recycle,
+        },
+        {
+            title: t('menu.news'),
+            url: "/news",
+            icon: Newspaper,
+        },
+        {
+            title: t('menu.store'),
+            url: "/store",
+            icon: Store,
+        },
+        {
+            title: t('menu.game'),
+            url: "/game",
+            icon: Gamepad2,
+        },
+        {
+            title: t('menu.about'),
+            url: "/about",
+            icon: Info,
+        },
+    ]
+
+    const dashboardItems = [
+        {
+            title: t('dashboard.overview'),
+            url: "/overview",
+            icon: RxDashboard,
+        },
+        {
+            title: t('dashboard.addEvent'),
+            url: "/",
+            icon: MdOutlineAddToPhotos,
+        },
+        {
+            title: t('dashboard.browseEvents'),
+            url: "/",
+            icon: MdOutlineSearch,
+        },
+        {
+            title: t('dashboard.eventDetails'),
+            url: "/",
+            icon: MdOutlineEventRepeat,
+        },
+    ]
+
     return (
         <Sidebar collapsible="icon" variant='floating' className='bg-background '>
             <SidebarHeader >
@@ -95,7 +100,7 @@ export default function SideBar() {
             </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Application</SidebarGroupLabel>
+                    <SidebarGroupLabel>{t('groups.application')}</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {items.map((item) => (
@@ -113,7 +118,7 @@ export default function SideBar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
+                    <SidebarGroupLabel>{t('groups.dashboard')}</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {dashboardItems.map((item) => (
@@ -138,7 +143,7 @@ export default function SideBar() {
                             <SidebarMenuButton asChild >
                                 <Link href="/fav">
                                     <Heart />
-                                    <span>Favorite</span>
+                                    <span>{t('footer.favorite')}</span>
                                     <GetFavCount />
                                 </Link>
                             </SidebarMenuButton>
@@ -147,7 +152,7 @@ export default function SideBar() {
                             <SidebarMenuButton asChild >
                                 <Link href="/cart">
                                     <ShoppingCart />
-                                    <span>Cart</span>
+                                    <span>{t('footer.cart')}</span>
                                     <SidebarMenuBadge>24</SidebarMenuBadge>
                                 </Link>
                             </SidebarMenuButton>
@@ -156,11 +161,12 @@ export default function SideBar() {
                             <SidebarMenuButton asChild >
                                 <Link href="/auth">
                                     <LogIn />
-                                    <span>Login</span>
+                                    <span>{t('footer.login')}</span>
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                         <ThemeBtn />
+                        <LanguageSwitcher />
                         <UserBtn />
                     </SidebarMenu>
                 </SidebarGroupContent>

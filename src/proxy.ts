@@ -2,6 +2,10 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { applyAuthRules } from "@/backend/features/auth/middleware/auth.rules";
 import { AuthSession } from "@/backend/features/auth/middleware/role.guards";
+import createMiddleware from 'next-intl/middleware';
+import {routing} from './i18n/routing';
+
+const intlMiddleware = createMiddleware(routing);
 
 export const proxy = auth((req) => {
 	const session = req.auth as AuthSession | null;
@@ -10,7 +14,7 @@ export const proxy = auth((req) => {
 	const result = applyAuthRules(req, session, pathname);
 	if (result) return result;
 
-	return NextResponse.next();
+	return intlMiddleware(req);
 });
 
 export const config = {

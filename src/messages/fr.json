@@ -1,0 +1,45 @@
+{
+  "Home": {
+    "hero": {
+      "subtitle": "#RejoindreLeMouvement",
+      "title": "Les collectes réussies commencent ici",
+      "cta": "En savoir plus sur EcoSphere"
+    }
+  },
+  "Layout": {
+    "Sidebar": {
+      "groups": {
+        "application": "Application",
+        "dashboard": "Tableau de bord"
+      },
+      "menu": {
+        "home": "Accueil",
+        "shops": "Boutiques",
+        "events": "Événements",
+        "recycle": "Recycler",
+        "news": "Actualités",
+        "store": "Magasin",
+        "game": "Jeu",
+        "about": "À propos"
+      },
+      "dashboard": {
+        "overview": "Aperçu",
+        "addEvent": "Ajouter un événement",
+        "browseEvents": "Parcourir les événements",
+        "eventDetails": "Détails de l'événement"
+      },
+      "footer": {
+        "favorite": "Favoris",
+        "cart": "Panier",
+        "login": "Connexion"
+      }
+    },
+    "UserBtn": {
+      "subscribe": "S'abonner",
+      "account": "Compte",
+      "billing": "Facturation",
+      "notifications": "Notifications",
+      "logout": "Se déconnecter"
+    }
+  }
+}

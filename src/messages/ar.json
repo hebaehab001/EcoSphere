@@ -1,0 +1,45 @@
+{
+  "Home": {
+    "hero": {
+      "subtitle": "#انضم_إلى_الحركة",
+      "title": "ابدأ حملاتك الناجحة من هنا",
+      "cta": "المزيد عن EcoSphere"
+    }
+  },
+  "Layout": {
+    "Sidebar": {
+      "groups": {
+        "application": "التطبيق",
+        "dashboard": "لوحة التحكم"
+      },
+      "menu": {
+        "home": "الرئيسية",
+        "shops": "المتاجر",
+        "events": "الفعاليات",
+        "recycle": "إعادة التدوير",
+        "news": "الأخبار",
+        "store": "المتجر",
+        "game": "اللعبة",
+        "about": "حول"
+      },
+      "dashboard": {
+        "overview": "نظرة عامة",
+        "addEvent": "إضافة فعالية",
+        "browseEvents": "تصفح الفعاليات",
+        "eventDetails": "تفاصيل الفعالية"
+      },
+      "footer": {
+        "favorite": "المفضلة",
+        "cart": "السلة",
+        "login": "تسجيل الدخول"
+      }
+    },
+    "UserBtn": {
+      "subscribe": "اشتراك",
+      "account": "الحساب",
+      "billing": "الفوترة",
+      "notifications": "الإشعارات",
+      "logout": "تسجيل الخروج"
+    }
+  }
+}

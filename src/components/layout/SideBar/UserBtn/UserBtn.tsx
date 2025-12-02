@@ -28,8 +28,10 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
+import { useTranslations } from 'next-intl';
 
 export default function UserBtn() {
+    const t = useTranslations('Layout.UserBtn');
     const { isMobile } = useSidebar()
     const user = {
         name: 'user',
@@ -78,31 +80,31 @@ export default function UserBtn() {
                         <DropdownMenuGroup>
                             <DropdownMenuItem>
                                 <Sparkles />
-                                Subscribe
+                                {t('subscribe')}
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                             <Link href="/profile">
-                            <DropdownMenuItem>
-                                <BadgeCheck />
-                                Account
-                            </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <BadgeCheck />
+                                    {t('account')}
+                                </DropdownMenuItem>
                             </Link>
                             <DropdownMenuItem>
                                 <CreditCard />
-                                Billing
+                                {t('billing')}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <Bell />
-                                Notifications
+                                {t('notifications')}
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
                         <Link href="/auth">
                             <DropdownMenuItem>
                                 <LogOut />
-                                <span> Log out</span>
+                                <span> {t('logout')}</span>
                             </DropdownMenuItem>
                         </Link>
                     </DropdownMenuContent>

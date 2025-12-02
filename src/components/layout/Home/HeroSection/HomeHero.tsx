@@ -14,22 +14,25 @@ const circleLayers = [
   },
 ];
 
+import { useTranslations } from 'next-intl';
+
 const HomeHero = () => {
+  const t = useTranslations('Home');
   return (
     <section className="">
       <div className="flex justify-center items-center h-screen relative ">
         <div className="relative flex items-center justify-center p-[3%] overflow-hidden h-full ">
           <motion.div
-          initial={{ opacity: 0, scale: 0 }}
-          whileInView={{ opacity: 1, scale: [0,1.5,1] }}
-          transition={{ duration: 0.5 , ease: "easeOut" }}
-          className="relative z-10 max-w-md text-center flex flex-col gap-4 justify-center items-center ">
-            <p className="mb-0 text-secondary-foreground">#Join the movement</p>
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: [0, 1.5, 1] }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="relative z-10 max-w-md text-center flex flex-col gap-4 justify-center items-center ">
+            <p className="mb-0 text-secondary-foreground">{t('hero.subtitle')}</p>
             <h1 className="text-[clamp(3rem,calc(3rem+2.125*(100vw-23.4375rem)/66.5625),5.125rem)] font-bold leading-none text-foreground">
-              Successful fundraisers start here
+              {t('hero.title')}
             </h1>
             <Link href="/about" className="myBtnPrimary text-base! mt-5">
-              More About EcoSphere
+              {t('hero.cta')}
             </Link>
           </motion.div>
           <motion.div

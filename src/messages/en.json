@@ -1,0 +1,77 @@
+{
+  "Home": {
+    "hero": {
+      "subtitle": "#Join the movement",
+      "title": "Successful fundraisers start here",
+      "cta": "More About EcoSphere"
+    }
+  },
+  "Layout": {
+    "Sidebar": {
+      "groups": {
+        "application": "Application",
+        "dashboard": "Dashboard"
+      },
+      "menu": {
+        "home": "Home",
+        "shops": "Shops",
+        "events": "Events",
+        "recycle": "Recycle",
+        "news": "News",
+        "store": "Store",
+        "game": "Game",
+        "about": "About"
+      },
+      "dashboard": {
+        "overview": "OverView",
+        "addEvent": "Add Event",
+        "browseEvents": "Browse Events",
+        "eventDetails": "Event Details"
+      },
+      "footer": {
+        "favorite": "Favorite",
+        "cart": "Cart",
+        "login": "Login"
+      }
+    },
+    "UserBtn": {
+      "subscribe": "Subscribe",
+      "account": "Account",
+      "billing": "Billing",
+      "notifications": "Notifications",
+      "logout": "Log out"
+    }
+  },
+  "About": {
+    "hero": {
+      "title": "Our Store",
+      "subtitle": "EcoSphere is your trusted destination for eco-friendly products, sustainable gifts, and smart green choices. Browse a variety of earth-conscious items made to help you live cleaner, better, and more naturally every day."
+    },
+    "story": {
+      "label": "About Us",
+      "title": "Building a greener future together Forever",
+      "description": "EcoSphere was created to make sustainable shopping simple, trustworthy, and accessible. With greenwashing becoming widespread, consumers are often overwhelmed or unsure who to trust. EcoSphere bridges that gap—connecting verified, planet-friendly businesses with the growing community of people who want to shop responsibly."
+    },
+    "mission": {
+      "label": "Our Mission",
+      "title": "Making sustainability",
+      "titleHighlight": "effortless & trustworthy.",
+      "description": "EcoSphere exists to bridge the gap between conscious consumers and ethical enterprises. We strip away the guesswork of \"greenwashing\" by providing a rigorously vetted marketplace where every choice is a verified step towards a better planet.",
+      "forConsumers": {
+        "title": "For Consumers",
+        "description": "Instant access to transparent, planet-first products without the research fatigue."
+      },
+      "forBusinesses": {
+        "title": "For Businesses",
+        "description": "High-visibility growth for brands that prioritize integrity over easy profits."
+      }
+    },
+    "vision": {
+      "label": "Our Vision",
+      "title": "A world where",
+      "titleHighlight": "sustainable is standard.",
+      "description": "Our vision is to help create an interconnected, global economy where sustainable and regenerative commerce is the",
+      "descriptionHighlight": "standard, not the exception."
+    }
+  }
+}
