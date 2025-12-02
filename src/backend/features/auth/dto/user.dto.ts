@@ -1,5 +1,4 @@
-import { Gender, UserRole } from "../../user/user.model";
-import { IUser } from "../../user/user.model";
+import { Gender, UserRole , IUser } from "../../user/user.model";
 import { IRestaurant } from "../../restaurant/restaurant.model";
 import { imageService } from "../../../services/image.service";
 
@@ -9,23 +8,10 @@ export type LoginRequestDTO = {
 };
 
 export type LoginResponse = {
-	id: string;
+  id: string;
 	email: string;
-	firstName: string;
-	lastName: string;
-	password: string;
-	birthDate: string;
-	address: string;
-	avatar?: string;
-	gender: string;
-	phoneNumber: string;
-	role: LoginTypes;
-    // Shop specific
-    location?: string;
-    workingHours?: string;
-    description?: string;
-    hotline?: string;
-    name?: string;
+	name: string;
+	role: string;
 };
 
 export type LoginResponseDTO = {
@@ -227,3 +213,20 @@ export type RegisterWithPhoneNumber = {
 };
 
 export type LoginTypes = UserTypes;
+
+export const mapToUserPublicProfile = (
+	user: Partial<IUser> | Partial<IRestaurant>
+) => {
+	return {
+		id: user._id!,
+		email: user.email!,
+		name: isUser(user) ? user.lastName! : user.name!,
+		role: isUser(user) ? user.role! : "shop",
+	};
+};
+
+const isUser = (
+	u: Partial<IUser> | Partial<IRestaurant>
+): u is Partial<IUser> => {
+	return "lastName" in u;
+};

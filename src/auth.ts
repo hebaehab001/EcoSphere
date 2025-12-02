@@ -70,15 +70,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			}
 		},
 		async jwt({ token, user }) {
-			if (user) {
-                // user is LoginResponseDTO { token, user: PublicUserProfile }
-                const u = (user as any).user || user;
-				token.id = u.id || u._id;
-				token.email = u.email;
-				token.role = u.role;
-				token.name = u.name || (u.firstName ? `${u.firstName} ${u.lastName}` : "");
-                token.accessToken = (user as any).token;
-			}
+		  if (user) {
+				token.id = user.id;
+				token.email = user.email;
+				token.role = user.role;
+				token.name = user.name;
+				}
 			return token;
 		},
 
@@ -95,6 +92,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
 	pages: {
 		signIn: "/auth",
+		error: "/auth"
 	},
 
 	// Add these important NextAuth v5 configs

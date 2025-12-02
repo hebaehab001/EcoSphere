@@ -1,13 +1,14 @@
-import { toggleAuthView, loginUser } from '@/frontend/redux/Slice/AuthSlice'
-import { AppDispatch, RootState } from '@/frontend/redux/store'
-import Link from 'next/link'
+import { toggleAuthView } from "@/frontend/redux/Slice/AuthSlice";
+import { AppDispatch, RootState } from "@/frontend/redux/store";
+import Link from "next/link";
 import Image from "next/image";
-import { FaApple, FaFacebookF, FaGoogle, FaTwitter } from 'react-icons/fa'
-import { IoIosArrowRoundForward } from 'react-icons/io'
-import { useDispatch, useSelector } from 'react-redux'
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { FaApple, FaFacebookF, FaGoogle, FaTwitter } from "react-icons/fa";
+import { IoIosArrowRoundForward } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 const LogIn = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,65 +18,28 @@ const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loginType, setLoginType] = useState<"customer" | "organizer" | "shop">("customer");
 
   const handleToggle = () => {
-    dispatch(toggleAuthView())
-  }
+    dispatch(toggleAuthView());
+  };
 
   const handleLogin = async () => {
     if (!email || !password) return;
 
-    const resultAction = await dispatch(loginUser({ email, password, loginType }));
-    if (loginUser.fulfilled.match(resultAction)) {
-      router.push('/');
-    }
+    await signIn("credentials", { email, password });
+    //   router.push('/');
+    // const resultAction = await dispatch(loginUser({ email, password }));
+    // if (loginUser.fulfilled.match(resultAction)) {
+    // }
   };
 
   return (
-    <div className='flex sm:flex gap-5 flex-col'>
+    <div className="flex sm:flex gap-5 flex-col">
       <p className="capitalize text-center font-extrabold mb-5 text-secondary-foreground text-4xl">
         Login
       </p>
 
       {error && <p className="text-red-500 text-center">{error}</p>}
-
-      {/* Login Type Selector */}
-      <div className="flex justify-center gap-4 mb-4">
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="radio"
-            name="loginType"
-            value="customer"
-            checked={loginType === "customer"}
-            onChange={() => setLoginType("customer")}
-            className="accent-primary"
-          />
-          <span className="text-sm text-secondary-foreground">Customer</span>
-        </label>
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="radio"
-            name="loginType"
-            value="organizer"
-            checked={loginType === "organizer"}
-            onChange={() => setLoginType("organizer")}
-            className="accent-primary"
-          />
-          <span className="text-sm text-secondary-foreground">Organizer</span>
-        </label>
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="radio"
-            name="loginType"
-            value="shop"
-            checked={loginType === "shop"}
-            onChange={() => setLoginType("shop")}
-            className="accent-primary"
-          />
-          <span className="text-sm text-secondary-foreground">Shop/Restaurant</span>
-        </label>
-      </div>
 
       <input
         type="email"
@@ -97,7 +61,11 @@ const LogIn = () => {
           onClick={() => setShowPassword(!showPassword)}
           className="absolute right-4 top-1/2 cursor-pointer -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
         >
-          {showPassword ? <EyeOff size={20} className="text-black" /> : <Eye size={20} className="text-black" />}
+          {showPassword ? (
+            <EyeOff size={20} className="text-black" />
+          ) : (
+            <Eye size={20} className="text-black" />
+          )}
         </button>
       </div>
       {/* forget password */}
@@ -131,12 +99,12 @@ const LogIn = () => {
 
       {/* social login */}
       <div className="flex justify-evenly items-center my-4 text-4xl text-secondary-foreground ">
-        <Link
-          href={"#"}
+        <button
+          onClick={async () => await signIn("google")}
           className="hover:scale-115 hover:shadow-2xl shadow-primary transition duration-300"
         >
           <FaGoogle />
-        </Link>
+        </button>
         <Link
           href={"#"}
           className="hover:scale-115 hover:shadow-2xl shadow-primary transition duration-300"
@@ -158,15 +126,12 @@ const LogIn = () => {
       </div>
       <p className="text-center text-stone-600 space-x-1 sm:hidden ">
         <span>New to EcoSphere ?</span>
-        <button
-          onClick={handleToggle}
-          className="text-primary cursor-pointer"
-        >
+        <button onClick={handleToggle} className="text-primary cursor-pointer">
           Sign up
         </button>
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default LogIn
+export default LogIn;

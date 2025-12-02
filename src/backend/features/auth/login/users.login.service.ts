@@ -1,10 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { type IAuthRepository } from "../auth.repository";
-import type {
-	FoundedUser,
-	LoginRequestDTO,
-	LoginResponse,
+import {
+    mapToUserPublicProfile,
+	type FoundedUser,
+	type LoginRequestDTO,
+	type LoginResponse,
 } from "../dto/user.dto";
+import { IUser } from "../../user/user.model";
 
 // NOTE: This service appears to be deprecated in favor of UserLoginStrategy and ShopLoginStrategy
 // Consider removing if not used
@@ -23,14 +25,15 @@ class LoginService {
 			throw new Error("Invalid email or password");
 		
 		// This needs proper DTO transformation - returning raw FoundedUser as workaround
-		return user as any;
+		return mapToUserPublicProfile(user);
 	}
 
 	async findByEmail(email: string, key: string): Promise<FoundedUser> {
 		let user = await this.authRepository.findShopByEmail(email, key);
 
 		if (!user) user = await this.authRepository.findUserByEmail(email, key);
-		if (!user.oAuthId || user.password)
+		console.log(user)
+		if (!user?.oAuthId && user?.password)
 			throw new Error("user must login using email and password");
 
 		return user;
