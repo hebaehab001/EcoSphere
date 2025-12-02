@@ -1,81 +1,57 @@
-import { useRef, useEffect } from "react";
+import { useState } from "react";
 import ShopCard from "./ShopCard";
+import FilterBar from "./FilterBar";
+import { motion } from "framer-motion";
+import { shops } from "@/data/shops";
 
 export default function ShopSection() {
-  const trackRef = useRef<HTMLDivElement>(null);
+  const [currentSort, setCurrentSort] = useState("Default"); // New state for sorting
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Auto-scroll effect (infinite-like)
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
+  const processedShops = shops.filter((shop) => {
+    const passesSearch =
+      shop.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      shop.desc.toLowerCase().includes(searchQuery.toLowerCase());
+    return passesSearch;
+  });
 
-    let scrollPos = 0;
+  const sortedShops = [...processedShops].sort((a, b) => {
+    if (currentSort === "Highest Rating") {
+      return b.rating - a.rating;
+    }
+    if (currentSort === "Lowest Rating") {
+      return a.rating - b.rating;
+    }
 
-    const tick = () => {
-      scrollPos += 0.6;
-      track.scrollLeft = scrollPos;
-
-      // Loop halfway to fake infinite
-      if (scrollPos >= track.scrollWidth / 2) {
-        scrollPos = 0;
-      }
-
-      requestAnimationFrame(tick);
-    };
-
-    tick();
-  }, []);
-
-  const shops = [
-    {
-      id: 1,
-      title: "PVC film for food wrap",
-      img: "/store5.png",
-      desc: "Safe for food, prevents evaporation, protects vegetables.Safe for food, prevents evaporation, protects vegetables.Safe for food, prevents evaporation, protects vegetables.",
-    },
-    {
-      id: 2,
-      title: "PVC film for industrial use",
-      img: "/store5.png",
-      desc: "Durable & strong for industrial applications.",
-    },
-    {
-      id: 3,
-      title: "Capacitor film (electric)",
-      img: "/store5.png",
-      desc: "High dielectric strength for electric capacitors.",
-    },
-    {
-      id: 4,
-      title: "Capacitor film (electric)",
-      img: "/store5.png",
-      desc: "High dielectric strength for electric capacitors.",
-    },
-    {
-      id: 5,
-      title: "Capacitor film",
-      img: "/store5.png",
-      desc: "High dielectric strength for electric capacitors.",
-    },
-    {
-      id: 6,
-      title: "Capacitor film (electric)",
-      img: "/store5.png",
-      desc: "Safe for food, prevents evaporation, protects vegetables.Safe for food, prevents evaporation, protects vegetables.Safe for food, prevents evaporation, protects vegetables.",
-    },
-    {
-      id: 7,
-      title: "Capacitor film (electric)",
-      img: "/store5.png",
-      desc: "Safe for food, prevents evaporation, protects vegetables.Safe for food, prevents evaporation, protects vegetables.Safe for food, prevents evaporation, protects vegetables.",
-    },
-  ];
+    return 0;
+  });
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-16 mb-4">
-      {shops.map((shop) => (
-        <ShopCard key={shop.id} shop={shop} />
-      ))}
-    </div>
+    <>
+      <FilterBar
+        onSortChange={setCurrentSort}
+        onSearch={setSearchQuery}
+        isSorting={true}
+      />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10 auto-rows-auto w-[80%] mx-auto mb-4">
+        {sortedShops.length > 0 ? (
+          sortedShops.map((shop, index) => (
+            <motion.div
+              key={shop.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: index * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <ShopCard shop={shop} index={index} />
+            </motion.div>
+          ))
+        ) : (
+          <p className="col-span-full text-center text-primary-forground py-10">
+            No products match your current search criteria.
+          </p>
+        )}
+      </div>
+    </>
   );
 }
