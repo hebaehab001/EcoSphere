@@ -20,7 +20,8 @@ class ShopRegistration implements IRegistrationStrategy {
 			data.email,
 			"firstName" in data || "lastName" in data
 				? `${(data as any).firstName || ""} ${(data as any).lastName || ""}`.trim()
-				: data.name
+				: data.name,
+			"shop"
 		);
 
 		return { success: true };

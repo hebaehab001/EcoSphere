@@ -20,7 +20,8 @@ class OrganizerRegistration implements IRegistrationStrategy {
 		await sendWelcomeEmail(
 			data.email,
 			`${"firstName" in data ? data.firstName : ""} ${"lastName" in data ? data.lastName : ""
-				}`.trim()
+				}`.trim(),
+			"organizer"
 		);
 
 		return { success: true };

@@ -1,7 +1,8 @@
 import nodemailer from "nodemailer";
 import {
-	registrationSubject,
-	registrationTemplate,
+	getRegistrationSubject,
+	getRegistrationTemplate,
+	type UserType,
 	newEventSubject,
 	newEventTemplate,
 } from "./mailTemplates";
@@ -24,14 +25,18 @@ function ensureSmtpConfigured() {
 	return true;
 }
 
-export async function sendWelcomeEmail(to: string, name: string) {
+export async function sendWelcomeEmail(
+	to: string,
+	name: string,
+	userType: UserType = "customer"
+) {
 	if (!ensureSmtpConfigured()) return;
 
 	const mailOptions = {
 		from: `"EcoSphere" <no-reply@ecosphere.com>`,
 		to,
-		subject: registrationSubject,
-		html: registrationTemplate({ name }),
+		subject: getRegistrationSubject(userType),
+		html: getRegistrationTemplate(userType, { name }),
 	};
 
 	try {

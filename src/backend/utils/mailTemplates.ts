@@ -23,16 +23,29 @@ const baseStyles = {
 
 const formatName = (name?: string) => name?.trim() || "EcoSphere friend";
 
-export const registrationSubject = "Welcome to EcoSphere 🌱";
+export type UserType = "customer" | "organizer" | "shop";
 
-export function registrationTemplate(user: BasicUserInfo): string {
+export function getRegistrationSubject(userType: UserType): string {
+  switch (userType) {
+    case "customer":
+      return "Welcome to EcoSphere 🌱";
+    case "organizer":
+      return "Welcome to EcoSphere - Event Organizer Portal 🎉";
+    case "shop":
+      return "Welcome to EcoSphere - Shop Partner Portal 🏪";
+    default:
+      return "Welcome to EcoSphere 🌱";
+  }
+}
+
+export function customerWelcomeTemplate(user: BasicUserInfo): string {
   const name = formatName(user.name);
 
   return `
   <div style="${baseStyles.wrapper}">
     <div style="${baseStyles.card}">
-      <h2 style="${baseStyles.title}">Welcome to EcoSphere, ${name}!</h2>
-      <p style="${baseStyles.subtitle}">We\'re excited to have you in our eco‑friendly community. 🌍</p>
+      <h2 style="${baseStyles.title}">Welcome to EcoSphere, ${name}! 🌍</h2>
+      <p style="${baseStyles.subtitle}">We're excited to have you in our eco‑friendly community!</p>
       <p style="${baseStyles.paragraph}">
         From now on, you can discover sustainable shops, join green events,
         track your impact, and learn more about living consciously with
@@ -40,16 +53,98 @@ export function registrationTemplate(user: BasicUserInfo): string {
       </p>
       <p style="${baseStyles.paragraph}">
         Start exploring the platform and see how small actions can create a
-        big change.
+        big change. Browse eco-friendly products, participate in environmental
+        events, and earn points as you make sustainable choices!
       </p>
       <p style="${baseStyles.paragraph}">See you inside,</p>
       <p style="${baseStyles.paragraph}"><strong>The EcoSphere Team</strong></p>
       <div style="${baseStyles.footer}">
-        You received this email because you created an account on EcoSphere.
+        You received this email because you created a customer account on EcoSphere.
       </div>
     </div>
   </div>
   `;
+}
+
+export function organizerWelcomeTemplate(user: BasicUserInfo): string {
+  const name = formatName(user.name);
+
+  return `
+  <div style="${baseStyles.wrapper}">
+    <div style="${baseStyles.card}">
+      <h2 style="${baseStyles.title}">Welcome to EcoSphere, ${name}! 🎉</h2>
+      <p style="${baseStyles.subtitle}">Thank you for joining as an Event Organizer!</p>
+      <p style="${baseStyles.paragraph}">
+        As an event organizer, you can now create and manage environmental events,
+        reach eco-conscious audiences, and make a positive impact in your community.
+      </p>
+      <p style="${baseStyles.paragraph}">
+        Get started by creating your first event, setting up event details,
+        managing attendees, and promoting sustainability through engaging activities.
+      </p>
+      <p style="${baseStyles.paragraph}">
+        We're here to support you every step of the way. If you need help,
+        don't hesitate to reach out!
+      </p>
+      <p style="${baseStyles.paragraph}">Let's create change together,</p>
+      <p style="${baseStyles.paragraph}"><strong>The EcoSphere Team</strong></p>
+      <div style="${baseStyles.footer}">
+        You received this email because you created an Event Organizer account on EcoSphere.
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+export function shopWelcomeTemplate(user: BasicUserInfo): string {
+  const name = formatName(user.name);
+
+  return `
+  <div style="${baseStyles.wrapper}">
+    <div style="${baseStyles.card}">
+      <h2 style="${baseStyles.title}">Welcome to EcoSphere, ${name}! 🏪</h2>
+      <p style="${baseStyles.subtitle}">Thank you for joining as a Shop Partner!</p>
+      <p style="${baseStyles.paragraph}">
+        As a shop partner, you can now showcase your sustainable products,
+        connect with eco-conscious customers, and grow your business while
+        making a positive environmental impact.
+      </p>
+      <p style="${baseStyles.paragraph}">
+        Get started by setting up your shop profile, adding your products,
+        managing inventory, and reaching customers who value sustainability.
+      </p>
+      <p style="${baseStyles.paragraph}">
+        We're committed to helping you succeed. Our platform provides tools
+        to manage your shop, track sales, and engage with the EcoSphere community.
+      </p>
+      <p style="${baseStyles.paragraph}">Welcome aboard,</p>
+      <p style="${baseStyles.paragraph}"><strong>The EcoSphere Team</strong></p>
+      <div style="${baseStyles.footer}">
+        You received this email because you created a Shop Partner account on EcoSphere.
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+export function getRegistrationTemplate(userType: UserType, user: BasicUserInfo): string {
+  switch (userType) {
+    case "customer":
+      return customerWelcomeTemplate(user);
+    case "organizer":
+      return organizerWelcomeTemplate(user);
+    case "shop":
+      return shopWelcomeTemplate(user);
+    default:
+      return customerWelcomeTemplate(user);
+  }
+}
+
+// Legacy function for backward compatibility
+export const registrationSubject = "Welcome to EcoSphere 🌱";
+
+export function registrationTemplate(user: BasicUserInfo): string {
+  return customerWelcomeTemplate(user);
 }
 
 export function newEventSubject(event: Partial<EventInfo>): string {

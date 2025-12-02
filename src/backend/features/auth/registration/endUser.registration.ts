@@ -24,7 +24,8 @@ class EndUserRegistration implements IRegistrationStrategy {
 		await sendWelcomeEmail(
 			data.email,
 			`${"firstName" in data ? data.firstName : ""} ${"lastName" in data ? data.lastName : ""
-				}`.trim()
+				}`.trim(),
+			"customer"
 		);
 
 		return { success: true };
