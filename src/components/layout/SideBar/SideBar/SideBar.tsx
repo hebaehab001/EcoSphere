@@ -23,6 +23,7 @@ import Link from 'next/link'
 import ThemeBtn from '../ThemeBtn/ThemeBtn'
 import UserBtn from '../UserBtn/UserBtn'
 import GetFavCount from '@/frontend/Actions/GetFavCount'
+import { useSession } from 'next-auth/react'
 // Menu items.
 const items = [
     {
@@ -91,7 +92,8 @@ const dashboardItems = [
 ]
 
 export default function SideBar() {
-    const user = useSelector((state: RootState) => state.user)
+    // const user = useSelector((state: RootState) => state.user)
+    const { data: session, status } = useSession();
 
     return (
         <Sidebar collapsible="icon" variant='floating' className='bg-background '>
@@ -157,7 +159,7 @@ export default function SideBar() {
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
-                        {!user.isLoggedIn && (
+                        {status === "unauthenticated" && (
                             <SidebarMenuItem >
                                 <SidebarMenuButton asChild >
                                     <Link href="/auth">
@@ -168,7 +170,7 @@ export default function SideBar() {
                             </SidebarMenuItem>
                         )}
                         <ThemeBtn />
-                        <UserBtn />
+                        <UserBtn session={session!} status={status}/>
                     </SidebarMenu>
                 </SidebarGroupContent>
             </SidebarFooter>
