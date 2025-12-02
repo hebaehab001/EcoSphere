@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import type {
   LoginRequestDTO,
-  LoginResponseDTO,
+  LoginResponse,
   OAuthUserDTO,
   RegisterRequestDTO,
   RegisterResponseDTO,
@@ -10,7 +10,7 @@ import type { IRegistrationStrategy } from "./registration/registration.service"
 import { LoginService } from "./login/users.login.service";
 
 export interface IAuthController {
-  loginWithCredentials(loginDto: LoginRequestDTO): Promise<boolean>;
+  loginWithCredentials(loginDto: LoginRequestDTO): Promise<LoginResponse>;
   LoginWithGoogle(user: OAuthUserDTO, googleId: string): Promise<boolean>;
   register(registerDto: RegisterRequestDTO): Promise<RegisterResponseDTO>;
 }
@@ -23,15 +23,13 @@ class AuthController implements IAuthController {
     @inject("LoginService") private readonly loginService: LoginService,
   ) {}
 
-  async loginWithCredentials(loginDto: LoginRequestDTO): Promise<boolean> {
+  async loginWithCredentials(
+    loginDto: LoginRequestDTO
+  ): Promise<LoginResponse> {
     if (!loginDto.email || !loginDto.password) {
       throw new Error("Email and password are required");
     }
-    const response = this.loginService.login(loginDto);
-    if (!response) {
-      throw new Error("can find the user");
-    }
-    return response;
+    return await this.loginService.login(loginDto);;
   }
 
   async LoginWithGoogle(user: OAuthUserDTO): Promise<boolean> {
@@ -39,12 +37,7 @@ class AuthController implements IAuthController {
       user.email,
       user.provider!,
     );
-
-    if (!savedUser) {
-      const response = await this.registrationService.register(user);
-      console.log(response)
-      
-    }
+    if (!savedUser) await this.registrationService.register(user);
     return true;
   }
 
