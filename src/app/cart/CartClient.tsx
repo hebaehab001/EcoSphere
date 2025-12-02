@@ -22,7 +22,7 @@ export default function CartClient({
   }, [initialCart, dispatch]);
 
   return (
-    <div className=" ">
+    <div>
       {/* Left Section - Shopping Cart Items */}
       <CartHero />
       <div className="max-w-[80%] mx-auto my-10">
