@@ -103,5 +103,37 @@
       "draws": "Draws",
       "ai": "AI"
     }
+  },
+  "Shop": {
+    "hero": {
+      "title": "Shops",
+      "subtitle": "Shops for eco-friendly products and gifts made with love for our planet."
+    },
+    "quality": {
+      "title": "Quality You Can Trust",
+      "description": "We check every partner shop with real care keeping things healthy, planet-friendly, and a little fun along the way. Hover over a card to explore it!",
+      "cards": {
+        "planetFriendly": {
+          "title": "Planet-Friendly Products",
+          "text": "Each shop prioritizes items that are inherently sustainable and kind to the environment, minimizing ecological impact."
+        },
+        "ecoConscious": {
+          "title": "Eco-Conscious Sourcing",
+          "text": "They ensure full responsibility and ethical sourcing, favoring materials that are renewable, recycled, or low-waste."
+        },
+        "commitment": {
+          "title": "Commitment to You",
+          "text": "Products are carefully selected to be safe, kind to your health, and promote a holistic, sustainable lifestyle."
+        }
+      }
+    },
+    "filter": {
+      "sortBy": "Sort by:",
+      "sortOptions": {
+        "default": "Default",
+        "highestRating": "Highest Rating",
+        "lowestRating": "Lowest Rating"
+      }
+    }
   }
 }
