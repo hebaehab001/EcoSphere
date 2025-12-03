@@ -28,6 +28,7 @@ class EndUserRegistration implements IRegistrationStrategy {
 			"customer"
 		);
 
+
 		return { success: true };
 	}
 }

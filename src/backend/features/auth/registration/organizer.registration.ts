@@ -15,7 +15,7 @@ class OrganizerRegistration implements IRegistrationStrategy {
 		if (isOrganizerExists) throw new Error("user already exists.");
 		const organizer = await this.authRepo.saveNewUser(data);
 		if (!organizer)
-			throw new Error("something went wrong, organizer didn't save.");
+			throw new Error("something went wrong, organizer can not registered");
 
 		await sendWelcomeEmail(
 			data.email,
