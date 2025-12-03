@@ -93,13 +93,6 @@ const LogIn = () => {
         )}
       </button>
 
-      {/* divider */}
-      <div className="flex items-center gap-2">
-        <div className="h-px bg-secondary-foreground/50 w-full"></div>
-        <p className="text-stone-500">{t('or')}</p>
-        <div className="h-px bg-secondary-foreground/50 w-full"></div>
-      </div>
-
       {/* social login */}
       <div className="flex justify-evenly items-center my-4 text-4xl text-secondary-foreground ">
         <button
