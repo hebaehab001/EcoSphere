@@ -15,7 +15,20 @@ export interface IEventRepository {
 class EventRepository {
   async getEvents() {
     await DBInstance.getConnection();
-    return await UserModel.find({}).select("events").lean().exec();
+
+    return await UserModel.aggregate([
+      { $unwind: "$events" },
+      {
+        $match: {
+          "events.eventDate": { $gte: new Date() },
+        },
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$events",
+        },
+      },
+    ]);
   }
 
   async getEvent(id: string, eventId: string): Promise<IEvent> {
@@ -34,32 +47,34 @@ class EventRepository {
     return data as IEvent;
   }
 
-  async createEvent(id: string, data: IEvent): Promise<any> {
+  async createEvent(userId: string, eventData: IEvent): Promise<IEvent | null> {
     await DBInstance.getConnection();
-    const newEventId = new mongoose.Types.ObjectId();
-    const newEvent = {
-      ...data,
-      _id: newEventId,
-    } as IEvent;
 
-    const updatedUser = await UserModel.findOneAndUpdate(
-      { _id: id },
-      { $push: { events: newEvent } },
+    const eventId = new mongoose.Types.ObjectId();
+
+    const eventToInsert = {
+      ...eventData,
+      _id: eventId,
+    };
+
+    const result = await UserModel.findOneAndUpdate(
+      { _id: userId },
+      { $push: { events: eventToInsert } },
       {
         new: true,
         select: {
-          events: { $elemMatch: { _id: newEventId } },
+          events: { $elemMatch: { _id: eventId } },
         },
       }
     )
-      .lean()
+      .lean<{ events: IEvent[] }>()
       .exec();
 
-    if (!updatedUser) {
-      throw new Error(`User ${id} not found or event creation failed.`);
+    if (!result || !result.events || result.events.length === 0) {
+      return null;
     }
 
-    return updatedUser;
+    return result.events[0];
   }
 
   async updateEvent(id: string, data: Partial<IEvent>): Promise<any> {

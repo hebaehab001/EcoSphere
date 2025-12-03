@@ -25,8 +25,16 @@ class EventService {
     return await this.eventRepository.getEvent(id, eventId);
   }
 
-  async createEvent(id: string, event: IEvent): Promise<IEvent> {
-    return await this.eventRepository.createEvent(id, event);
+  async createEvent(userId: string, data: IEvent): Promise<IEvent> {
+    const createdEvent = await this.eventRepository.createEvent(userId, data);
+
+    if (!createdEvent) {
+      throw new Error(
+        `User ${userId} not found or event could not be created.`
+      );
+    }
+
+    return createdEvent;
   }
 
   async updateEvent(id: string, event: Partial<IEvent>): Promise<IEvent> {
