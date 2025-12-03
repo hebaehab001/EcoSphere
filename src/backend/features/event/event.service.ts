@@ -37,10 +37,7 @@ class EventService {
     return createdEvent;
   }
 
-  async updateEvent(
-    userId: string,
-    event: Partial<IEvent> & { _id: string }
-  ): Promise<IEvent> {
+  async updateEvent(userId: string, event: Partial<IEvent>): Promise<IEvent> {
     const updated = await this.eventRepository.updateEvent(userId, event);
 
     if (!updated) {
