@@ -79,7 +79,7 @@ class EventRepository {
 
   async updateEvent(
     userId: string,
-    eventData: Partial<IEvent> & { _id: string }
+    eventData: Partial<IEvent>
   ): Promise<IEvent | null> {
     await DBInstance.getConnection();
 
