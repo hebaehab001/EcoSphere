@@ -387,5 +387,43 @@
       "hotline": "Hotline",
       "editModalTitle": "Edit Shop Profile"
     }
+  },
+  "Cart": {
+    "hero": {
+      "title": "Shopping Cart",
+      "home": "Home",
+      "cart": "Cart"
+    },
+    "productsSection": {
+      "product": "Product",
+      "productCode": "Product Code",
+      "quantity": "Quantity",
+      "total": "Total",
+      "action": "Action",
+      "clearAll": "Clear all",
+      "emptyCart": "Your cart is empty"
+    },
+    "removeButton": {
+      "confirm": "Confirm?",
+      "removeItem": "Remove item",
+      "clickToConfirm": "Click again to confirm"
+    },
+    "quantitySelector": {
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity"
+    },
+    "orderSummary": {
+      "title": "Order Summary",
+      "promoCode": "Promo code",
+      "apply": "Apply",
+      "couponApplied": "Coupon applied!",
+      "subTotal": "Sub total",
+      "discount": "Discount ({percent}%)",
+      "deliveryFee": "Delivery fee",
+      "total": "Total",
+      "warranty": "90 Day Limited Warranty up to manufacturer's elements",
+      "details": "Details",
+      "checkoutNow": "Checkout Now"
+    }
   }
 }
