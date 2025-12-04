@@ -58,8 +58,7 @@ class EventRepository {
     return user?.events || [];
   }
 
-
-  async createEvent(userId: string, eventData: IEvent): Promise<IEvent | null> {
+  async createEvent(userId: string, eventData: IEvent): Promise<IEvent> {
     await DBInstance.getConnection();
 
     const eventId = new mongoose.Types.ObjectId();
@@ -82,8 +81,8 @@ class EventRepository {
       .lean<{ events: IEvent[] }>()
       .exec();
 
-    if (!result || !result.events || result.events.length === 0) {
-      return null;
+    if (!result?.events || result.events.length === 0) {
+      throw new Error(`Event with ID ${eventId} not found for user ${userId}.`);
     }
 
     return result.events[0];
@@ -92,7 +91,7 @@ class EventRepository {
   async updateEvent(
     userId: string,
     eventData: Partial<IEvent>
-  ): Promise<IEvent | null> {
+  ): Promise<IEvent> {
     await DBInstance.getConnection();
 
     const eventId = eventData._id;
@@ -120,8 +119,8 @@ class EventRepository {
       .lean<{ events: IEvent[] }>()
       .exec();
 
-    if (!result || !result.events || result.events.length === 0) {
-      return null;
+    if (!result?.events || result.events.length === 0) {
+      throw new Error(`Event with ID ${eventId} not found for user ${userId}.`);
     }
 
     return result.events[0];
@@ -136,15 +135,11 @@ class EventRepository {
       .lean<Pick<IUser, "events">>()
       .exec();
 
-    if (
-      !eventProjection ||
-      !eventProjection.events ||
-      eventProjection.events.length === 0
-    ) {
+    if (!eventProjection?.events || eventProjection.events.length === 0) {
       throw new Error(`Event with ID ${eventId} not found for user ${id}.`);
     }
 
-    const deletedEvent: IEvent = eventProjection.events[0] as IEvent;
+    const deletedEvent: IEvent = eventProjection.events[0];
 
     await UserModel.updateOne(
       { _id: id },
