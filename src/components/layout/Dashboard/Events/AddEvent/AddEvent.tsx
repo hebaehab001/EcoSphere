@@ -45,25 +45,25 @@ export default function EventForm() {
   const form = useForm<IEventDetails>({
     resolver: zodResolver(eventSchema),
     defaultValues: {
-      eventName: '',
-      eventType: '',
-      imageUrl: '',
+      name: '',
+      type: '',
+      avatar: '',
       description: '',
-      location: '',
-      date: '',
-      timeStart: '',
-      timeEnd: '',
-      ticketsAmount:0,
+      locate: '',
+      eventDate: '',
+      startTime: '',
+      endTime: '',
+      capacity:0,
       ticketType: 'Priced',
-      price: 0,
-      subEvents: [],
+      ticketPrice: 0,
+      sections: [],
     },
   });
 
   // --- Initialize useFieldArray for dynamic schedule items ---
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "subEvents",
+    name: "sections",
   });
 
   // --- 3. Watchers & Calculations ---
@@ -74,19 +74,19 @@ export default function EventForm() {
   // If ticket type changes to 'Free', reset price to 0 automatically
   useEffect(() => {
     if (ticketType === 'Free') {
-      form.setValue('price', 0);
-      form.clearErrors('price');
+      form.setValue('ticketPrice', 0);
+      form.clearErrors('ticketPrice');
     }
   }, [ticketType, form]);
 
   // --- 5. Submission Handler ---
   const onSubmit: SubmitHandler<IEventDetails> = (data) => {
-    const file = data.imageUrl instanceof FileList ? data.imageUrl[0] : null;
+    const file = data.avatar instanceof FileList ? data.avatar[0] : null;
     const { ticketType, ...restOfData } = data;
     const eventData = {
       ...restOfData,
-      price: restOfData.price,
-      imageUrl: file || restOfData.imageUrl,
+      ticketPrice: restOfData.ticketPrice,
+      avatar: file || restOfData.avatar,
     };
     console.log("--- Event Details (excluding file/upload details) ---", eventData);
   }
@@ -111,7 +111,7 @@ export default function EventForm() {
 
                 <FormField
                   control={form.control}
-                  name="eventName"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Event Title</FormLabel>
@@ -128,7 +128,7 @@ export default function EventForm() {
 
                 <FormField
                   control={form.control}
-                  name="eventType"
+                  name="type"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Event Type</FormLabel>
@@ -154,7 +154,7 @@ export default function EventForm() {
 
                 <FormField
                   control={form.control}
-                  name="imageUrl"
+                  name="avatar"
                   render={({ field: { value, onChange, ...fieldProps } }) => (
                     <FormItem>
                       <FormLabel>Event Image (Upload File)</FormLabel>
@@ -208,7 +208,7 @@ export default function EventForm() {
 
                 <FormField
                   control={form.control}
-                  name="location"
+                  name="locate"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Location / Venue</FormLabel>
@@ -226,7 +226,7 @@ export default function EventForm() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <FormField
                     control={form.control}
-                    name="date"
+                    name="eventDate"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Event Date</FormLabel>
@@ -242,7 +242,7 @@ export default function EventForm() {
                   />
                   <FormField
                     control={form.control}
-                    name="timeStart"
+                    name="startTime"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Start Time</FormLabel>
@@ -258,7 +258,7 @@ export default function EventForm() {
                   />
                   <FormField
                     control={form.control}
-                    name="timeEnd"
+                    name="endTime"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>End Time</FormLabel>
@@ -286,7 +286,7 @@ export default function EventForm() {
 
                   <FormField
                     control={form.control}
-                    name="ticketsAmount"
+                    name="capacity"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Tickets Amount</FormLabel>
@@ -339,7 +339,7 @@ export default function EventForm() {
 
                   <FormField
                     control={form.control}
-                    name="price"
+                    name="ticketPrice"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Ticket Price (Rs)</FormLabel>
@@ -370,9 +370,9 @@ export default function EventForm() {
                   Detailed Event Schedule (Agenda Items)
                 </h2>
 
-                {form.formState.errors.subEvents && (
+                {form.formState.errors.sections && (
                   <p className="text-sm font-medium text-red-500 mt-2">
-                    {form.formState.errors.subEvents.message}
+                    {form.formState.errors.sections.message}
                   </p>
                 )}
 
@@ -394,7 +394,7 @@ export default function EventForm() {
                     {/* Title Input */}
                     <FormField
                       control={form.control}
-                      name={`subEvents.${index}.title`}
+                      name={`sections.${index}.title`}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Section Title</FormLabel>
@@ -409,7 +409,7 @@ export default function EventForm() {
                     {/* Description Textarea */}
                     <FormField
                       control={form.control}
-                      name={`subEvents.${index}.description`}
+                      name={`sections.${index}.description`}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Description</FormLabel>
@@ -425,7 +425,7 @@ export default function EventForm() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <FormField
                         control={form.control}
-                        name={`subEvents.${index}.timeStart`}
+                        name={`sections.${index}.startTime`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Start Time</FormLabel>
@@ -439,7 +439,7 @@ export default function EventForm() {
 
                       <FormField
                         control={form.control}
-                        name={`subEvents.${index}.timeEnd`}
+                        name={`sections.${index}.endTime`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>End Time</FormLabel>
@@ -458,7 +458,7 @@ export default function EventForm() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => append({ title: '', description: '', timeStart: '', timeEnd: '' })}
+                  onClick={() => append({ title: '', description: '', startTime: '', endTime: '' })}
                   className="w-full justify-center text-indigo-600 border-indigo-300 hover:bg-indigo-50"
                 >
                   <Plus className="h-4 w-4 mr-2" /> Add Agenda Section

@@ -6,23 +6,21 @@ export const EVENT_TYPES = [
 export interface ISubEvent {
     title: string;
     description?: string;
-    timeStart: string;
-    timeEnd: string;
+    startTime: string;
+    endTime: string;
 }
 
 export interface IEventDetails {
-    eventName: string;
-    eventType: string;
-    imageUrl?: string | FileList;
+    name: string;
+    type: string;
+    avatar?: string | FileList;
     description?: string;
-    location: string;
-    date: string;
-    timeStart: string;
-    timeEnd: string;
-    ticketsAmount: number;
+    locate: string;
+    eventDate: string;
+    startTime: string;
+    endTime: string;
+    capacity: number;
     ticketType: "Priced" | "Free";
-    price: number;
-    subEvents?: ISubEvent[];
+    ticketPrice: number;
+    sections?: ISubEvent[];
 }
-
-
