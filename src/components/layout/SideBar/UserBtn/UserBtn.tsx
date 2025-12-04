@@ -115,7 +115,7 @@ export default function UserBtn({
 							<Link href="/profile">
 								<DropdownMenuItem>
 									<BadgeCheck />
-									Profile
+									{t('account')}
 								</DropdownMenuItem>
 							</Link>
 							<DropdownMenuItem>
