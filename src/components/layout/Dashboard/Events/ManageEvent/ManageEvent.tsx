@@ -41,7 +41,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { EVENT_TYPES, IEventDetails } from '@/types/EventTypes';
 import { eventSchema} from '@/frontend/schema/event.schema';
 
-export default function EventForm() {
+export default function ManageEvent() {
   const form = useForm<IEventDetails>({
     resolver: zodResolver(eventSchema),
     defaultValues: {
@@ -302,7 +302,7 @@ export default function EventForm() {
                   />
 
                   {/* Radio Group for Ticket Status */}
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name="ticketType"
                     render={({ field }) => (
@@ -332,6 +332,30 @@ export default function EventForm() {
                             </FormItem>
                           </RadioGroup>
                         </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  /> */}
+                  <FormField
+                    control={form.control}
+                    name="ticketType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Ticket Status</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <div className="relative">
+                              <Tag className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground z-10" />
+                              <SelectTrigger className="pl-9">
+                                <SelectValue placeholder="Select ticket status" />
+                              </SelectTrigger>
+                            </div>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="Priced">Priced</SelectItem>
+                            <SelectItem value="Free">Free</SelectItem>
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}

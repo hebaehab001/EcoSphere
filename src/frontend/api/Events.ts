@@ -13,10 +13,12 @@ export  async function GetAllUserEvents() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/events/user`, {
         next: { revalidate: 7200 },
     });
-    if (!res.ok) {
-        throw new Error("error in fetch api response");
-    }
-    return res.json();
+    // console.log(res);
+    
+    // if (!res.ok) {
+    //     throw new Error("error in fetch api response");
+    // }
+    return await res.json();
 };
 export async function PostEvent({data}:{data:Partial<IEventDetails>}) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/events/user`, {
