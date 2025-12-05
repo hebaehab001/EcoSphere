@@ -3,6 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { rootContainer } from "./backend/config/container";
 import AuthController from "./backend/features/auth/auth.controller";
+import UserController from "./backend/features/user/user.controller";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	providers: [
@@ -52,7 +53,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			switch (account?.provider) {
 				case "google": {
 					const [firstName, ...rest] = (profile?.name ?? "").split(" ");
-					const lastName = rest.join(" ")	
+					const lastName = rest.join(" ");
 					return !!(await rootContainer
 						.resolve(AuthController)
 						.LoginWithGoogle({
@@ -72,23 +73,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 		},
 		async jwt({ token, user, account }) {
 			if (user) {
-				token.id = user.id;
-				token.email = user.email;
+				token.userId = user.id;
 				token.role = user.role;
-				token.name = user.name;
 			}
 			if (account?.provider === "google") {
-				token.role = "customer"
+				token.role = "customer";
+				user.image = account.image as string;
+				token.userId = `${
+					(
+						await rootContainer
+							.resolve(UserController)
+							.getUserIdByEmail(user.email!)
+					)._id
+				}`;
 			}
 			return token;
 		},
 
-		async session({ session, token }) {
+		async session({ session, token, user }) {
 			if (token) {
 				session.user.id = token.id as string;
 				session.user.email = token.email as string;
 				session.user.role = token.role as string;
 				session.user.name = token.name as string;
+				session.user.image = user?.picture as string;
 			}
 			return session;
 		},
