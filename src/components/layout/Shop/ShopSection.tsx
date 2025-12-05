@@ -44,7 +44,7 @@ export default function ShopSection({ shops }: { shops: IShop[] }) {
         onSearch={setSearchQuery}
         isSorting={true}
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10 auto-rows-auto w-[80%] mx-auto mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-15 auto-rows-auto w-[80%] mx-auto mb-4">
         {sortedShops.length > 0 ? (
           sortedShops.map((shop, index) => (
             <BasicAnimatedWrapper
@@ -59,7 +59,7 @@ export default function ShopSection({ shops }: { shops: IShop[] }) {
             </BasicAnimatedWrapper>
           ))
         ) : (
-          <p className="col-span-full text-center text-primary-forground py-10">
+          <p className="col-span-full text-center text-primary-foreground py-10">
             {t("noProducts")}
           </p>
         )}
