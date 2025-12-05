@@ -1,9 +1,9 @@
 import ShopDetailsClient from "@/components/layout/Shop/ShopDetailsClient";
 
 interface Props {
-  params: {
+  params: Promise<{
     shopId: string;
-  };
+  }>;
 }
 
 const getShopDetails = async (shopId: string) => {
