@@ -7,6 +7,7 @@ import { Toaster } from "sonner";
 import { SidebarInset } from "@/components/ui/sidebar";
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
+import SidebarTriggerBtn from "@/components/layout/SideBar/SidebarTriggerBtn/SidebarTriggerBtn";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,12 +43,9 @@ export default async function RootLayout({
             <Toaster position="top-right" />
             <SideBar />
             <SidebarInset>
-
-              {/* <div className="w-full bg-background text-foreground"> */}
+              <SidebarTriggerBtn/>
               {children}
-              {/* </div> */}
             </SidebarInset>
-
           </Providers>
         </NextIntlClientProvider>
       </body>
