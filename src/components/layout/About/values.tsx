@@ -2,10 +2,13 @@
 
 import React from "react";
 import Reveal from "@/components/ui/reveal";
-import { Leaf, Handshake, Globe, Users} from "lucide-react";
+import { Leaf, Handshake, Globe, Users } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslations } from 'next-intl';
 
 export default function Values() {
+    const t = useTranslations('About.values');
+
     const values = [
         { 
             icon: <Leaf className="w-8 h-8 text-accent-foreground" />, 
@@ -37,9 +40,9 @@ export default function Values() {
                 <Reveal>
                     {/* Header Section */}
                     <div className="text-center max-w-3xl mx-auto mb-16">
-                        <span className="text-xl font-bold tracking-[0.2em] text-primary uppercase mb-3 block">Our Core Values</span>
+                        <span className="text-xl font-bold tracking-[0.2em] text-primary uppercase mb-3 block">{t('label')}</span>
                         <h2 className="text-3xl md:text-5xl font-bold text-foreground leading-tight">
-                            Preserving The Earth For <br className="hidden md:block" /> Future Generations
+                            {t('title')}
                         </h2>
                     </div>
 

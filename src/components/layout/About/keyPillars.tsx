@@ -5,8 +5,11 @@ import Reveal from "@/components/ui/reveal";
 import { Sprout, HeartHandshake, Search, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useTranslations } from 'next-intl';
 
 export default function KeyPillars() {
+    const t = useTranslations('About.keyPillars');
+
     const pillars = [
         { 
             icon: <Sprout className="w-8 h-8 text-accent-foreground" />,
@@ -48,7 +51,7 @@ export default function KeyPillars() {
                             Our Standards
                         </span>
                         <h2 className="text-3xl md:text-5xl font-bold text-foreground leading-tight">
-                            Key Pillars
+                            {t('title')}
                         </h2>
                         <p className="mt-4 text-foreground max-w-2xl mx-auto">
                             We don&apos;t just take a brand&apos;s word for it. We rigorously evaluate every partner against these four non-negotiable standards.
@@ -71,9 +74,9 @@ export default function KeyPillars() {
                                 <motion.div whileTap={{ scale: 0.98 }} className="w-20 h-20 bg-[var(--primary-foreground)/0.08] rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                                     {pillar.icon}
                                 </motion.div>
-                                
+
                                 <h3 className="font-bold text-xl text-foreground mb-3">
-                                    {pillar.title}
+                                    {t(`pillars.${pillar.key}.title`)}
                                 </h3>
                                 
                                 <p className="text-sm text-foreground leading-relaxed">

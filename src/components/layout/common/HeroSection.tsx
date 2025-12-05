@@ -1,6 +1,6 @@
-"use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import BasicAnimatedWrapper from "./BasicAnimatedWrapper";
 
 interface IProps {
   imgUrl: string;
@@ -10,33 +10,26 @@ interface IProps {
 
 const HeroSection = ({ imgUrl, subTitle, title }: IProps) => {
   return (
-    <section className="mb-20 md:mb-28 lg:mb-10">
-      <div className="relative w-full">
-        <div className="relative w-full h-[450px] md:h-[520px] lg:h-[600px]">
-          <Image
-            src={imgUrl}
-            alt="hero"
-            fill
-            className="object-contain"
-            unoptimized
-          />
-        </div>
+    <section>
+      <div>
+        <Image
+          src={imgUrl}
+          width={1000}
+          height={1000}
+          alt="hero"
+          className="  object-cover mx-auto h-[450px] relative z-0"
+        />
 
-        {/* Overlay Box: placed below the image */}
-        <motion.div
-          className="mt-6 mx-auto w-[80%] bg-primary/70 dark:bg-primary/50 backdrop-blur-lg rounded-xl p-6 flex flex-col items-center text-center shadow-lg"
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <h1 className="lg:text-5xl md:text-4xl text-3xl font-semibold mb-3 text-primary-foreground">
+        {/* Overlay Box */}
+        <BasicAnimatedWrapper className="relative z-10 left-1/2 -translate-x-1/2 -translate-y-1/3 w-[80%] bg-primary/70  dark:bg-primary/50 backdrop-blur-lg to-transparent rounded-xl p-6 flex flex-col items-center text-center shadow-lg">
+          <h1 className="lg:text-5xl md:text-4xl text-3xl font-semibold mb-3 text-primary-foreground ">
             {title}
           </h1>
 
           <p className="mt-2 lg:text-lg text-base text-primary-foreground/80 w-[90%] leading-relaxed">
             {subTitle}
           </p>
-        </motion.div>
+        </BasicAnimatedWrapper>
       </div>
     </section>
   );
