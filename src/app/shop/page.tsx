@@ -1,5 +1,4 @@
 import ShopClient from "@/components/layout/Shop/ShopClient";
-import { IShop } from "@/types/ShopTypes";
 
 const getShops = async () => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/shops`, {
@@ -23,8 +22,6 @@ export default async function Shop() {
   const shops = await getShops();
 
   return (
-    <>
       <ShopClient shops={shops} />
-    </>
   );
 }
