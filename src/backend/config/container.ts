@@ -20,6 +20,7 @@ import { ProductRepository } from "../features/product/product.repository";
 import { ProductService } from "../features/product/product.service";
 import { OrderRepository } from "../features/orders/order.repository";
 import { OrderService } from "../features/orders/order.service";
+import { PaymentService } from "../services/payment.service";
 
 // you will register any
 container.registerSingleton("IUserRepository", UserRepository);
@@ -40,7 +41,8 @@ container.registerSingleton("LoginService", LoginService);
 container.registerSingleton("ImageService", ImageService);
 container.registerSingleton("UploadService", UploadService);
 container.registerSingleton("UploadRepository", UploadRepository);
-container.registerSingleton("ProductRepository" ,ProductRepository);
+container.registerSingleton("ProductRepository", ProductRepository);
 container.registerSingleton("ProductService", ProductService);
+container.registerSingleton("PaymentService", PaymentService);
 
 export { container as rootContainer } from "tsyringe";
