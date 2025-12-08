@@ -16,6 +16,9 @@ import { UploadService } from "../features/upload/upload.service";
 import { UploadRepository } from "../features/upload/upload.repository";
 import EventService from "../features/event/event.service";
 import EventRepository from "../features/event/event.repository";
+import { ProductRepository } from "../features/product/product.repository";
+import { ProductService } from "../features/product/product.service";
+import { ProductController } from "../features/product/product.controller";
 
 // you will register any
 container.registerSingleton("IUserRepository", UserRepository);
@@ -34,5 +37,8 @@ container.registerSingleton("LoginService", LoginService);
 container.registerSingleton("ImageService", ImageService);
 container.registerSingleton("UploadService", UploadService);
 container.registerSingleton("UploadRepository", UploadRepository);
+container.registerSingleton(ProductRepository);
+container.registerSingleton(ProductService);
+container.registerSingleton(ProductController);
 
 export { container as rootContainer } from "tsyringe";
