@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { Star, Clock } from "lucide-react";
+import { Star, Clock, Phone, MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { IShop } from "@/types/ShopTypes";
 import { getAverageRating } from "../ShopSection";
@@ -25,6 +25,40 @@ const BranchMap = dynamic(() => import("./ShopMap"), {
 const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
   const t = useTranslations("ShopDetails.card");
   const [showMap, setShowMap] = useState(false);
+  const [showContact, setShowContact] = useState(false);
+  const [searchedPhone, setSearchedPhone] = useState<string | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
+
+  // Function to search for phone number online
+  const searchPhoneNumber = async () => {
+    setIsSearching(true);
+    setSearchError(null);
+
+    try {
+      // Call your backend API to search for the shop's phone number
+      const response = await fetch(
+        `/api/search-phone?shopName=${encodeURIComponent(shop.name)}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch phone number");
+      }
+
+      const data = await response.json();
+
+      if (data.phoneNumber) {
+        setSearchedPhone(data.phoneNumber);
+      } else {
+        setSearchError("Phone number not found online");
+      }
+    } catch (error) {
+      console.error("Error searching phone number:", error);
+      setSearchError("Unable to search at this time. Please try again later.");
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   return (
     <section className="">
@@ -137,19 +171,57 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
             {/* Action buttons */}
             <div className="flex gap-4 mt-4">
               <button
-                onClick={() => setShowMap(!showMap)}
+                onClick={() => {
+                  setShowMap(!showMap);
+                  setShowContact(false); // Close contact when opening map
+                }}
                 className="flex-1 bg-primary text-primary-foreground p-3 rounded-full transition duration-400 hover:scale-102 flex justify-center items-center text-lg gap-2 hover:outline-2 hover:outline-primary hover:outline-offset-4 cursor-pointer"
               >
+                <MapPin className="w-5 h-5" />
                 {t("visitShop")}
               </button>
               <button
+                onClick={() => {
+                  setShowContact(!showContact);
+                  setShowMap(false); // Close map when opening contact
+                }}
                 className="flex-1 bg-primary text-primary-foreground p-3 rounded-full transition duration-400 hover:scale-102 flex justify-center items-center text-lg gap-2 hover:outline-2 hover:outline-primary hover:outline-offset-4 cursor-pointer"
                 aria-label="Contact shop"
               >
+                <Phone className="w-5 h-5" />
                 {t("contact")}
               </button>
             </div>
           </div>
+        </div>
+
+        {/* Contact Information */}
+        <div
+          className={`overflow-hidden transition-all duration-500 ease-in-out w-full ${
+            showContact ? "max-h-[300px] opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          {showContact && (
+            <div className="w-full p-6 bg-muted/50 rounded-lg border border-border">
+              <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
+                <Phone className="w-5 h-5 text-primary" />
+                Contact Information
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-semibold text-muted-foreground min-w-[100px]">
+                    Phone:
+                  </span>
+                  <a
+                    href={`tel:${shop.phoneNumber}`}
+                    className="text-lg font-semibold text-primary hover:underline"
+                  >
+                    {shop.phoneNumber}
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Branch Map - Shows all shop/restaurant locations */}
@@ -158,11 +230,7 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
             showMap ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          {showMap && (
-            <BranchMap
-              shopName={shop.name}
-            />
-          )}
+          {showMap && <BranchMap shopName={shop.name} />}
         </div>
       </BasicAnimatedWrapper>
     </section>
