@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { CartItems } from "@/types/cart";
+import { RootState } from "../store";
 
 type CartState = {
   items: Record<string, CartItems>;
@@ -34,7 +35,7 @@ const cartSlice = createSlice({
     },
     updateQuantity(
       state,
-      action: PayloadAction<{ id: string; quantity: number }>,
+      action: PayloadAction<{ id: string; quantity: number }>
     ) {
       const { id, quantity } = action.payload;
       // Item doesn't exist or invalid quantity
@@ -53,3 +54,6 @@ const cartSlice = createSlice({
 export const { hydrateCart, addItem, updateQuantity, removeItem, clearCart } =
   cartSlice.actions;
 export default cartSlice.reducer;
+
+export const isInCartSelector = (state: RootState, productId: string) =>
+  state.cart.items[productId];
