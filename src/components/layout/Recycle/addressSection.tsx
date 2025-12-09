@@ -12,12 +12,12 @@ interface AddressSectionProps {
 
 const AddressSection = ({ register, errors }: AddressSectionProps) => (
   <div className="space-y-6">
-    <div className="flex items-center gap-3 pb-3 border-b-2 border-primary-foreground/30">
+    <div className="flex items-center text-muted-foreground gap-3 pb-3 border-b-2 border-primary/30">
       <MapPin className="w-6 h-6" />
       <span className="text-sm font-extrabold uppercase">Address Details</span>
     </div>
 
-    <div className="bg-primary-foreground/10 p-8 rounded-3xl border-2 border-primary-foreground/30 outline  outline-primary-foreground/20 shadow-lg space-y-6">
+    <div className=" p-8 rounded-3xl border-2 border-primary/30  space-y-6">
       <div className="grid md:grid-cols-2 gap-8">
         <Input label="City" register={register("city")} error={errors.city?.message} icon={MapPin} placeholder="Enter city name" required />
         <Input label="Neighborhood" register={register("neighborhood")} error={errors.neighborhood?.message} icon={MapPin} placeholder="Enter neighborhood" required />
