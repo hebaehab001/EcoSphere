@@ -13,6 +13,32 @@ import { EventListItemProps, EventProps, IEventDetails, MetricData } from '@/typ
 import React from 'react';
 import { useSession } from 'next-auth/react';
 
+const formatTime = (time: string): string => {
+  try {
+    // Assuming time is in "HH:MM" format (24-hour)
+    const [hours, minutes] = time.split(":");
+    const date = new Date(0, 0, 0, parseInt(hours), parseInt(minutes));
+    return date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  } catch (e) {
+    return time; // Return original if formatting fails
+  }
+};
+// Function to format the date
+const formatDate = (dateString: string): string => {
+  try {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  } catch (e) {
+    return dateString;
+  }
+};
 
 const dashboardData: MetricData[] = [
   {
@@ -110,9 +136,9 @@ const EventListItem: React.FC<EventListItemProps> = ({  name, eventDate, startTi
 
         {/* Location */}
         <div className="flex justify-center items-center flex-col text-sm col-span-1">
-          <p className="text-sm text-gray-500 font-medium">{eventDate}</p>
+          <p className="text-sm text-gray-500 font-medium">{formatDate(eventDate)}</p>
           {/* Displaying the Time */}
-          <p className="text-sm text-grey-600 font-semibold">`${startTime} - ${endTime}`</p>
+          <p className="text-sm text-grey-600 font-semibold">{formatTime(startTime)} - {formatTime(endTime)}</p>
         </div>
 
         {/* Placeholder column */}
@@ -139,9 +165,7 @@ const EventListItem: React.FC<EventListItemProps> = ({  name, eventDate, startTi
   );
 };
 export default function EventOverview({ events }: EventProps) {
-   const { data: session, status } = useSession();
-  //  console.log(session);
-   
+
   const t = useTranslations('Dashboard.overview');
   const today = new Date();
   today.setHours(0, 0, 0, 0);
