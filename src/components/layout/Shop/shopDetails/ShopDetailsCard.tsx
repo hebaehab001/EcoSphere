@@ -3,13 +3,15 @@
 import Image from "next/image";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { Star, Clock, Phone, MapPin } from "lucide-react";
+import { Star, Clock, Phone, MapPin, MessageSquarePlus } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
 import { IShop } from "@/types/ShopTypes";
 import { getAverageRating } from "../ShopSection";
 import BasicAnimatedWrapper from "../../common/BasicAnimatedWrapper";
+import { toast } from "sonner";
+import { Router } from "next/router";
 
-// Dynamically import the map component to avoid SSR issues
 const BranchMap = dynamic(() => import("./ShopMap"), {
   ssr: false,
   loading: () => (
@@ -24,39 +26,58 @@ const BranchMap = dynamic(() => import("./ShopMap"), {
 
 const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
   const t = useTranslations("ShopDetails.card");
+  const { data: session } = useSession();
   const [showMap, setShowMap] = useState(false);
   const [showContact, setShowContact] = useState(false);
-  const [searchedPhone, setSearchedPhone] = useState<string | null>(null);
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchError, setSearchError] = useState<string | null>(null);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [reviewText, setReviewText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Function to search for phone number online
-  const searchPhoneNumber = async () => {
-    setIsSearching(true);
-    setSearchError(null);
+  const handleReviewSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!session?.user?.email) {
+      alert("You must be logged in to submit a review");
+      return;
+    }
+
+    if (rating === 0) {
+      alert("Please select a rating");
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
-      // Call your backend API to search for the shop's phone number
-      const response = await fetch(
-        `/api/search-phone?shopName=${encodeURIComponent(shop.name)}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch phone number");
-      }
+      const response = await fetch(`/api/shops/${shop._id}/reviews`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          rating,
+          review: reviewText,
+        }),
+      });
 
       const data = await response.json();
 
-      if (data.phoneNumber) {
-        setSearchedPhone(data.phoneNumber);
+      if (response.ok) {
+        toast.success("Review submitted successfully!");
+        setRating(0);
+        setReviewText("");
+        setShowReviewForm(false);
       } else {
-        setSearchError("Phone number not found online");
+        toast.error(
+          `Failed to submit review: ${data.message || "Unknown error"}`
+        );
       }
     } catch (error) {
-      console.error("Error searching phone number:", error);
-      setSearchError("Unable to search at this time. Please try again later.");
+      console.error("Error submitting review:", error);
+      toast.error("Error submitting review. Please try again.");
     } finally {
-      setIsSearching(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -73,7 +94,6 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
               alt={shop.name}
               className="w-[500px] rounded-lg "
             />
-            {/* top right decorative SVG */}
             <div className="w-[30%] h-[30%] absolute -top-[6%] -right-[6%]  ">
               <svg
                 width="100%"
@@ -103,7 +123,6 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
               </svg>
             </div>
 
-            {/* bottom left decorative SVG */}
             <div className="max-w-[50%] max-h-[30%] absolute -bottom-[3%] -left-[5%] rounded-full bg-background p-4 drop-shadow-lg ">
               {/* shop data */}
               <div className="bg-primary rounded-full px-4 py-2 w-full text-center flex items-center  gap-4">
@@ -173,7 +192,8 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
               <button
                 onClick={() => {
                   setShowMap(!showMap);
-                  setShowContact(false); // Close contact when opening map
+                  setShowContact(false);
+                  setShowReviewForm(false);
                 }}
                 className="flex-1 bg-primary text-primary-foreground p-3 rounded-full transition duration-400 hover:scale-102 flex justify-center items-center text-lg gap-2 hover:outline-2 hover:outline-primary hover:outline-offset-4 cursor-pointer"
               >
@@ -183,13 +203,26 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
               <button
                 onClick={() => {
                   setShowContact(!showContact);
-                  setShowMap(false); // Close map when opening contact
+                  setShowMap(false);
+                  setShowReviewForm(false);
                 }}
                 className="flex-1 bg-primary text-primary-foreground p-3 rounded-full transition duration-400 hover:scale-102 flex justify-center items-center text-lg gap-2 hover:outline-2 hover:outline-primary hover:outline-offset-4 cursor-pointer"
                 aria-label="Contact shop"
               >
                 <Phone className="w-5 h-5" />
                 {t("contact")}
+              </button>
+              <button
+                onClick={() => {
+                  setShowReviewForm(!showReviewForm);
+                  setShowMap(false);
+                  setShowContact(false);
+                }}
+                className="flex-1 bg-primary text-primary-foreground p-3 rounded-full transition duration-400 hover:scale-102 flex justify-center items-center text-lg gap-2 hover:outline-2 hover:outline-primary hover:outline-offset-4 cursor-pointer"
+                aria-label="Add Review"
+              >
+                <MessageSquarePlus className="w-5 h-5" />
+                Add Review
               </button>
             </div>
           </div>
@@ -220,6 +253,100 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
                   </a>
                 </div>
               </div>
+            </div>
+          )}
+        </div>
+
+        {/* Review Form */}
+        <div
+          className={`overflow-hidden transition-all duration-500 ease-in-out w-full ${
+            showReviewForm ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          {showReviewForm && (
+            <div className="w-full p-6 bg-muted/50 rounded-lg border border-border">
+              <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
+                <MessageSquarePlus className="w-5 h-5 text-primary" />
+                Write a Review
+              </h3>
+              <form onSubmit={handleReviewSubmit} className="space-y-4">
+                {/* Star Rating */}
+                <div>
+                  <label className="block text-sm font-semibold mb-2">
+                    Rating <span className="text-red-500">*</span>
+                  </label>
+                  <div className="flex gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setRating(star)}
+                        className="transition-transform duration-200 hover:scale-110"
+                      >
+                        <Star
+                          className={`w-8 h-8 ${
+                            star <= rating
+                              ? "fill-yellow-400 text-yellow-400"
+                              : "fill-none text-gray-300"
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                  {rating > 0 && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {rating} star{rating > 1 ? "s" : ""}
+                    </p>
+                  )}
+                </div>
+
+                {/* Review Text */}
+                <div>
+                  <label
+                    htmlFor="reviewText"
+                    className="block text-sm font-semibold mb-2"
+                  >
+                    Your Review
+                  </label>
+                  <textarea
+                    id="reviewText"
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
+                    rows={4}
+                    placeholder="Share your experience with this shop..."
+                    className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <div className="flex gap-3">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting || rating === 0}
+                    className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity duration-200"
+                  >
+                    {isSubmitting ? (
+                      <span className="flex items-center gap-2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        Submitting...
+                      </span>
+                    ) : (
+                      "Submit Review"
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowReviewForm(false);
+                      setRating(0);
+                      setReviewText("");
+                    }}
+                    className="px-6 py-2 bg-muted text-foreground rounded-lg hover:bg-muted/80 transition-colors duration-200"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
             </div>
           )}
         </div>

@@ -26,7 +26,7 @@ const ShopTextComponent = ({ shop }: { shop: IShop }) => {
             <div className="space-y-6">
               {topReviews.map((review, index) => (
                 <motion.div
-                  key={review.userId}
+                  key={review.userId + index}
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{
