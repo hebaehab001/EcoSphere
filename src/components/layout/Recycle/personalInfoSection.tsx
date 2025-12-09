@@ -65,7 +65,7 @@ const PersonalInfoSection = ({
               +20
             </div> */}
 
-            <div className=" ">
+            <div className=" w-full">
               <div className="relative">
                 <input
                   {...register("phone")}
@@ -74,7 +74,7 @@ const PersonalInfoSection = ({
                   placeholder="01234567890"
                   required
                   // className="w-full p-3 rounded-full bg-primary-foreground/20 border border-primary-foreground/20 text-primary-foreground placeholder:text-foreground transition-all duration-300 focus:ring-2 focus:border-primary-foreground hover:shadow-lg"
-                  className="myInput"
+                  className="myInput "
                 />
                 <FaPhoneAlt className="absolute top-[35%] text-primary-foreground left-3" />
               </div>
