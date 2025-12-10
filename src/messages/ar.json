@@ -184,6 +184,7 @@
       }
     },
     "filter": {
+      "searchPlaceholder": "ابحث عن المتاجر",
       "sortBy": "الترتيب حسب:",
       "sortOptions": {
         "default": "افتراضي",

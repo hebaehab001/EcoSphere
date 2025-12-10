@@ -2,11 +2,13 @@
 
 interface BranchMapProps {
   shopName: string;
+  location?: string;
 }
 
-const BranchMap = ({ shopName }: BranchMapProps) => {
-  // Use Google Maps search to find all branches by shop name
-  const searchQuery = encodeURIComponent(shopName);
+const BranchMap = ({ shopName, location }: BranchMapProps) => {
+  const query = location ? `${shopName} ${location}` : `${shopName} branches`;
+
+  const encoded = encodeURIComponent(query);
 
   return (
     <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg border border-border">
@@ -17,9 +19,9 @@ const BranchMap = ({ shopName }: BranchMapProps) => {
         loading="lazy"
         allowFullScreen
         referrerPolicy="no-referrer-when-downgrade"
-        src={`https://maps.google.com/maps?q=${searchQuery}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
-        title={`${shopName} Locations`}
-      ></iframe>
+        src={`https://www.google.com/maps?q=${encoded}&output=embed`}
+        title={`${shopName} Branches`}
+      />
     </div>
   );
 };

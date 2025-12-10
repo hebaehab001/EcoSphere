@@ -1,16 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import { Star, Clock, Phone, MapPin, MessageSquarePlus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
-import { IShop } from "@/types/ShopTypes";
-import { getAverageRating } from "../ShopSection";
-import BasicAnimatedWrapper from "../../common/BasicAnimatedWrapper";
+import { IShop, IReview } from "@/types/ShopTypes";
 import { toast } from "sonner";
-import { Router } from "next/router";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+import BasicAnimatedWrapper from "../../common/BasicAnimatedWrapper";
 
 const BranchMap = dynamic(() => import("./ShopMap"), {
   ssr: false,
@@ -24,7 +22,17 @@ const BranchMap = dynamic(() => import("./ShopMap"), {
   ),
 });
 
-const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
+interface ShopDetailsCardProps {
+  shop: IShop;
+  liveAverageRating: number;
+  onReviewAdded: (newReview: IReview) => void;
+}
+
+const ShopDetailsCard = ({
+  shop,
+  onReviewAdded,
+  liveAverageRating,
+}: ShopDetailsCardProps) => {
   const t = useTranslations("ShopDetails.card");
   const { data: session } = useSession();
   const [showMap, setShowMap] = useState(false);
@@ -38,12 +46,12 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
     e.preventDefault();
 
     if (!session?.user?.email) {
-      alert("You must be logged in to submit a review");
+      toast.error("You must be logged in to submit a review");
       return;
     }
 
     if (rating === 0) {
-      alert("Please select a rating");
+      toast.error("Please select a rating");
       return;
     }
 
@@ -65,6 +73,10 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
 
       if (response.ok) {
         toast.success("Review submitted successfully!");
+
+        const newReview: IReview = data.review;
+        onReviewAdded(newReview);
+
         setRating(0);
         setReviewText("");
         setShowReviewForm(false);
@@ -85,7 +97,6 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
     <section className="">
       <BasicAnimatedWrapper className="flex flex-col gap-10 my-30 w-full">
         <div className="flex flex-col justify-center items-center md:flex-row gap-10 w-full">
-          {/* shop image */}
           <div className="relative shadow-lg rounded-lg  ">
             <Image
               width={600}
@@ -124,7 +135,6 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
             </div>
 
             <div className="max-w-[50%] max-h-[30%] absolute -bottom-[3%] -left-[5%] rounded-full bg-background p-4 drop-shadow-lg ">
-              {/* shop data */}
               <div className="bg-primary rounded-full px-4 py-2 w-full text-center flex items-center  gap-4">
                 <Image
                   src="/store img/avatar.jpg"
@@ -142,23 +152,20 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
             </div>
           </div>
 
-          {/* shop details */}
           <div className="flex-1 flex flex-col gap-6">
-            {/* Shop name and cuisine */}
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
                 {shop.name}
               </h1>
             </div>
 
-            {/* Rating */}
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
                     className={`w-5 h-5 ${
-                      star <= Math.round(+getAverageRating(shop))
+                      star <= Math.round(liveAverageRating)
                         ? "fill-primary text-primary"
                         : "fill-none text-primary"
                     }`}
@@ -166,11 +173,10 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
                 ))}
               </div>
               <span className="text-sm text-muted-foreground">
-                ({getAverageRating(shop).toFixed(1)})
+                ({liveAverageRating.toFixed(1)})
               </span>
             </div>
 
-            {/* Working Hours */}
             <div className="flex items-center gap-2 text-lg">
               <Clock className="w-5 h-5 text-primary" />
               <span className="font-semibold text-foreground">
@@ -179,7 +185,6 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
               <span className="text-muted-foreground">{shop.workingHours}</span>
             </div>
 
-            {/* Description */}
             <div>
               <h3 className="text-lg font-semibold mb-2">{t("about")}</h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -187,7 +192,6 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
               </p>
             </div>
 
-            {/* Action buttons */}
             <div className="flex gap-4 mt-4">
               <button
                 onClick={() => {
@@ -228,7 +232,7 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
           </div>
         </div>
 
-        {/* Contact Information */}
+        {/* Contact */}
         <div
           className={`overflow-hidden transition-all duration-500 ease-in-out w-full ${
             showContact ? "max-h-[300px] opacity-100" : "max-h-0 opacity-0"
@@ -270,7 +274,6 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
                 Write a Review
               </h3>
               <form onSubmit={handleReviewSubmit} className="space-y-4">
-                {/* Star Rating */}
                 <div>
                   <label className="block text-sm font-semibold mb-2">
                     Rating <span className="text-red-500">*</span>
@@ -300,7 +303,6 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
                   )}
                 </div>
 
-                {/* Review Text */}
                 <div>
                   <label
                     htmlFor="reviewText"
@@ -318,7 +320,6 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
                   />
                 </div>
 
-                {/* Submit Button */}
                 <div className="flex gap-3">
                   <button
                     type="submit"
@@ -351,13 +352,15 @@ const ShopDetailsCard = ({ shop }: { shop: IShop }) => {
           )}
         </div>
 
-        {/* Branch Map - Shows all shop/restaurant locations */}
+        {/* Map */}
         <div
           className={`overflow-hidden transition-all duration-500 ease-in-out w-full ${
             showMap ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          {showMap && <BranchMap shopName={shop.name} />}
+          {showMap && (
+            <BranchMap shopName={shop.name} location={shop.location} />
+          )}
         </div>
       </BasicAnimatedWrapper>
     </section>

@@ -184,6 +184,7 @@
       }
     },
     "filter": {
+      "searchPlaceholder": "Search shops",
       "sortBy": "Sort by:",
       "sortOptions": {
         "default": "Default",
