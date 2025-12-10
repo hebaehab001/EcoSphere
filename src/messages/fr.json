@@ -154,6 +154,7 @@
       }
     },
     "filter": {
+      "searchPlaceholder": "Rechercher des boutiques",
       "sortBy": "Trier par :",
       "sortOptions": {
         "default": "Par défaut",
