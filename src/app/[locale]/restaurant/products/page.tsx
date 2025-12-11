@@ -1,61 +1,33 @@
-import React from "react";
 import { getCurrentUser } from "@/backend/utils/authHelper";
-import { rootContainer } from "@/backend/config/container";
-import { ProductController } from "@/backend/features/product/product.controller";
-import ProductsClient from "@/components/layout/restaurant/products/ProductsClient";
-import {
-	ProductResponse,
-	PaginatedProductResponse,
-} from "@/backend/features/product/dto/product.dto";
-
-type ProductMetadata = {
-	total: number;
-	page: number;
-	limit: number;
-	totalPages: number;
-} | null;
+import ProductsClient from "@/components/layout/Products/ProductsClient";
 
 export default async function ProductsPage() {
-	// Server-side: fetch current user and initial product list
-	const user = await getCurrentUser();
-	const restaurantId = user?.id as string | undefined;
+  const user = await getCurrentUser();
 
-	let initialProducts: ProductResponse[] = [];
-	let initialMetadata: ProductMetadata = null;
+  if (!user) {
+    return <div className="p-10 text-center">Unauthorized</div>;
+  }
 
-	if (restaurantId) {
-		try {
-			const controller = rootContainer.resolve(ProductController);
-			const result = await controller.getByRestaurantId(restaurantId, {
-				page: 1,
-				limit: 12,
-			});
+  // Fetch initial data server-side
+  const searchParams = new URLSearchParams({
+    page: "1",
+    limit: "5",
+    search: "",
+  });
 
-			// result can be PaginatedProductResponse or ProductResponse[]
-			if (Array.isArray(result)) {
-				initialProducts = result;
-			} else if (
-				typeof result === "object" &&
-				result !== null &&
-				"data" in result
-			) {
-				const paginated = result as PaginatedProductResponse;
-				initialProducts = paginated.data;
-				initialMetadata = paginated.metadata;
-			}
-		} catch (error) {
-			// Server-side: log and continue, client will handle user feedback
-			console.error("Failed to load initial products:", error);
-		}
-	}
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL}/api/restaurants/${user.id}/products?${searchParams}`,
+    { cache: "no-store" }
+  );
 
-	return (
-		<div className="pt-15 h-[calc(100vh-20px)] w-[80%] mx-auto flex flex-col space-y-4">
-			<ProductsClient
-				initialProducts={initialProducts}
-				initialMetadata={initialMetadata}
-				restaurantId={restaurantId}
-			/>
-		</div>
-	);
+  const json = await res.json();
+  const initial = json.data.data;
+
+  return (
+    <ProductsClient
+      restaurantId={user.id}
+      initialProducts={initial.data ?? initial}
+      initialMetadata={initial.metadata ?? null}
+    />
+  );
 }
