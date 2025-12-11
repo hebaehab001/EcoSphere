@@ -127,7 +127,10 @@ export function shopWelcomeTemplate(user: BasicUserInfo): string {
   `;
 }
 
-export function getRegistrationTemplate(userType: UserType, user: BasicUserInfo): string {
+export function getRegistrationTemplate(
+  userType: UserType,
+  user: BasicUserInfo
+): string {
   switch (userType) {
     case "customer":
       return customerWelcomeTemplate(user);
@@ -151,7 +154,10 @@ export function newEventSubject(event: Partial<EventInfo>): string {
   return `New event: ${event.title} 🌿`;
 }
 
-export function newEventTemplate(user: BasicUserInfo, event: EventInfo): string {
+export function newEventTemplate(
+  user: BasicUserInfo,
+  event: EventInfo
+): string {
   const name = formatName(user.name);
 
   const datePart = event.date
@@ -187,3 +193,47 @@ export function newEventTemplate(user: BasicUserInfo, event: EventInfo): string 
   </div>
   `;
 }
+
+export const redeemCouponTemplate = (
+	code: string,
+	validTo: Date,
+  name: string = "EcoSphere friend",
+): string => {
+
+	return `
+    <div style="${baseStyles.wrapper}">
+      <div style="${baseStyles.card}">
+        <h2 style="${baseStyles.title}">Your Reward Code is Here 🎁</h2>
+
+        <p style="${baseStyles.paragraph}">
+          Hello ${name}, thanks for being an active EcoSphere member!
+        </p>
+
+        <p style="${baseStyles.paragraph}">
+          Here is your <strong>exclusive 6-digit coupon code</strong>:
+        </p>
+
+        <h1 style="
+          font-size: 32px;
+          font-weight: bold;
+          letter-spacing: 8px;
+          text-align: center;
+          color: #14532d;
+          margin: 20px 0;
+        ">
+          ${code}
+        </h1>
+
+        <p style="${baseStyles.paragraph}">
+          This code gives you a special discount.  
+          Please use it before <strong>${validTo.toDateString()}</strong>.
+        </p>
+
+        <div style="${baseStyles.footer}">
+          You received this email because you redeemed your EcoSphere points.
+        </div>
+      </div>
+    </div>
+  `;
+};
+
