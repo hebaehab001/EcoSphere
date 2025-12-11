@@ -4,10 +4,14 @@ import React, { useState, useTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { recycleFormSchema, type RecycleFormValues } from "@/frontend/schema/recycle.schema";
+import {
+  recycleFormSchema,
+  type RecycleFormValues,
+} from "@/frontend/schema/recycle.schema";
 import PersonalInfoSection from "./personalInfoSection";
 import AddressSection from "./addressSection";
 import MaterialSection from "./MaterialSection";
+import { FaRecycle } from "react-icons/fa6";
 
 type MaterialItem = {
   id: number;
@@ -34,8 +38,7 @@ const RecycleForm = () => {
     setMaterials([...materials, { id: Date.now(), type: "", amount: 1 }]);
 
   const removeMaterial = (id: number) =>
-    materials.length > 1 &&
-    setMaterials(materials.filter((m) => m.id !== id));
+    materials.length > 1 && setMaterials(materials.filter((m) => m.id !== id));
 
   const updateAmount = (index: number, delta: number) => {
     const updated = [...materials];
@@ -57,7 +60,7 @@ const RecycleForm = () => {
   const isSubmitting = isPending || isHFSubmitting;
 
   return (
-    <div className="w-full min-h-screen bg-background text-foreground flex flex-col items-center py-20">
+    <div className="w-full min-h-screen  text-foreground flex flex-col items-center py-20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -66,11 +69,13 @@ const RecycleForm = () => {
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full space-y-12 bg-primary text-primary-foreground p-8 md:p-16 rounded-[3rem] border-4 shadow-2xl"
+          className="w-full space-y-12   p-8 md:p-16 rounded-[3rem] border-2  border-primary/80 shadow-2xl"
         >
-          <div className="text-center space-y-4">
-            <h2 className="text-5xl font-extrabold">Recycle Request</h2>
-            <p className="text-primary-foreground/90">
+          <div className="text-center space-y-4 animate-bounce">
+            <h2 className="text-5xl font-extrabold text-primary">
+              Recycle Request
+            </h2>
+            <p className="text-primary/80">
               Schedule your pickup. Eco-friendly and easy.
             </p>
           </div>
@@ -95,9 +100,11 @@ const RecycleForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-4 text-xl font-bold rounded-full bg-primary-foreground text-primary border-4 disabled:opacity-50"
+            className="w-full myBtnPrimary"
           >
-            {isSubmitting ? "Processing..." : "Submit Recycling Request"}
+            <FaRecycle size={20} />
+
+            {isSubmitting ? "Processing..." : "Submit"}
           </button>
         </form>
       </motion.div>

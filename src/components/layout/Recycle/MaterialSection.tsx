@@ -31,7 +31,7 @@ const MaterialSection = ({
   errors,
 }: MaterialSectionProps) => (
   <div className="space-y-6">
-    <div className="flex items-center gap-3 pb-3 border-b-2 border-primary-foreground/30">
+    <div className="flex  items-center text-muted-foreground gap-3 pb-3 border-b-2 border-primary/30">
       <Package className="w-6 h-6" />
       <span className="text-sm font-extrabold uppercase">Recycling Info</span>
     </div>
@@ -54,9 +54,9 @@ const MaterialSection = ({
       <button
         type="button"
         onClick={addMaterial}
-        className="w-full md:w-auto flex items-center justify-center gap-2 py-3 px-6 rounded-full font-bold bg-primary-foreground text-primary border hover:bg-primary-foreground/90"
+        className="w-full md:w-auto bg-background text-primary border-2 border-primary p-3 px-5 rounded-full transition duration-400 hover:scale-102 flex justify-center items-center text-lg gap-2 hover:outline-2 hover:outline-primary hover:outline-offset-4 hover:bg-primary hover:text-primary-foreground cursor-pointer"
       >
-        <Plus size={20} /> Add Another Item
+        <Plus size={20} /> Add Item
       </button>
     </div>
   </div>
