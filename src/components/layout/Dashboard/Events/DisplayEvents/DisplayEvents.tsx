@@ -2,14 +2,9 @@ import React from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaCalendar } from "react-icons/fa";
 import { MdAccessTime } from "react-icons/md";
-import { BsFillPeopleFill } from "react-icons/bs";
-import { PiTicketFill } from "react-icons/pi";
-
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { EventProps, IEventDetails, ISubEvent } from "@/types/EventTypes";
-
-import { Button } from "@/components/ui/button"
 import {
   Tooltip,
   TooltipContent,
@@ -17,50 +12,20 @@ import {
 } from "@/components/ui/tooltip"
 import DeleteEventBtn from "./DeleteEventBtn";
 import UpdateEventBtn from "./UpdateEventBtn";
+import { formatDate, formatTime } from "@/frontend/utils/Event";
 
-const formatTime = (time: string): string => {
-  try {
-    // Assuming time is in "HH:MM" format (24-hour)
-    const [hours, minutes] = time.split(":");
-    const date = new Date(0, 0, 0, parseInt(hours), parseInt(minutes));
-    return date.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  } catch (e) {
-    return time; // Return original if formatting fails
-  }
-};
-// Function to format the date
-const formatDate = (dateString: string): string => {
-  try {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch (e) {
-    return dateString;
-  }
-};
+
 export default function DisplayEvents({ events }: EventProps) {
-
-
-
   console.log(events);
-
   const t = useTranslations("Dashboard.displayEvents");
   return (
     <div className="min-h-screen py-8 w-[85%] mx-auto flex flex-col gap-6">
       <h1 className="capitalize font-bold text-4xl  text-foreground">
         {t("title")}
       </h1>
-
       {events.map((event) => (
         <div
           key={event._id}
-          // Added relative positioning for the absolute action buttons
           className=" my-2 border-2 border-primary shadow-xl rounded-tl-4xl rounded-br-4xl overflow-hidden transform hover:scale-[1.01] transition duration-300 relative"
         >
           {/* --- Action Buttons (Icon-only, Top Right) --- */}
@@ -92,8 +57,8 @@ export default function DisplayEvents({ events }: EventProps) {
                 src={event.avatar || '/events/defaultImgEvent.png'}
                 alt={`${event.name} avatar`}
                 className="w-full h-full object-cover"
-                width={300} // Increased width for better display in column
-                height={300} // Ensuring a square or proportional fit
+                width={300} 
+                height={300} 
               />
             </div>
 
@@ -111,7 +76,7 @@ export default function DisplayEvents({ events }: EventProps) {
               </div>
 
               {/* Date, Time, and Location */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm  mb-6">
                 <div className="flex items-center space-x-2">
                   <FaCalendar className="w-6 size-5 mr-2 items-baseline text-accent-foreground" />
                   <p className="font-semibold">{formatDate(event.eventDate)}</p>
@@ -155,7 +120,7 @@ export default function DisplayEvents({ events }: EventProps) {
                   <div>
                     <p className="text-sm font-medium text-gray-500">Price</p>
                     <p className="text-lg font-bold">
-                      ${event.ticketPrice.toFixed(2)}
+                      {event.ticketPrice.toFixed(2)} EGY
                     </p>
                   </div>
                 )}
@@ -174,7 +139,7 @@ export default function DisplayEvents({ events }: EventProps) {
                     Schedule
                   </h3>
                   <div className="space-y-4">
-                    {event?.sections?.map((section, index) => ( // Removed ISubEvent type for simplicity
+                    {event?.sections?.map((section, index) => (
                       <div
                         key={index}
                         className="border-l-4 border-yellow-500 pl-4 py-2 bg-yellow-50/50"
@@ -198,9 +163,6 @@ export default function DisplayEvents({ events }: EventProps) {
                   </div>
                 </div>
               )}
-
-              {/* The old Action Buttons were removed from here to the top right */}
-
             </div>
           </div>
         </div>

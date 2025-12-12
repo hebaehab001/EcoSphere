@@ -9,36 +9,10 @@ import { TrendingUp, TrendingDown } from 'lucide-react';
 import { MapPin } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { EventListItemProps, EventProps, IEventDetails, MetricData } from '@/types/EventTypes';
+import { EventListItemProps, EventProps, MetricData } from '@/types/EventTypes';
 import React from 'react';
-import { useSession } from 'next-auth/react';
+import { formatDate, formatTime } from "@/frontend/utils/Event";
 
-const formatTime = (time: string): string => {
-  try {
-    // Assuming time is in "HH:MM" format (24-hour)
-    const [hours, minutes] = time.split(":");
-    const date = new Date(0, 0, 0, parseInt(hours), parseInt(minutes));
-    return date.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  } catch (e) {
-    return time; // Return original if formatting fails
-  }
-};
-// Function to format the date
-const formatDate = (dateString: string): string => {
-  try {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch (e) {
-    return dateString;
-  }
-};
 
 const dashboardData: MetricData[] = [
   {
@@ -129,7 +103,7 @@ const EventListItem: React.FC<EventListItemProps> = ({  name, eventDate, startTi
         <div className="flex flex-col col-span-1">
           <h3 className="text-base font-semibold ">{name}</h3>
           <p className='flex items-center text-gray-600'>
-            <MapPin className="w-4 h-4 mr-1.5 text-gray-400" />
+            <MapPin className="w-4 h-4 mr-1.5 text-muted-foreground" />
             <span>{locate}</span>
           </p>
         </div>
@@ -150,6 +124,7 @@ const EventListItem: React.FC<EventListItemProps> = ({  name, eventDate, startTi
       {/* 4. Action Button */}
       <Link href='/organizer/manage'>
       <button className="
+      cursor-pointer
         ml-4 px-4 py-2 text-sm font-medium
         border border-primary rounded-lg
         text-foreground
@@ -190,7 +165,7 @@ export default function EventOverview({ events }: EventProps) {
         <h2 className='capitalize font-bold text-2xl mb-2 text-foreground'>{t('quickActions')}</h2>
         <div className='grid grid-cols-3 gap-5 '>
           <Link href='/organizer/manage' className='col-span-1 '>
-            <Button className='w-full py-6 text-xl text-primary-foreground rounded-2xl'>
+            <Button className='w-full py-6 text-xl cursor-pointer text-primary-foreground rounded-2xl'>
               <MdAddCircleOutline className='size-6' />
               <span className='capitalize'>
                 {t('createNewEvent')}
@@ -198,7 +173,7 @@ export default function EventOverview({ events }: EventProps) {
             </Button>
           </Link>
           <Link href='/organizer/details' className='col-span-1 '>
-            <Button className='w-full py-6 text-xl text-primary-foreground rounded-2xl'>
+            <Button className='w-full py-6 text-xl cursor-pointer text-primary-foreground rounded-2xl'>
               <FaRegRectangleList className='size-6' />
               <span className='capitalize'>
                 {t('viewAllEvents')}
@@ -206,7 +181,7 @@ export default function EventOverview({ events }: EventProps) {
             </Button>
           </Link>
           <Link href='/organizer/browse' className='col-span-1 '>
-            <Button className='w-full py-6 text-xl text-primary-foreground rounded-2xl'>
+            <Button className='w-full py-6 text-xl cursor-pointer text-primary-foreground rounded-2xl'>
               <TbListSearch className='size-6' />
               <span className='capitalize'>
                 {t('browseEvents')}
@@ -218,7 +193,7 @@ export default function EventOverview({ events }: EventProps) {
       <div className='flex flex-col gap-2'>
         <div className='flex justify-between'>
           <h2 className='capitalize font-bold text-2xl mb-2 text-foreground'>{t('keyMetrics')}</h2>
-          <h4 className='text-gray-400 text-md'>{t('realTimeData')}</h4>
+          <h4 className='text-muted-foreground text-md'>{t('realTimeData')}</h4>
         </div>
         <div className='grid grid-cols-4 gap-10 '>
           {dashboardData.map((data) => (
@@ -237,10 +212,12 @@ export default function EventOverview({ events }: EventProps) {
       <div className='flex flex-col gap-2'>
         <div className=' flex justify-between'>
           <h2 className='capitalize font-bold text-2xl mb-2 text-foreground'>{t('upcomingEvents')}</h2>
-          <h4 className='text-gray-400 text-md'>{t('viewAll')}</h4>
+         <Link href='/organizer/details'>
+          <h4 className='text-muted-foreground underline text-md'>{t('viewAll')}</h4>
+         </Link>
         </div>
         <div className='flex flex-col gap-2'>
-          {sortedAndLimitedEvents?.length! > 0 ? (
+          {sortedAndLimitedEvents.length! > 0 ? (
             sortedAndLimitedEvents!.map((event) => (
               <EventListItem
                 key={event._id}

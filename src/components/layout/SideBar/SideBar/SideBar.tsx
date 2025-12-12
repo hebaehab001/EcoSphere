@@ -45,9 +45,10 @@ export default function SideBar() {
 	const t = useTranslations('Layout.Sidebar');
 	const matchPathWithOptionalLocale = (pathname: string,targetSegment: string) => {
 		const base = `\\${targetSegment}`;
+		const en = `\\/en\\${targetSegment}`;
 		const ar = `\\/ar\\${targetSegment}`;
 		const fr = `\\/fr\\${targetSegment}`;
-		return new RegExp(`^(${base}|${ar}?|${fr}?)$`).test(pathname);
+		return new RegExp(`^(${base}|${en}?|${ar}?|${fr}?)$`).test(pathname);
 	};
 	// User items.
 	const useritems = [
