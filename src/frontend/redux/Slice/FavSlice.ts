@@ -28,7 +28,7 @@ export const getFavorites = createAsyncThunk(
     const { data } = await res.json();
 
     const state = getState() as RootState;
-    const existingFavs = state.fav.favProducts;
+    const existingFavs = state.fav.favProducts || [];
 
     const merged = Array.from(
       new Map(
@@ -47,13 +47,13 @@ export const toggleFavoriteAsync = createAsyncThunk(
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ favoritesIds: product._id }),
+      body: JSON.stringify({ ids: product._id }),
     });
 
     if (!res.ok) throw new Error("Failed to toggle favorite");
 
     const { data } = await res.json();
-    return data.favoritesIds;
+    return data;
   }
 );
 

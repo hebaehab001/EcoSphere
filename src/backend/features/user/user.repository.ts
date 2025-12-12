@@ -8,7 +8,7 @@ import { IMenuItem, RestaurantModel } from "../restaurant/restaurant.model";
 export interface IUserRepository {
   getAll(): Promise<IUser[]>;
   getById(id: string, query?: string): Promise<IUser>;
-  getFavoriteMenuItems;(itemIds: string[]): Promise<IMenuItem[]>;
+  getFavoriteMenuItems(itemIds: string[]): Promise<IMenuItem[]>;
   getUsersByRoleAdvanced(options?: {
     limit?: number;
     sortBy?: string;

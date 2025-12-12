@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl';
 const FavCardsSection = () => {
   const t = useTranslations('Favorites.emptyState');
   const { view, favProducts } = useSelector((state: RootState) => state.fav);
+
   return (
     <section>
       {favProducts.length === 0 && (

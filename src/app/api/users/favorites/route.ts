@@ -40,21 +40,25 @@ export const GET = async (
 
 export const PATCH = async (
   _req: NextRequest
-): Promise<NextResponse<ApiResponse<IUser>>> => {
+): Promise<NextResponse<ApiResponse<IMenuItem[]>>> => {
   const session = await getCurrentUser();
   if (!session?.id) {
     return unauthorized();
   }
   const body = await _req.json();
-  const { favoritesIds } = body as { favoritesIds?: string };
+  const { ids } = body as { ids?: string };
   const controller = rootContainer.resolve(UserController);
 
-  if (!favoritesIds) {
+  if (!ids) {
     return badRequest("Missing favoritesIds");
   }
 
   try {
-    const result = await controller.updateFavorites(session.id, favoritesIds);
+    const { favoritesIds } = await controller.updateFavorites(session.id, ids);
+
+    const result = await controller.getFavoriteMenuItems(
+      favoritesIds as string[]
+    );
     return ok(result);
   } catch (error) {
     console.error(error);
