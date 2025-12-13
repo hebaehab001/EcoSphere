@@ -89,7 +89,7 @@ const EventListItem: React.FC<EventListItemProps> = ({  name, eventDate, startTi
 
       {/* 2. Event Image */}
       <Image
-        src={imageSource}
+        src={typeof imageSource === 'string' ? imageSource : imageSource.url}
         alt={`Image for ${name}`}
         className="w-14 h-14 object-cover rounded-md mr-4 shrink-0"
         width={100}

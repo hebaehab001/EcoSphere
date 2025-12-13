@@ -40,6 +40,7 @@ import { eventSchema } from "@/frontend/schema/event.schema";
 import { PostEvent, UpdateEvent } from "@/frontend/api/Events";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import z from "zod";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -189,7 +190,18 @@ export default function ManageEvent({ initialData }: { initialData?: any }) {
                       <Input
                         type="file"
                         accept="image/*"
-                        onChange={(e) => onChange(e.target.files?.[0])}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            onChange(file);
+                            const reader = new FileReader();
+                            reader.onload = () => {
+                              const preview = document.getElementById("image-preview") as HTMLImageElement;
+                              if (preview) preview.src = reader.result as string;
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
                       />
                     </FormControl>
                     <FormMessage />

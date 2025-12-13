@@ -54,7 +54,7 @@ export default function DisplayEvents({ events }: EventProps) {
             {/* --- Image/Avatar Section (Left Column) --- */}
             <div className="col-span-1 overflow-hidden rounded-tl-xl sm:rounded-tl-xl  bg-gray-100 flex items-center justify-center">
               <Image
-                src={event.avatar || '/events/defaultImgEvent.png'}
+                src={event.avatar?.url || '/events/defaultImgEvent.png'}
                 alt={`${event.name} avatar`}
                 className="w-full h-full object-cover"
                 width={300} 
