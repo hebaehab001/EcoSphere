@@ -39,10 +39,38 @@ export class RecycleController {
   }
 
   async analyzeImages(formData: FormData): Promise<any> {
-    const files = formData.getAll("files") as Blob[];
-    if (!files || files.length === 0) {
-      throw new Error("No files provided");
+    try {
+      const files = formData.getAll("files") as File[]; // Cast to File[] for better typing
+
+      if (!files || files.length === 0) {
+        throw new Error("No files uploaded");
+      }
+
+      const result = await this.recycleService.analyzeImages(files);
+      return result; // Return data directly
+    } catch (error) {
+      console.error("Analysis Error:", error);
+      throw error; // Let route handler handle error response
     }
-    return await this.recycleService.analyzeImages(files);
+  }
+
+  async calculateManual(req: Request): Promise<any> {
+    try {
+      const body = await req.json();
+      const { items } = body; // Expects { items: [{ type: 'Plastic', amount: 0.5 }] }
+
+      if (!items || !Array.isArray(items)) {
+        return Response.json(
+          { error: "Invalid items format" },
+          { status: 400 }
+        );
+      }
+
+      const result = await this.recycleService.calculateManualCarbon(items);
+      return Response.json(result);
+    } catch (error) {
+      console.error("Calculation Error:", error);
+      return Response.json({ error: "Calculation failed" }, { status: 500 });
+    }
   }
 }

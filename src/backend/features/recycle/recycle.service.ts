@@ -14,6 +14,9 @@ export interface IRecycleService {
   listRecycleEntries(): Promise<RecycleResponse[]>;
   analyzeImages(files: Blob[]): Promise<any>;
   calculateCarbonFootprint(items: any[]): Promise<number>;
+  calculateManualCarbon(
+    items: { type: string; amount: number }[]
+  ): Promise<any>;
 }
 
 @injectable()
@@ -123,8 +126,41 @@ export class RecycleService implements IRecycleService {
       });
     });
 
+    // Redistribution Logic: Merge "Unknown" into dominant category
+    let maxKey: string | null = null;
+    let maxCount = 0;
+    const unknownKeys: string[] = [];
+
+    // 1. Find dominant known key and identify unknown keys
+    Object.entries(aggregatedCounts).forEach(([key, count]) => {
+      // Check if key is known in WEIGHT_MAPPING (and not generic 'bottle' if 'plastic_bottle' exists, but mapping handles this)
+      if (WEIGHT_MAPPING[key]) {
+        if (count > maxCount) {
+          maxCount = count;
+          maxKey = key;
+        }
+      } else {
+        unknownKeys.push(key);
+      }
+    });
+
+    // 2. Redistribute if we have a dominant known category
+    if (maxKey && unknownKeys.length > 0) {
+      let unknownTotal = 0;
+      unknownKeys.forEach((key) => {
+        unknownTotal += aggregatedCounts[key];
+        delete aggregatedCounts[key]; // Remove unknown entry
+      });
+
+      // Add to dominant key
+      aggregatedCounts[maxKey!] += unknownTotal;
+      console.log(
+        `🔄 Redistributed ${unknownTotal} unknown items to ${maxKey}`
+      );
+    }
+
     const items = Object.entries(aggregatedCounts).map(([key, count]) => {
-      const mapping = WEIGHT_MAPPING[key] || { type: "Unknown", weight: 0 };
+      const mapping = WEIGHT_MAPPING[key] || { type: "Mixed", weight: 0 };
       const totalWeight = count * mapping.weight;
 
       return {
@@ -148,40 +184,120 @@ export class RecycleService implements IRecycleService {
     };
   }
 
+  async calculateManualCarbon(
+    items: { type: string; amount: number }[]
+  ): Promise<any> {
+    // Map frontend 'amount' (which is weight in kg) to 'estimatedWeight' for the calculation
+    const formattedItems = items.map((item) => ({
+      type: item.type,
+      estimatedWeight: item.amount, // Manual input IS the weight
+      count: 1, // Dummy count
+    }));
+
+    const totalWeight = formattedItems.reduce(
+      (sum, item) => sum + item.estimatedWeight,
+      0
+    );
+    const estimatedCarbonSaved = await this.calculateCarbonFootprint(
+      formattedItems
+    );
+
+    return {
+      items: formattedItems,
+      totalEstimatedWeight: parseFloat(totalWeight.toFixed(2)),
+      estimatedCarbonSaved: parseFloat(estimatedCarbonSaved.toFixed(2)),
+    };
+  }
+
   async calculateCarbonFootprint(items: any[]): Promise<number> {
     let totalCO2 = 0;
 
     for (const item of items) {
       const type = item.type.toLowerCase();
-      let activityId = "waste_type_mixed_recyclables-disposal_method_recycled"; // Fallback
 
-      if (type.includes("plastic"))
-        activityId = "waste_type_pet-disposal_method_recycled";
-      if (type.includes("glass"))
-        activityId = "waste_type_glass-disposal_method_recycled";
-      if (type.includes("metal"))
-        activityId = "waste_type_aluminum-disposal_method_recycled";
-      if (type.includes("paper"))
-        activityId = "waste_type_paper_cardboard-disposal_method_recycled";
+      // Default Config (fallback)
+      let config = {
+        activity_id: "waste-type_mixed_recyclables-disposal_method_recycled",
+        source: "EPA",
+        region: "US",
+        year: 2025,
+        source_lca_activity: "end_of_life",
+        data_version: "^29",
+      };
+
+      if (type.includes("plastic")) {
+        config = {
+          activity_id: "plastics_rubber-type_plastics_recycled",
+          source: "Bafa",
+          region: "DE",
+          year: 2025,
+          source_lca_activity: "cradle_to_gate",
+          data_version: "^29",
+          // @ts-ignore
+          allowed_data_quality_flags: ["notable_methodological_variance"],
+        };
+      } else if (type.includes("glass")) {
+        config = {
+          activity_id: "waste-type_glass-disposal_method_recycled",
+          source: "EPA",
+          region: "US",
+          year: 2025,
+          source_lca_activity: "end_of_life",
+          data_version: "^29",
+        };
+      } else if (
+        type.includes("metal") ||
+        type.includes("aluminum") ||
+        type.includes("can")
+      ) {
+        config = {
+          activity_id: "waste-type_aluminum_cans-disposal_method_recycled",
+          source: "EPA",
+          region: "US",
+          year: 2025,
+          source_lca_activity: "end_of_life",
+          data_version: "^29",
+        };
+      } else if (type.includes("paper") || type.includes("cardboard")) {
+        config = {
+          activity_id:
+            "waste-type_mixed_paper_general-disposal_method_recycled",
+          source: "EPA",
+          region: "US",
+          year: 2025,
+          source_lca_activity: "end_of_life",
+          data_version: "^29",
+        };
+      } else if (type.includes("electronics")) {
+        config = {
+          activity_id: "waste-type_mixed_electronics-disposal_method_recycled",
+          source: "EPA",
+          region: "US",
+          year: 2025,
+          source_lca_activity: "end_of_life",
+          data_version: "^29",
+        };
+      }
 
       try {
-        const response = await fetch("https://api.climatiq.io/estimate", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${process.env.CLIMATIQ_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            emission_factor: {
-              activity_id: activityId,
-              data_version: "^29",
+        // Note: Using https://api.climatiq.io/data/v1/estimate as per curl example
+        const response = await fetch(
+          "https://api.climatiq.io/data/v1/estimate",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${process.env.CLIMATIQ_API_KEY}`,
+              "Content-Type": "application/json",
             },
-            parameters: {
-              weight: item.estimatedWeight,
-              weight_unit: "kg",
-            },
-          }),
-        });
+            body: JSON.stringify({
+              emission_factor: config,
+              parameters: {
+                weight: item.estimatedWeight,
+                weight_unit: "kg",
+              },
+            }),
+          }
+        );
 
         if (!response.ok) {
           const errText = await response.text();
@@ -192,6 +308,7 @@ export class RecycleService implements IRecycleService {
         }
 
         const data = await response.json();
+
         totalCO2 += data.co2e || 0;
       } catch (error) {
         // Fallback logic
