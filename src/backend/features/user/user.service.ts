@@ -105,7 +105,7 @@ class UserService implements IUserService {
 	async getCart(
 		userId: string
 	): Promise<{ success: boolean; items: IProductCart[] }> {
-		const user = await this.userRepository.getById(userId);
+		const user = await this.userRepository.getById(userId, "cart");
 		if (!user?.cart || user.cart.length === 0) {
 			return {
 				success: true,
