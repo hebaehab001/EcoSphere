@@ -8,7 +8,7 @@ export interface IProduct {
   productPrice: number;
   productSubtitle: string;
   productDescription: string;
-  availableOnline: boolean;
+  availableOnline?: boolean;
 }
 
 export interface IProductCart extends IProduct {
