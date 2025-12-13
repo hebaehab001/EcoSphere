@@ -7,10 +7,12 @@ import { DashboardUsers } from "./user.types";
 import { randomInt } from "node:crypto";
 import { ICoupon } from "../discountCoupon/coupon.model";
 import { sendRedeemingMail } from "@/backend/utils/mailer";
+import { IMenuItem } from "../restaurant/restaurant.model";
 
 export interface IUserService {
   getAll(): Promise<IUser[]>;
-  getById(id: string): Promise<IUser>;
+  getById(id: string, query?: string): Promise<IUser>;
+  getFavoriteMenuItems(itemIds: string[]): Promise<IMenuItem[]>;
   getDashBoardData(
     limit?: number,
     sortBy?: string,
@@ -35,6 +37,11 @@ class UserService implements IUserService {
   async getAll(): Promise<IUser[]> {
     const users = await this.userRepository.getAll();
     return await Promise.all(users.map((user) => this.populateAvatar(user)));
+  }
+
+  async getById(id: string, query?: string): Promise<IUser> {
+    const user = await this.userRepository.getById(id, query);
+    return await this.populateAvatar(user);
   }
 
   async getDashBoardData(
@@ -81,11 +88,7 @@ class UserService implements IUserService {
       message: "A coupon has been sent to your email."
     };
   }
-
-  async getById(id: string): Promise<IUser> {
-    const user = await this.userRepository.getById(id);
-    return await this.populateAvatar(user);
-  }
+  
   async getUserIdByEmail(email: string): Promise<IUser> {
     const user = await this.userRepository.getUserIdByEmail(email);
     if (!user) throw new Error("User not found");
@@ -101,6 +104,10 @@ class UserService implements IUserService {
   async updateFavorites(id: string, data: string): Promise<IUser> {
     const user = await this.userRepository.updateFavorites(id, data);
     return await this.populateAvatar(user);
+  }
+
+  async getFavoriteMenuItems(itemIds: string[]): Promise<IMenuItem[]> {
+    return await this.userRepository.getFavoriteMenuItems(itemIds);
   }
 
   async deleteById(id: string): Promise<IUser> {
