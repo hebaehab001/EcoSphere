@@ -35,9 +35,6 @@ export async function DeleteEvent({ eventId }: { eventId: string }) {
     `${process.env.NEXT_PUBLIC_APP_URL}/api/events/user/`,
     {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({ eventId }),
     }
   );

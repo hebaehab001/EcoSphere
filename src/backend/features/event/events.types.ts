@@ -2,6 +2,7 @@ import { ISubEvent } from "@/types/EventTypes";
 import { IEvent } from "../user/user.model";
 
 export type EventResponse = {
+    events: any;
 	_id: string;
 	name: string;
 	type: string;
