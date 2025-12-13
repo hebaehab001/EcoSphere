@@ -15,6 +15,7 @@ export async function GetAllUserEvents() {
         throw new Error("User is not authenticated");
     }
     const res = await rootContainer.resolve(EventController).getEventsByUserId(user.id!)
+
     if (!res) {
         throw new Error("error in fetch api response");
     }
@@ -29,5 +30,5 @@ export async function GetEventById(eventId: string) {
     if (!res) {
         throw new Error("error in fetch api response");
     }
-    return res;
+    return res.events[0];
 };

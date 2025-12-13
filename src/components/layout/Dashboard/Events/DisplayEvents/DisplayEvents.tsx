@@ -4,7 +4,7 @@ import { FaCalendar } from "react-icons/fa";
 import { MdAccessTime } from "react-icons/md";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { EventProps, IEventDetails, ISubEvent } from "@/types/EventTypes";
+import { EventProps } from "@/types/EventTypes";
 import {
   Tooltip,
   TooltipContent,
@@ -17,6 +17,8 @@ import { formatDate, formatTime } from "@/frontend/utils/Event";
 
 export default function DisplayEvents({ events }: EventProps) {
   const t = useTranslations("Dashboard.displayEvents");
+  console.log(events);
+  
   return (
     <div className="min-h-screen py-8 w-[85%] mx-auto flex flex-col gap-6">
       <h1 className="capitalize font-bold text-4xl  text-foreground">
@@ -31,7 +33,7 @@ export default function DisplayEvents({ events }: EventProps) {
           <div className="absolute top-4 right-4 flex space-x-2 z-10">
             <Tooltip>
               <TooltipTrigger asChild >
-                <UpdateEventBtn event={event}/>
+                <UpdateEventBtn id={event._id} />
               </TooltipTrigger>
               <TooltipContent >
                 <p>Edit Event</p>
@@ -53,7 +55,8 @@ export default function DisplayEvents({ events }: EventProps) {
             {/* --- Image/Avatar Section (Left Column) --- */}
             <div className="col-span-1 overflow-hidden rounded-tl-xl sm:rounded-tl-xl  bg-gray-100 flex items-center justify-center">
               <Image
-                src={event.avatar?.url || '/events/defaultImgEvent.png'}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                src={typeof event.avatar === "string" ? event.avatar : (event.avatar as any)?.url || "/events/defaultImgEvent.png"}
                 alt={`${event.name} avatar`}
                 className="w-full h-full object-cover"
                 width={300} 
@@ -66,10 +69,10 @@ export default function DisplayEvents({ events }: EventProps) {
 
               {/* Header Section (Name & Type - Adjusted to remove Avatar) */}
               <div className="mb-4 border-b pb-4">
-                <h2 className="text-3xl font-extrabold ">
+                <h2 className="text-3xl mb-2 font-extrabold capitalize">
                   {event.name}
                 </h2>
-                <p className="text-sm font-medium text-primary-foreground uppercase tracking-wider">
+                <p className="text-sm font-medium  uppercase tracking-wider">
                   {event.type}
                 </p>
               </div>
@@ -141,19 +144,19 @@ export default function DisplayEvents({ events }: EventProps) {
                     {event?.sections?.map((section, index) => (
                       <div
                         key={index}
-                        className="border-l-4 border-yellow-500 pl-4 py-2 bg-yellow-50/50"
+                        className="border-l-4 border-primary pl-4 py-2 bg-primary/40"
                       >
                         <div className="flex justify-between items-center">
-                          <h4 className="font-semibold text-gray-800">
+                          <h4 className="font-semibold ">
                             {section.title}
                           </h4>
-                          <p className="text-xs text-gray-500 font-medium">
+                          <p className="text-xs  font-medium mr-3">
                             {formatTime(section.startTime)} -{" "}
                             {formatTime(section.endTime)}
                           </p>
                         </div>
                         {section.description && (
-                          <p className="text-sm text-gray-600 mt-1">
+                          <p className="text-sm  mt-1 ">
                             {section.description}
                           </p>
                         )}
