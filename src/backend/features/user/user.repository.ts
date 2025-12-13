@@ -2,17 +2,20 @@ import { injectable } from "tsyringe";
 import { IUser, UserModel, UserRole } from "./user.model";
 import { DBInstance } from "@/backend/config/dbConnect";
 import { DashboardUsers } from "./user.types";
+import { ProjectionFields, Types } from "mongoose";
+import { IMenuItem, RestaurantModel } from "../restaurant/restaurant.model";
 
 export interface IUserRepository {
   getAll(): Promise<IUser[]>;
-  getById(id: string): Promise<IUser>;
+  getById(id: string, query?: string): Promise<IUser>;
+  getFavoriteMenuItems(itemIds: string[]): Promise<IMenuItem[]>;
   getUsersByRoleAdvanced(options?: {
     limit?: number;
     sortBy?: string;
     sortOrder?: 1 | -1;
     selectFields?: string | Record<string, 0 | 1>;
   }): Promise<DashboardUsers>;
-	redeemPoints(userId: string): Promise<IUser>
+  redeemPoints(userId: string): Promise<IUser>;
   getUserIdByEmail(email: string): Promise<IUser>;
   updateById(id: string, data: Partial<IUser>): Promise<IUser>;
   updateFavorites(id: string, data: string): Promise<IUser>;
@@ -20,17 +23,36 @@ export interface IUserRepository {
 }
 
 @injectable()
-class UserRepository implements IUserRepository{
+class UserRepository implements IUserRepository {
   async getAll(): Promise<IUser[]> {
     await DBInstance.getConnection();
     return await UserModel.find({}, { password: 0 }).lean<IUser[]>().exec();
   }
-  
-  async getById(id: string): Promise<IUser> {
+
+  async getById(
+    id: string,
+    query: string = "email firstName lastName avatar phoneNumber"
+  ): Promise<IUser> {
     await DBInstance.getConnection();
-    const user = await UserModel.findById(id, { password: 0 })
+    let projection: ProjectionFields<IUser> = {};
+
+    if (!query || query.trim() === "") {
+      projection = { password: 0 };
+    } else {
+      query
+        .trim()
+        .split(/\s+/)
+        .filter((f) => f !== "password")
+        .forEach((field) => {
+          projection[field] = 1;
+        });
+    }
+
+    const user = await UserModel.findById(id, projection)
+      .populate("favoritesIds")
       .lean<IUser>()
       .exec();
+
     if (!user) {
       throw new Error(`User with id ${id} not found`);
     }
@@ -60,7 +82,7 @@ class UserRepository implements IUserRepository{
         { $match: { role } },
         { $sort: { [sortBy]: sortOrder } },
         { $limit: limit },
-        { $project: projectStage }
+        { $project: projectStage },
       ];
       return acc;
     }, {} as Record<string, any[]>);
@@ -73,7 +95,7 @@ class UserRepository implements IUserRepository{
     return result[0] as DashboardUsers;
   }
 
-	async redeemPoints(userId: string) {
+  async redeemPoints(userId: string) {
     await DBInstance.getConnection();
     const user = await UserModel.findByIdAndUpdate(
       userId,
@@ -84,24 +106,26 @@ class UserRepository implements IUserRepository{
       .lean<IUser>()
       .exec();
     return user!;
-}
+  }
 
   async getUserIdByEmail(email: string): Promise<IUser> {
-		await DBInstance.getConnection();
+    await DBInstance.getConnection();
     const response = await UserModel.findOne({ email })
-			.select("_id")
-			.lean<IUser>()
-			.exec();
-		return response!;
+      .select("_id")
+      .lean<IUser>()
+      .exec();
+    return response!;
   }
+
   async updateById(id: string, data: Partial<IUser>): Promise<IUser> {
     await DBInstance.getConnection();
-    const user = await this.getById(id);
-    if (!user) {
+    const updatedUser = await UserModel.findByIdAndUpdate(id, data, {
+      new: true,
+    });
+    if (!updatedUser) {
       throw new Error(`User with id ${id} not found`);
     }
-    Object.assign(user, data);
-    return await user.save();
+    return updatedUser;
   }
 
   async updateFavorites(id: string, item: string): Promise<IUser> {
@@ -111,10 +135,8 @@ class UserRepository implements IUserRepository{
     let updatedUser = await UserModel.findOneAndUpdate(
       { _id: id, favoritesIds: { $ne: item } },
       { $addToSet: { favoritesIds: item } },
-      { new: true }
-    ) 
-      .lean<IUser>()
-      .exec();
+      { new: true, projection: { favoritesIds: 1, _id: 0 } }
+    );
 
     if (updatedUser) {
       return updatedUser;
@@ -124,12 +146,36 @@ class UserRepository implements IUserRepository{
     updatedUser = await UserModel.findByIdAndUpdate(
       id,
       { $pull: { favoritesIds: item } },
-      { new: true }
-    )
-      .lean<IUser>()
+      { new: true, projection: { favoritesIds: 1, _id: 0 } }
+    );
+
+    return updatedUser;
+  }
+
+  async getFavoriteMenuItems(itemIds: string[]): Promise<IMenuItem[]> {
+    if (itemIds.length === 0) return [];
+    await DBInstance.getConnection();
+
+    const objectIds = itemIds.map((id) => new Types.ObjectId(id));
+
+    const restaurants = await RestaurantModel.find({
+      "menus._id": { $in: objectIds },
+    })
+      .select("menus")
+      .lean()
       .exec();
 
-    return updatedUser!;
+    const favoriteItems: IMenuItem[] = [];
+
+    restaurants.forEach((restaurant) => {
+      restaurant.menus.forEach((menu: IMenuItem) => {
+        if (objectIds.some((id) => id.equals(menu._id))) {
+          favoriteItems.push(menu);
+        }
+      });
+    });
+
+    return favoriteItems;
   }
 
   async deleteById(id: string): Promise<IUser> {
@@ -140,7 +186,7 @@ class UserRepository implements IUserRepository{
     }
     return await user.deleteOne();
   }
-  
+
   // Helper function to convert Mongoose select syntax to $project
   private parseSelectFields(
     selectFields: string | Record<string, 0 | 1>
