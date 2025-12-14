@@ -1,7 +1,7 @@
-import mongoose, { Document, model, Schema } from "mongoose";
+import { Document, model, models, Schema, Types } from "mongoose";
 import bcrypt from "bcrypt";
 
-export type UserRole = "customer" | "organizer" | "admin";
+export type UserRole = "customer" | "organizer" | "admin" | "recycleMan";
 
 export type Gender = "male" | "female";
 
@@ -42,7 +42,7 @@ export interface IEvent extends Document {
 }
 
 export interface IUser extends Document {
-  _id: mongoose.Types.ObjectId;
+  _id: Types.ObjectId;
   email: string;
   firstName: string;
   lastName: string;
@@ -64,6 +64,10 @@ export interface IUser extends Document {
   cart?: string[];
   paymentHistory?: string[];
   events?: IEvent[];
+  resetCode?: {
+    code: string;
+    validTo: Date;
+  };
   createdAt?: Date;
   updatedAt?: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -133,13 +137,17 @@ const userSchema = new Schema<IUser>(
     accountProvider: { type: String, required: false },
     role: {
       type: String,
-      enum: ["customer", "organizer", "admin"],
+      enum: ["customer", "organizer", "admin", "recycleMan"],
       default: "customer",
     },
     favoritesIds: { type: [String], default: [] },
     cart: { type: [String], default: [] },
     paymentHistory: { type: [String], default: [] },
     events: { type: [eventSchema], default: [] },
+    resetCode: {
+      code: { type: String, required: false },
+      validTo: { type: Date, required: false },
+    },
   },
   { timestamps: true }
 );
@@ -159,5 +167,9 @@ userSchema.methods.comparePassword = async function (
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-export const UserModel =
-  mongoose.models.User || model<IUser>("User", userSchema);
+userSchema.index({ role: 1 });
+userSchema.index({ createdAt: -1 });
+userSchema.index({ updatedAt: -1 });
+userSchema.index({ subscriptionPeriod: -1 });
+
+export const UserModel = models.User || model<IUser>("User", userSchema);

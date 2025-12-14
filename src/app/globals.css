@@ -19,6 +19,14 @@ div::-webkit-scrollbar {
   color: var(--color-primary-foreground);
 }
 
+.myInput {
+  @apply pl-10 bg-input text-input-foreground p-3 rounded-full focus:outline-2 focus:outline-primary focus:outline-offset-2 transition w-full;
+}
+
+.myBtnPrimary {
+  @apply bg-primary text-primary-foreground p-3 px-5 rounded-full transition duration-400 hover:scale-102 flex justify-center items-center text-lg gap-2 hover:outline-2 hover:outline-primary hover:outline-offset-4;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
 
@@ -110,7 +118,7 @@ div::-webkit-scrollbar {
   --secondary-foreground: oklch(0.216 0.006 56.043);
 
   /* input */
-  --input: oklch(92.8% 0.006 264.531);
+  --input: oklch(92.758% 0.00592 264.656 / 0.604);
   --input-foreground: oklch(0.216 0.006 56.043);
 
   /* card --> black&white */
@@ -162,7 +170,7 @@ div::-webkit-scrollbar {
   --secondary-foreground: oklch(100% 0.00011 271.152 / 0.758);
 
   /* input  */
-  --input: oklch(98.193% 0.01802 156.147 / 0.723);
+  --input: oklch(95.729% 0.04754 154.775 / 0.782);
   --input-foreground: oklch(0.216 0.006 56.043);
 
   /* card --> black&white */

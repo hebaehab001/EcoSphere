@@ -18,8 +18,15 @@ import EventService from "../features/event/event.service";
 import EventRepository from "../features/event/event.repository";
 import { ProductRepository } from "../features/product/product.repository";
 import { ProductService } from "../features/product/product.service";
+import { RecycleService } from "../features/recycle/recycle.service";
+import { RecycleRepository } from "../features/recycle/recycle.repository";
 import { OrderRepository } from "../features/orders/order.repository";
 import { OrderService } from "../features/orders/order.service";
+import { PaymentService } from "../services/payment.service";
+import { CouponRepository } from "../features/discountCoupon/coupon.repository";
+import { CouponService } from "../features/discountCoupon/coupon.service";
+import { AIRepository } from "../features/ai/ai.repository";
+import { AIService } from "../features/ai/ai.service";
 
 // you will register any
 container.registerSingleton("IUserRepository", UserRepository);
@@ -40,7 +47,14 @@ container.registerSingleton("LoginService", LoginService);
 container.registerSingleton("ImageService", ImageService);
 container.registerSingleton("UploadService", UploadService);
 container.registerSingleton("UploadRepository", UploadRepository);
-container.registerSingleton("ProductRepository" ,ProductRepository);
+container.registerSingleton("ProductRepository", ProductRepository);
 container.registerSingleton("ProductService", ProductService);
+container.registerSingleton("PaymentService", PaymentService);
+container.registerSingleton("RecycleService", RecycleService);
+container.registerSingleton("RecycleRepository", RecycleRepository);
+container.registerSingleton("CouponRepository", CouponRepository);
+container.registerSingleton("CouponService", CouponService);
+container.registerSingleton("AIRepository", AIRepository);
+container.registerSingleton("AIService", AIService);
 
 export { container as rootContainer } from "tsyringe";

@@ -3,41 +3,48 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/frontend/redux/store";
 import { PiListMagnifyingGlassBold } from "react-icons/pi";
 import {
-	Gamepad2,
-	Calendar,
-	Home,
-	ShoppingBag,
-	Recycle,
-	Store,
-	ShoppingCart,
-	Heart,
-	LogIn,
-	Newspaper,
-	Info,
+  Gamepad2,
+  Calendar,
+  Home,
+  ShoppingBag,
+  Recycle,
+  Store,
+  ShoppingCart,
+  Heart,
+  LogIn,
+  Newspaper,
+  Info,
 } from "lucide-react";
 import {
-	Sidebar,
-	SidebarContent,
-	SidebarFooter,
-	SidebarGroup,
-	SidebarGroupContent,
-	SidebarGroupLabel,
-	SidebarHeader,
-	SidebarMenu,
-	SidebarMenuButton,
-	SidebarMenuItem,
-	SidebarTrigger,
-	SidebarMenuBadge,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarTrigger,
+  SidebarMenuBadge,
 } from "@/components/ui/sidebar";
-import { MdOutlineAddToPhotos, MdOutlineEventRepeat } from "react-icons/md";
+import {
+  MdOutlineAddToPhotos,
+  MdOutlineEventRepeat,
+  MdRestaurantMenu,
+  MdAssignment,
+  MdEventAvailable,
+} from "react-icons/md";
+import { FaShop } from "react-icons/fa6";
 import { RxDashboard } from "react-icons/rx";
 import Link from "next/link";
 import ThemeBtn from "../ThemeBtn/ThemeBtn";
 import UserBtn from "../UserBtn/UserBtn";
-import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher'
+import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 
 export default function SideBar() {
 	
@@ -116,103 +123,217 @@ export default function SideBar() {
 			icon: PiListMagnifyingGlassBold,
 		},
 	];
-	const pathname = usePathname();
-	const { favProducts } = useSelector((state: RootState) => state.fav);
+  // Restaurant dashboard items.
+  const restaurantItems = [
+    {
+      title: t("dashboard.products"),
+      url: "/restaurant/products",
+      icon: MdRestaurantMenu,
+    },
+    {
+      title: t("dashboard.orders"),
+      url: "/restaurant/orders",
+      icon: MdAssignment,
+    },
+  ];
+  // admin dashboard items.
+  const adminItems = [
+    {
+      title: t("dashboard.shops"),
+      url: "/admin/shop",
+      icon: FaShop,
+    },
+    {
+      title: t("dashboard.events"),
+      url: "/admin/event",
+      icon: MdEventAvailable,
+    },
+  ];
+  // recycle dashboard items.
+  const recycleItems = [
+    {
+      title: t("menu.recycle"),
+      url: "/recycleDash",
+      icon: Recycle,
+    },
+  ];
 
-	return (
-		<Sidebar collapsible="icon" variant="floating" className="bg-background ">
-			<SidebarHeader>
-				<SidebarTrigger />
-			</SidebarHeader>
-			<SidebarContent>
-				{(session?.user.role === 'customer' || session === null) &&
-					<SidebarGroup>
-						<SidebarGroupLabel>{t('groups.application')}</SidebarGroupLabel>
-						<SidebarGroupContent>
-							<SidebarMenu>
-								{useritems.map((item) => (
-									<SidebarMenuItem key={item.title}>
-										<SidebarMenuButton asChild isActive={matchPathWithOptionalLocale(pathname, item.url)}>
-											<Link href={item.url}>
-												<item.icon />
-												<span className="capitalize">{item.title}</span>
-											</Link>
-										</SidebarMenuButton>
-									</SidebarMenuItem>
-								))}
-							</SidebarMenu>
-						</SidebarGroupContent>
-					</SidebarGroup>
-				}
-				{
-					session?.user.role == 'organizer' &&
-					<SidebarGroup>
-						<SidebarGroupLabel>{t('groups.dashboard')}</SidebarGroupLabel>
-						<SidebarGroupContent>
-							<SidebarMenu>
-								{dashboardItems.map((item) => (
-									<SidebarMenuItem key={item.title}>
-										<SidebarMenuButton asChild isActive={matchPathWithOptionalLocale(pathname, item.url)}>
-											<Link href={item.url}>
-												<item.icon />
-												<span className="capitalize">{item.title}</span>
-											</Link>
-										</SidebarMenuButton>
-									</SidebarMenuItem>
-								))}
-							</SidebarMenu>
-						</SidebarGroupContent>
-					</SidebarGroup>
-				}
-			</SidebarContent>
-			<SidebarFooter>
-				<SidebarGroupContent className="gap-2">
-					{
-						(session?.user.role === 'customer' || session === null) && (
-							<SidebarMenu>
-								<SidebarMenuItem>
-									<SidebarMenuButton asChild isActive={matchPathWithOptionalLocale(pathname, "/fav")}>
-										<Link href="/fav">
-											<Heart />
-											<span>{t('footer.favorite')}</span>
-										</Link>
-									</SidebarMenuButton>
-									<SidebarMenuBadge suppressHydrationWarning={true}>
-										{favProducts.length}
-									</SidebarMenuBadge>
-								</SidebarMenuItem>
-								<SidebarMenuItem>
-									<SidebarMenuButton asChild isActive={matchPathWithOptionalLocale(pathname, "/cart")}>
-										<Link href="/cart">
-											<ShoppingCart />
-											<span>{t('footer.cart')}</span>
-										</Link>
-									</SidebarMenuButton>
-									<SidebarMenuBadge>24</SidebarMenuBadge>
-								</SidebarMenuItem>
-							</SidebarMenu>
-						)
-					}
-				</SidebarGroupContent>
-				<SidebarGroupContent className="gap-2">
-					<SidebarMenu>
-						<ThemeBtn />
-						<LanguageSwitcher />
-						{status === "unauthenticated" ? (
-							<SidebarMenuItem>
-								<SidebarMenuButton asChild isActive={matchPathWithOptionalLocale(pathname, "/auth")}>
-									<Link href="/auth">
-										<LogIn />
-										<span>{t('footer.login')}</span>
-									</Link>
-								</SidebarMenuButton>
-							</SidebarMenuItem>)
-							:
-							<UserBtn session={session!} />
-						}
-					</SidebarMenu>
-				</SidebarGroupContent>
-			</SidebarFooter>
-		</Sidebar>
-	);
+  const pathname = usePathname();
+  const { favProducts } = useSelector((state: RootState) => state.fav);
+  return (
+    <Sidebar collapsible="icon" variant="floating" className="bg-background ">
+      <SidebarHeader>
+        <SidebarTrigger />
+      </SidebarHeader>
+      <SidebarContent>
+        {(session?.user.role === "customer" || session === null) && (
+          <SidebarGroup>
+            <SidebarGroupLabel>{t("groups.application")}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {useritems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={matchPathWithOptionalLocale(pathname, item.url)}
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span className="capitalize">{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+        {session?.user.role == "organizer" && (
+          <SidebarGroup>
+            <SidebarGroupLabel>{t("groups.dashboard")}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {dashboardItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={matchPathWithOptionalLocale(pathname, item.url)}
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span className="capitalize">{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+        {session?.user.role == "shop" && (
+          <SidebarGroup>
+            <SidebarGroupLabel>{t("groups.dashboard")}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {restaurantItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={matchPathWithOptionalLocale(pathname, item.url)}
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span className="capitalize">{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+        {session?.user.role == "admin" && (
+          <SidebarGroup>
+            <SidebarGroupLabel>admin</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {adminItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={matchPathWithOptionalLocale(pathname, item.url)}
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span className="capitalize">{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+
+        {/* **! change the role to be recycleMan */}
+        {session?.user.role == "admin" && (
+          <SidebarGroup>
+            <SidebarGroupLabel>{t("groups.dashboard")}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {recycleItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={matchPathWithOptionalLocale(pathname, item.url)}
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span className="capitalize">{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarGroupContent className="gap-2">
+          {(session?.user.role === "customer" || session === null) && (
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={matchPathWithOptionalLocale(pathname, "/fav")}
+                >
+                  <Link href="/fav">
+                    <Heart />
+                    <span>{t("footer.favorite")}</span>
+                  </Link>
+                </SidebarMenuButton>
+                <SidebarMenuBadge suppressHydrationWarning={true}>
+                  {favProducts.length}
+                </SidebarMenuBadge>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={matchPathWithOptionalLocale(pathname, "/cart")}
+                >
+                  <Link href="/cart">
+                    <ShoppingCart />
+                    <span>{t("footer.cart")}</span>
+                  </Link>
+                </SidebarMenuButton>
+                <SidebarMenuBadge>24</SidebarMenuBadge>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          )}
+        </SidebarGroupContent>
+        <SidebarGroupContent className="gap-2">
+          <SidebarMenu>
+            <ThemeBtn />
+            <LanguageSwitcher />
+            {status === "unauthenticated" ? (
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={matchPathWithOptionalLocale(pathname, "/auth")}
+                >
+                  <Link href="/auth">
+                    <LogIn />
+                    <span>{t("footer.login")}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ) : (
+              <UserBtn session={session!} />
+            )}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarFooter>
+    </Sidebar>
+  );
 }
