@@ -181,7 +181,6 @@ class UserService implements IUserService {
 			})
 		);
 		const filteredItems = cartItems.filter((item) => item !== null); // Remove deleted items
-		console.log("fetching cart done.");
 		return {
 			success: true,
 			items: filteredItems,
