@@ -120,7 +120,7 @@ const RecycleDashboard = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-primary via-primary/90 to-primary/70 text-primary-foreground py-12 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto flex flex-col items-center">
           <div className="flex items-center gap-3 mb-3">
             <Recycle className="w-8 h-8" />
             <h1 className="text-2xl sm:text-3xl font-bold">Recycle Dashboard</h1>
@@ -130,7 +130,7 @@ const RecycleDashboard = () => {
             Manage and track all recycling requests. Review, process, and complete pickups efficiently.
           </p>
 
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 w-full">
             {stats.map((stat) => (
               <div
                 key={stat.label}
