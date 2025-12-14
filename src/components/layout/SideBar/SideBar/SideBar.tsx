@@ -259,7 +259,7 @@ export default function SideBar() {
         {/* **! change the role to be recycleMan */}
         {session?.user.role == "admin" && (
           <SidebarGroup>
-            <SidebarGroupLabel>{t("groups.recycle")}</SidebarGroupLabel>
+            <SidebarGroupLabel>{t("groups.dashboard")}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {recycleItems.map((item) => (
