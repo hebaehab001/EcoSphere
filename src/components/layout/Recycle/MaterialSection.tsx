@@ -1,8 +1,8 @@
 "use client";
-
 import React from "react";
-import { Package, Plus } from "lucide-react";
+import { Package } from "lucide-react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { type RecycleFormValues } from "@/frontend/schema/recycle.schema";
 import ItemCard from "./UI/ItemCard";
 
@@ -31,33 +31,36 @@ const MaterialSection = ({
   register,
   addMaterial,
   errors,
-}: MaterialSectionProps) => (
-  <div className="space-y-6">
-    <div className="space-y-8">
-      {materials.map((m: MaterialItem, index: number) => (
-        <ItemCard
-          key={m.id}
-          item={m}
-          index={index}
-          total={materials.length}
-          onRemove={removeMaterial}
-          onAmountChange={updateAmount}
-          onTypeChange={updateType}
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          register={register as unknown as (name: string) => any}
-          error={errors[`type-${m.id}`]?.message as string | undefined}
-        />
-      ))}
+}: MaterialSectionProps) => {
+  const t = useTranslations("RecycleForm.materialSection");
 
-      <button
-        type="button"
-        onClick={addMaterial}
-        className="w-full md:w-auto flex items-center justify-center gap-2 py-3 px-6 rounded-full font-bold bg-primary-foreground text-primary border hover:bg-primary-foreground/90"
-      >
-        <Plus size={20} /> Add Another Item
-      </button>
+  return (
+    <div className="space-y-6">
+      <div className="space-y-8">
+        {materials.map((m: MaterialItem, index: number) => (
+          <ItemCard
+            key={m.id}
+            item={m}
+            index={index}
+            total={materials.length}
+            onRemove={removeMaterial}
+            onAmountChange={updateAmount}
+            onTypeChange={updateType}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            register={register as unknown as (name: string) => any}
+            error={errors[`type-${m.id}`]?.message as string | undefined}
+          />
+        ))}
+        <button
+          type="button"
+          onClick={addMaterial}
+          className="w-full md:w-auto flex items-center justify-center gap-2 py-3 px-6 rounded-full font-bold bg-primary-foreground text-primary border hover:bg-primary-foreground/90"
+        >
+          <Package size={20} /> {t("addButton")}
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default MaterialSection;
