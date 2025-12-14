@@ -21,7 +21,11 @@ export const eventSchema = z.object({
   type: z.string().min(1, "Event type is required"),
 
   avatar: z.union([
-    z.string().url().optional(),   // existing image (edit mode)
+    z.string().url().optional(),// existing image (edit mode)
+		z.object({
+      url: z.string().url(),
+      key: z.string(),
+    }),
     z.instanceof(File).optional(), // new upload
   ]).optional(),
 

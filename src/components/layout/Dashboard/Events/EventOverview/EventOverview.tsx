@@ -23,7 +23,7 @@ const dashboardData: MetricData[] = [
   {
     id: 2,
     title: "Total Revenue",
-    value: "$45,200",
+    value: "EGP 45,200",
     change: "+8%",
   },
   {
@@ -51,13 +51,11 @@ const MetricCard: React.FC<MetricData> = ({ title, value, change }) => {
     <div className="flex flex-col justify-center items-center h-full gap-1 p-3 ">
       {/* Title */}
       <p className="text-foreground text-sm font-medium mb-1">{title}</p>
-
       {/* Value and Change */}
       <div className="flex items-start gap-2 justify-between">
-        <h2 className="text-3xl font-bold text-foreground leading-none">
+        <h2 className="text-md md:text-2xl  font-bold text-foreground leading-none">
           {value}
         </h2>
-
         {/* Change Indicator (only for cards that have a 'change' value) */}
         {change && (
           <div className="flex items-center ml-2 space-x-1">
@@ -178,15 +176,15 @@ export default function EventOverview({ events }: EventProps) {
     })
     .slice(0, 3);
   return (
-    <div className="min-h-screen py-6 w-[90%] mx-auto flex flex-col gap-6">
-      <h1 className="capitalize font-bold text-4xl  text-foreground">
+    <div className="min-h-screen py-6 w-[80%] md:w-[90%] mx-auto flex flex-col gap-6">
+      <h1 className="capitalize font-bold text-3xl md:text-4xl text-center   text-foreground">
         {t("title")}
       </h1>
       <div className="flex flex-col gap-2">
-        <h2 className="capitalize font-bold text-2xl mb-2 text-foreground">
+        <h2 className="capitalize font-bold text-2xl mb-2  text-foreground">
           {t("quickActions")}
         </h2>
-        <div className="grid grid-cols-3 gap-5 ">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 ">
           <Link href="/organizer/manage" className="col-span-1 ">
             <Button className="w-full py-6 text-xl cursor-pointer text-primary-foreground rounded-2xl">
               <MdAddCircleOutline className="size-6" />
@@ -214,11 +212,11 @@ export default function EventOverview({ events }: EventProps) {
           </h2>
           <h4 className="text-muted-foreground text-md">{t("realTimeData")}</h4>
         </div>
-        <div className="grid grid-cols-4 gap-10 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10  w-[80%] mx-auto md:w-full ">
           {dashboardData.map((data) => (
             <BackgroundGradient
               key={data.id}
-              className="col-span-1 rounded-4xl  p-2 h-full   text-foreground bg-background"
+              className="col-span-1 rounded-4xl  p-2 h-full text-foreground bg-background"
             >
               <MetricCard
                 id={data.id}
@@ -260,7 +258,7 @@ export default function EventOverview({ events }: EventProps) {
               />
             ))
           ) : (
-            <div className="text-center p-8   rounded-xl shadow-md text-muted-foreground border-2 border-primary">
+            <div className="text-center p-8 h-full rounded-xl shadow-md text-muted-foreground border-2 border-primary">
               {t("noUpcomingEvents")}
             </div>
           )}

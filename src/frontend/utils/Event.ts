@@ -1,4 +1,4 @@
-import { IEventDetails } from "@/types/EventTypes";
+import { EventProps, IEventDetails } from "@/types/EventTypes";
 
 export const formatTime = (time: string): string => {
   try {
