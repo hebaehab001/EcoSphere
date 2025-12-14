@@ -34,7 +34,7 @@ import {
   MdOutlineEventRepeat,
   MdRestaurantMenu,
   MdAssignment,
-  MdEventAvailable 
+  MdEventAvailable,
 } from "react-icons/md";
 import { FaShop } from "react-icons/fa6";
 import { RxDashboard } from "react-icons/rx";
@@ -140,16 +140,25 @@ export default function SideBar() {
   // admin dashboard items.
   const adminItems = [
     {
-      title: "Shops",
+      title: t("dashboard.shops"),
       url: "/admin/shop",
       icon: FaShop,
     },
     {
-      title: "Events",
+      title: t("dashboard.events"),
       url: "/admin/event",
       icon: MdEventAvailable,
     },
   ];
+
+  const recycleItems = [
+    {
+      title: t("menu.recycle"),
+      url: "/recycleDash",
+      icon: Recycle,
+    },
+  ];
+
   const pathname = usePathname();
   const { favProducts } = useSelector((state: RootState) => state.fav);
   return (
@@ -230,6 +239,30 @@ export default function SideBar() {
             <SidebarGroupContent>
               <SidebarMenu>
                 {adminItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={matchPathWithOptionalLocale(pathname, item.url)}
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span className="capitalize">{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+
+        {/* **! change the role to be recycleMan */}
+        {session?.user.role == "admin" && (
+          <SidebarGroup>
+            <SidebarGroupLabel>{t("groups.recycle")}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {recycleItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
