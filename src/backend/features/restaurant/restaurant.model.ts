@@ -20,7 +20,7 @@ export interface IMenuItem extends Document {
 }
 
 export interface IRestaurant extends Document {
-  name: string;
+  name: string; // needed
   email: string;
   password: string;
   location: string;
@@ -37,6 +37,7 @@ export interface IRestaurant extends Document {
   };
   createdAt?: Date;
   updatedAt?: Date;
+  isHeddin: boolean; // needed
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 

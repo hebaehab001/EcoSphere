@@ -42,6 +42,7 @@ export interface IEvent extends Document {
   createdAt: Date;
   updatedAt: Date;
   type: EventType;
+  isAccepted: boolean; // needed
 }
 
 export interface IUser extends Document {
