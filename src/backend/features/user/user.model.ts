@@ -93,7 +93,7 @@ export const eventSchema = new Schema<IEvent>(
       key: { type: String, required: true },
       url: { type: String, required: false },
     },
-    attenders: { type: [String], default: [] },
+    attenders: { type: [Schema.Types.ObjectId], ref: "User", default: [] },
     capacity: { type: Number, required: true },
     sections: { type: [sectionsSchema], default: [] },
     createdAt: { type: Date, default: Date.now() },
