@@ -15,6 +15,8 @@ export interface IMenuItem extends Document {
     key: string;
     url?: string;
   };
+  sustainabilityScore?: number;
+  sustainabilityReason?: string;
   availableOnline: boolean;
   itemRating?: Types.DocumentArray<IRating>;
 }
@@ -58,6 +60,8 @@ export const menuItemSchema = new Schema<IMenuItem>({
     key: { type: String, required: false },
     url: { type: String, required: false },
   },
+  sustainabilityScore: { type: Number, required: false },
+  sustainabilityReason: { type: String, required: false },
   availableOnline: { type: Boolean, default: true },
   itemRating: { type: [ratingSchema], default: [] },
 });

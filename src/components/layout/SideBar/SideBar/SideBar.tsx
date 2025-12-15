@@ -14,6 +14,7 @@ import {
   LogIn,
   Newspaper,
   Info,
+  Salad,
 } from "lucide-react";
 import {
   Sidebar,
@@ -103,6 +104,11 @@ export default function SideBar() {
       title: t("menu.about"),
       url: "/about",
       icon: Info,
+    },
+    {
+      title: t("menu.recipes"),
+      url: "/recipes",
+      icon: Salad,
     },
   ];
   // Event dashboard items.
