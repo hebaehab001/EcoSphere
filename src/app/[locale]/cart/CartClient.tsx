@@ -1,5 +1,4 @@
 "use client"; // interactive container
-import { CartItems } from "@/types/cart";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/frontend/redux/hooks";
 import { hydrateCart } from "@/frontend/redux/Slice/CartSlice";
@@ -7,11 +6,12 @@ import OrderSummary from "@/components/layout/cart/OrderSummary";
 import ProductsSection from "@/components/layout/cart/ProductsSection";
 import { selectCartItemsArray } from "@/frontend/redux/selector/cartSelector";
 import CartHero from "@/components/layout/cart/CartHero";
+import { IProductCart } from "@/types/ProductType";
 
 export default function CartClient({
   initialCart,
 }: Readonly<{
-  initialCart: CartItems[];
+  initialCart: IProductCart[];
 }>) {
   // hydrate server cart into store inside CartPage client component (useEffect)
   const dispatch = useAppDispatch();
