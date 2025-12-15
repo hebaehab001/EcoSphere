@@ -1,14 +1,16 @@
 export interface IProduct {
-  id: string;
+  _id: string;
   restaurantId: string;
-  shopName: string;
-  shopSubtitle: string;
-  productImg: string;
-  productName: string;
-  productPrice: number;
-  productSubtitle: string;
-  productDescription: string;
+  title: string;
+  subtitle: string;
+  avatar?: {
+    url?: string;
+    key: string;
+  };
+  price: number;
   availableOnline?: boolean;
+  sustainabilityScore?: number;
+  sustainabilityReason?: string;
 }
 
 export interface IProductCart extends IProduct {

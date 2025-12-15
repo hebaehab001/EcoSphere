@@ -1,7 +1,7 @@
 "use client";
 import { IProduct } from "@/types/ProductType";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Heart, ShoppingCart, Star, Plus, Minus } from "lucide-react";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +20,8 @@ const ProductDetailsCard = ({ product }: { product: IProduct }) => {
     productPrice,
     availableOnline
   } = product;
+
+  console.log('ProductDetailsCard product:', product);
 
   const [count, setCount] = useState(1);
   const isFav = useSelector((state: RootState) => isInFavSelector(state, id));

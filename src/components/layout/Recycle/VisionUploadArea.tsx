@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 import { Upload, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface VisionUploadAreaProps {
   onFilesChange: (files: File[]) => void;
@@ -11,6 +12,7 @@ interface VisionUploadAreaProps {
 }
 
 const VisionUploadArea = ({ onFilesChange, error }: VisionUploadAreaProps) => {
+  const t = useTranslations("RecycleForm.vision");
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
@@ -30,14 +32,14 @@ const VisionUploadArea = ({ onFilesChange, error }: VisionUploadAreaProps) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    if (e.dataTransfer.files?.[0]) {
       handleFiles(Array.from(e.dataTransfer.files));
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files?.[0]) {
       handleFiles(Array.from(e.target.files));
     }
   };
@@ -98,10 +100,8 @@ const VisionUploadArea = ({ onFilesChange, error }: VisionUploadAreaProps) => {
           <div className="w-16 h-16 mx-auto rounded-full bg-primary-foreground/10 flex items-center justify-center mb-4">
             <Upload className="w-8 h-8 text-foreground" />
           </div>
-          <h3 className="text-xl font-bold">Add Images</h3>
-          <p className="text-foreground/70 text-sm">
-            Drag & drop or click to upload
-          </p>
+          <h3 className="text-xl font-bold">{t("addImages")}</h3>
+          <p className="text-foreground/70 text-sm">{t("dragDrop")}</p>
         </div>
       </motion.div>
 
@@ -127,7 +127,10 @@ const VisionUploadArea = ({ onFilesChange, error }: VisionUploadAreaProps) => {
               )}
             </div>
             <span className="font-bold text-sm">
-              {files.length} Image{files.length > 1 ? "s" : ""} Ready
+              {t("imagesReady", {
+                count: files.length,
+                s: files.length > 1 ? "s" : "",
+              })}
             </span>
             <button
               type="button" // Ensure it doesn't submit form

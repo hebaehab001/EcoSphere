@@ -2,6 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2, AlertTriangle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface DeleteProductDialogProps {
 	isOpen: boolean;
@@ -12,13 +13,14 @@ interface DeleteProductDialogProps {
 }
 
 export default function DeleteProductDialog({
-	isOpen,
-	onClose,
-	onConfirm,
-	isDeleting,
-	productTitle,
+  isOpen,
+  onClose,
+  onConfirm,
+  isDeleting,
+  productTitle,
 }: Readonly<DeleteProductDialogProps>) {
-	if (!isOpen) return null;
+  const t = useTranslations("Restaurant.Products.deleteDialog");
+  if (!isOpen) return null;
 
 	return (
 		<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-in fade-in duration-200">
@@ -28,46 +30,42 @@ export default function DeleteProductDialog({
 						<AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-500" />
 					</div>
 
-					<div className="space-y-2">
-						<h2 className="text-xl font-bold text-card-foreground">
-							Delete Product
-						</h2>
-						<p className="text-muted-foreground">
-							Are you sure you want to delete{" "}
-							<span className="font-semibold text-foreground">
-								{productTitle ? `"${productTitle}"` : "this product"}
-							</span>
-							? This action cannot be undone.
-						</p>
-					</div>
+          <div className="space-y-2">
+            <h2 className="text-xl font-bold text-card-foreground">
+              {t("title")}
+            </h2>
+            <p className="text-muted-foreground">
+              {productTitle
+                ? t("description", { title: productTitle })
+                : t("descriptionNoTitle")}
+            </p>
+          </div>
 
-					<div className="flex w-full gap-3 pt-4">
-						<Button
-							variant="outline"
-							className="flex-1"
-							onClick={onClose}
-							disabled={isDeleting}
-						>
-							Cancel
-						</Button>
-						<Button
-							variant="destructive"
-							className="flex-1"
-							onClick={onConfirm}
-							disabled={isDeleting}
-						>
-							{isDeleting ? (
-								<>
-									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-									Deleting...
-								</>
-							) : (
-								"Delete"
-							)}
-						</Button>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+          <div className="flex w-full gap-3 pt-4">
+            <Button
+              className="flex-1 myBtnPrimary bg-transparent text-foreground hover:bg-secondary/80 border border-input shadow-sm"
+              onClick={onClose}
+              disabled={isDeleting}
+            >
+              {t("cancel")}
+            </Button>
+            <Button
+              className="flex-1 myBtnPrimary bg-red-600 hover:bg-red-700 text-white border-none"
+              onClick={onConfirm}
+              disabled={isDeleting}
+            >
+              {isDeleting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {t("deleting")}
+                </>
+              ) : (
+                t("confirm")
+              )}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

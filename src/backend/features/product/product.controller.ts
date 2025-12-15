@@ -7,7 +7,6 @@ import {
   UpdateProductDTO,
   ProductPageOptions,
   PaginatedProductResponse,
-  mapResponseToIProduct,
 } from "./dto/product.dto";
 import { IProduct } from "@/types/ProductType";
 
@@ -19,7 +18,7 @@ export class ProductController {
 
   async getAll(): Promise<IProduct[]> {
     const products = await this.productService.getAllProducts();
-    return products.map(product => mapResponseToIProduct(product));
+    return products.map(product => product);
   }
 
   async getById(id: string): Promise<ProductResponse | null> {
