@@ -3,9 +3,17 @@ import { MotionItem } from "@/components/layout/PaymentVerification/MotionItem";
 import { MotionScaleIn } from "@/components/layout/PaymentVerification/MotionScaleIn";
 import { X, RefreshCcw, AlertOctagon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { PaymentFailedClient } from "@/components/layout/payment/PaymentFailedClient";
+import Link from "next/link";
 
-export default async function PaymentFailure() {
+interface PaymentFailureProps {
+  searchParams: Promise<{ orderId?: string; errorCode?: string; errorMessage?: string }>;
+}
+
+export default async function PaymentFailure({ searchParams }: PaymentFailureProps) {
   const t = await getTranslations("Checkout.verification");
+  const params = await searchParams;
+  const { orderId, errorCode, errorMessage } = params;
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center p-4 sm:p-6">
@@ -37,27 +45,15 @@ export default async function PaymentFailure() {
             </p>
           </MotionItem>
 
-          {/* Error Details */}
-          <MotionItem className="w-full bg-primary/10 rounded-2xl p-4 border border-accent-foreground/20 flex items-start gap-3 text-left">
-            <div className="mt-0.5 min-w-5">
-              <div className="w-1.5 h-1.5 rounded-full mt-2" />
-            </div>
-            <div className="flex-1">
-              <p className="text-l font-bold uppercase text-accent-foreground tracking-wider mb-1">
-                {t("errorCode", { code: 402 })}
-              </p>
-              <p className="text-sm font-semibold text-accent-foreground/80">
-                {t("cardDeclined")}
-              </p>
-            </div>
-          </MotionItem>
+          {/* Error Details - Client component will display error info from URL params */}
+          <PaymentFailedClient orderId={orderId} errorCode={errorCode} errorMessage={errorMessage} />
 
           {/* Action */}
           <MotionItem className="w-full space-y-3">
-            <button className="myBtnPrimary w-full flex items-center justify-center gap-2">
+            <Link href="/checkout" className="myBtnPrimary w-full flex items-center justify-center gap-2">
               {t("tryAgain")}
               <RefreshCcw className="w-4 h-4" />
-            </button>
+            </Link>
           </MotionItem>
         </div>
       </MotionContainer>

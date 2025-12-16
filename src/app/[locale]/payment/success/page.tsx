@@ -4,9 +4,23 @@ import { MotionContainer } from "@/components/layout/PaymentVerification/MotionC
 import { MotionItem } from "@/components/layout/PaymentVerification/MotionItem";
 import { MotionLeaf } from "@/components/layout/PaymentVerification/MotionLeaf";
 import { MotionScaleIn } from "@/components/layout/PaymentVerification/MotionScaleIn";
+import { PaymentSuccessClient } from "@/components/layout/payment/PaymentSuccessClient";
+import { redirect } from "next/navigation";
+import Link from "next/link";
 
-export default async function PaymentSuccess() {
+interface PaymentSuccessProps {
+  searchParams: Promise<{ orderId?: string; paymentIntentId?: string }>;
+}
+
+export default async function PaymentSuccess({ searchParams }: PaymentSuccessProps) {
   const t = await getTranslations("Checkout.verification");
+  const params = await searchParams;
+  const { orderId, paymentIntentId } = params;
+
+  if (!orderId) {
+    // If no orderId, redirect to home or show error
+    redirect("/");
+  }
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
@@ -43,34 +57,17 @@ export default async function PaymentSuccess() {
             </p>
           </MotionItem>
 
-          {/* Receipt */}
-          <MotionItem className="w-full bg-primary/10 rounded-2xl p-5 border-4 border-accent-foreground/10 space-y-4 backdrop-blur-sm">
-            <div className="flex justify-between items-center border-b-4 border-accent-foreground/30 pb-3">
-              <span className="text-sm font-medium text-accent-foreground/80">
-                {t("transactionId")}
-              </span>
-              <span className="font-mono text-sm font-bold text-accent-foreground">
-                #ECO-8829
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm font-medium text-accent-foreground/80">
-                {t("totalAmount")}
-              </span>
-              <span className="text-2xl font-bold text-accent-foreground">
-                $25.00
-              </span>
-            </div>
-          </MotionItem>
+          {/* Receipt - Client component will fetch and display order data */}
+          <PaymentSuccessClient orderId={orderId} paymentIntentId={paymentIntentId} />
 
           {/* Actions */}
           <MotionItem className="w-full space-y-3">
-            <button className="myBtnPrimary w-full group flex items-center justify-center gap-2">
+            <Link href="/" className="myBtnPrimary w-full group flex items-center justify-center gap-2">
               {t("returnHome")}
               <Home className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />
-            </button>
+            </Link>
 
-            <button className="myBtnPrimary w-full group flex items-center justify-center gap-2">
+            <button className="myBtnPrimary w-full group flex items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled>
               {t("downloadReceipt")}
               <Download className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />
             </button>
