@@ -9,6 +9,15 @@ export const GET = async (): Promise<NextResponse<ApiResponse<IProduct[]>>> => {
 
   try {
     const result = await controller.getAll();
+    console.log("[API /products] Returning", result.length, "products");
+    if (result.length > 0) {
+      console.log("[API /products] Sample product:", {
+        id: result[0].id,
+        productName: result[0].productName,
+        productImg: result[0].productImg || "EMPTY",
+        hasImg: !!result[0].productImg,
+      });
+    }
     return ok(result);
   } catch (error) {
     console.error(error);
