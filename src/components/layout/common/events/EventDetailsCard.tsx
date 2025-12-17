@@ -18,7 +18,7 @@ import { ISubEvent } from "@/types/EventTypes";
 import UpdateEventBtn from "../../Dashboard/Events/DisplayEvents/UpdateEventBtn";
 import DeleteEventBtn from "../../Dashboard/Events/DisplayEvents/DeleteEventBtn";
 import AddAttendBtn from "./AddAttendBtn";
-
+import { FaUserTie } from "react-icons/fa6"
 export default function EventDetailsCard({
   event,
   isOrganizerDetails,
@@ -143,6 +143,29 @@ export default function EventDetailsCard({
                       ? "Free"
                       : `${event.ticketPrice} EGP`}
                   </p>
+                </div>
+                {/* organizer */}
+                <div className="md:col-span-3 flex items-center gap-3 rounded-xl border bg-muted/40 px-4 py-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                    <FaUserTie className="text-primary" />
+                  </div>
+
+                  {!isOrganizerDetails ? (
+                    <span className="text-xs text-primary font-semibold">
+                      You are the organizer
+                    </span>
+                  ) : (
+                    <div className="flex flex-col text-sm">
+                      <span className="font-medium text-foreground">
+                        {event.user?.name}
+                      </span>
+                      {canAttend && (
+                        <span className="text-muted-foreground text-xs">
+                          {event.user?.email}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
               {/* Sections / Schedule */}

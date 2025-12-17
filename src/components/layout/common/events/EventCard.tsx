@@ -12,7 +12,7 @@ import { usePathname } from "next/navigation";
 import AddAttendBtn from "./AddAttendBtn";
 import { useSession } from "next-auth/react";
 import { EventStatus } from "@/types/EventTypes";
-
+import { FaUserTie } from "react-icons/fa6"
 export default function EventCard({ event }: { event: any }) {
   const { data: session } = useSession();
   const pathname = usePathname();
@@ -26,8 +26,8 @@ export default function EventCard({ event }: { event: any }) {
   const status: EventStatus = event.isAccepted
     ? "approved"
     : event.isEventNew
-    ? "pending"
-    : "rejected";
+      ? "pending"
+      : "rejected";
   const statusStyles: Record<EventStatus, string> = {
     approved: "bg-green-600 text-white",
     pending: "bg-yellow-500 text-white",
@@ -88,8 +88,29 @@ export default function EventCard({ event }: { event: any }) {
               <FaLocationDot className="text-primary" />
               <span>{event.locate}</span>
             </div>
+            <div className="flex items-center gap-2 rounded-full bg-muted px-4 py-2">
+              <FaUserTie className="text-primary" />
+
+              {isEventOrganizer ? (
+                <span className="text-xs text-primary font-semibold">
+                  You are the organizer
+                </span>
+              ) : (
+                <div className="flex flex-col text-sm">
+                  <span className="font-medium text-foreground">
+                    {event.user?.firstName}
+                  </span>
+                  {canAttend && (
+                    <span className="text-muted-foreground text-xs">
+                      {event.user?.email}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
+
         {/* Actions */}
         <div className="flex m-2 gap-3">
           <EventDetailsCard
