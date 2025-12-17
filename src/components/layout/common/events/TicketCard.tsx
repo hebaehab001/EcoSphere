@@ -1,7 +1,7 @@
 "use client";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
-import React from "react";
 import { MdAccessTime } from "react-icons/md";
 import { formatDate, formatTime } from "@/frontend/utils/Event";
 import { FaLocationDot } from "react-icons/fa6";
@@ -11,13 +11,17 @@ import DeleteEventBtn from "./DeleteEventBtn";
 import UpdateEventBtn from "./UpdateEventBtn";
 import { usePathname } from "next/navigation";
 import AddAttendBtn from "./AddAttendBtn";
+import { useSession } from "next-auth/react";
+
 export default function TicketCard({ event }: { event: any }) {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
+  const session = useSession();
   const isOrganizerDetails =
     segments.length >= 2 &&
     segments[1] === "organizer" &&
     segments[2] === "details";
+
   return (
     <div className="col-span-1 flex justify-center">
       <div className="w-full flex flex-col max-w-sm rounded-2xl overflow-hidden border border-primary/20 bg-background shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
@@ -48,8 +52,8 @@ export default function TicketCard({ event }: { event: any }) {
                   {event.state == "pending"
                     ? "pending..."
                     : event.state == "approved"
-                      ? "approved"
-                      : "rejected"}
+                    ? "approved"
+                    : "rejected"}
                 </p>
               </div>
             </div>
@@ -82,8 +86,19 @@ export default function TicketCard({ event }: { event: any }) {
         </div>
         {/* Actions */}
         <div className="flex m-2 gap-3">
-          <EventDetailsCard event={event} state={isOrganizerDetails} />
-          {!isOrganizerDetails && <AddAttendBtn />}
+          <EventDetailsCard
+            event={event}
+            state={isOrganizerDetails}
+            userId={session.data?.user.id || ""}
+          />
+          {!isOrganizerDetails && session.data?.user.id !== event.user._id && (
+            <AddAttendBtn
+              eventId={event._id}
+              isFree={event.ticketPrice === 0}
+              attenders={event.attenders ?? []}
+              userId={session.data?.user.id || ""}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -19,10 +19,18 @@ import DeleteEventBtn from "./DeleteEventBtn";
 import AddAttendBtn from "./AddAttendBtn";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function EventDetailsCard({event,state,}: {event: any;state: boolean;}) {
+export default function EventDetailsCard({
+  event,
+  state,
+  userId,
+}: {
+  event: any;
+  state: boolean;
+  userId: string | "";
+}) {
   return (
     <Dialog>
-      <DialogTrigger className="flex-1 py-3 rounded-xl border border-primary font-semibold text-sm hover:bg-primary/10 transition">
+      <DialogTrigger className="flex-1 py-3 rounded-xl border border-primary font-semibold text-sm hover:bg-primary/10 transition cursor-pointer">
         View Details
       </DialogTrigger>
       <DialogContent>
@@ -169,7 +177,12 @@ export default function EventDetailsCard({event,state,}: {event: any;state: bool
                   </div>
                 ) : (
                   <div className="flex gap-4">
-                    <AddAttendBtn/>
+                    <AddAttendBtn
+                      eventId={event._id}
+                      isFree={event.ticketPrice === 0}
+                      attenders={event.attenders ?? []}
+                      userId={userId || ""}
+                    />
                   </div>
                 )}
               </div>
