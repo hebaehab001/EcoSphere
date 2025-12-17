@@ -13,7 +13,7 @@ export default async function Events() {
         title="Never Miss an Event in Ecosphere"
         subTitle="Explore upcoming events across the Ecosphere platform, get all the details you need, and take part in experiences that bring the community together"
       />
-      <div className="min-h-screen py-8 w-[85%] mx-auto flex flex-col gap-6">
+      <div className="min-h-screen py-8 w-[80%] mx-auto flex flex-col gap-6">
         <WhyEcosphere />
         <MainDisplayEvents events={data} />
       </div>

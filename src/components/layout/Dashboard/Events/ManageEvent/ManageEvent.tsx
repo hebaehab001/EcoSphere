@@ -49,19 +49,24 @@ export default function ManageEvent({initialData,}: Readonly<{ initialData?: any
   const router = useRouter();
   const form = useForm<z.infer<typeof eventSchema>>({
     resolver: zodResolver(eventSchema),
-    defaultValues: initialData ?? {
-      name: "",
-      type: "",
-      avatar: undefined,
-      description: "",
-      locate: "",
-      eventDate: "",
-      startTime: "",
-      endTime: "",
-      capacity: 0,
-      ticketPrice: 0,
-      sections: [],
-    },
+    defaultValues: initialData ? {
+      ...initialData,
+      ticketType: initialData.ticketPrice === 0 ? "Free" : "Priced",
+    }
+      : {
+        name: "",
+        type: "",
+        avatar: undefined,
+        description: "",
+        locate: "",
+        eventDate: "",
+        startTime: "",
+        endTime: "",
+        capacity: 0,
+        ticketPrice: 0,
+        ticketType: "Free", 
+        sections: [],
+      },
   });
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -92,16 +97,16 @@ export default function ManageEvent({initialData,}: Readonly<{ initialData?: any
       form.setValue("ticketType", "Priced");
     }
   }, [ticketPrice, form]);
-  useEffect(() => {
-    if (!initialData) return;
+  // useEffect(() => {
+  //   if (!initialData) return;
 
-    const derivedTicketType = initialData.ticketPrice === 0 ? "Free" : "Priced";
+  //   const derivedTicketType = initialData.ticketPrice === 0 ? "Free" : "Priced";
 
-    form.reset({
-      ...initialData,
-      ticketType: derivedTicketType,
-    });
-  }, [initialData, form]);
+  //   form.reset({
+  //     ...initialData,
+  //     ticketType: derivedTicketType,
+  //   });
+  // }, [initialData, form]);
 
   // --- 5. Submission Handler ---
   async function onSubmit(data: z.infer<typeof eventSchema>) {
@@ -135,7 +140,7 @@ export default function ManageEvent({initialData,}: Readonly<{ initialData?: any
   }
 
   return (
-    <div className="min-h-screen py-8 w-[85%] mx-auto flex flex-col  gap-6">
+    <div className="min-h-screen py-8 w-[80%] mx-auto flex flex-col  gap-6">
       <h1 className="capitalize text-center  font-bold text-4xl  text-foreground">
         {initialData ? t("titleEdit") : t("titleCreate")}
       </h1>
