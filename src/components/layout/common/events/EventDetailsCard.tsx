@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Dialog,
   DialogClose,
@@ -17,7 +18,6 @@ import UpdateEventBtn from "../../Dashboard/Events/DisplayEvents/UpdateEventBtn"
 import DeleteEventBtn from "../../Dashboard/Events/DisplayEvents/DeleteEventBtn";
 import AddAttendBtn from "./AddAttendBtn";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function EventDetailsCard({
   event,
   isOrganizerDetails,
