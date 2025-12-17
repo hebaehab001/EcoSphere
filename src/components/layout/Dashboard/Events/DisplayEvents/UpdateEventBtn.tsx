@@ -13,13 +13,13 @@ export default function UpdateEventBtn({
   return (
     <Link href={`/organizer/manage/${id}`}>
       {detailscard ? (
-        <Button className="p-3 w-full text-primary-foreground bg-primary rounded-full hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition duration-150">
+        <Button className="p-3 w-full text-primary-foreground bg-primary rounded-full hover:bg-primary/90 transition duration-150">
           <FiEdit className=" size-4 items-baseline " />
           Edit Event
         </Button>
       ) : (
         <Button
-          className="p-3 text-primary-foreground bg-primary rounded-full hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition duration-150"
+          className="p-3 text-white bg-primary rounded-full hover:bg-primary/90 transition duration-150"
           title="Edit Event"
         >
           <FiEdit className=" size-4 items-baseline " />

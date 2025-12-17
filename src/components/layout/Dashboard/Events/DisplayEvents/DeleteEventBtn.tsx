@@ -30,7 +30,7 @@ export default function DeleteEventBtn({
   return detailscard ? (
     <Button
       onClick={() => onDelete(id)}
-      className="p-3 text-white bg-red-600 rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-150"
+      className="p-3 text-white bg-red-600 rounded-full hover:bg-red-700  transition duration-150"
     >
       <RiDeleteBin6Fill className=" size-4 items-baseline " />
       Delete Event
@@ -38,7 +38,7 @@ export default function DeleteEventBtn({
   ) : (
     <Button
       onClick={() => onDelete(id)}
-      className="p-3 text-white bg-red-600 rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-150"
+      className="p-3 text-white bg-red-600 rounded-full hover:bg-red-700  transition duration-150"
       title="Delete Event"
     >
       <RiDeleteBin6Fill className=" size-4 items-baseline " />
