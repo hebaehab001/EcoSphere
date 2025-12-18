@@ -132,7 +132,7 @@ const EventListItem: React.FC<EventListItemProps> = ({
   );
 };
 export default function EventOverview({ events }: EventProps) {
-  const t = useTranslations("Dashboard.overview");
+  const t = useTranslations("Events.overview");
   const dashboardData: MetricData[] = [
     {
       id: 1,
