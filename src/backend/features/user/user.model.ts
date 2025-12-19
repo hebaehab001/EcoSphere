@@ -47,6 +47,12 @@ export interface IEvent extends Document {
   type: EventType;
   isAccepted: boolean;
   isEventNew: boolean;
+  user?: {
+    _id: string;
+    firstName: string;
+    email: string;
+    phoneNumber: string;
+  };
 }
 
 export interface IUser extends Document {
