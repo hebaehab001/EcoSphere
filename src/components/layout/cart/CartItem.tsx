@@ -26,7 +26,7 @@ export default function CartItem({ item }: Readonly<{ item: IProductCart }>) {
             {item.productName}
           </h3>
           {item.productSubtitle && (
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5 line-clamp-3">
               {item.productSubtitle}
             </p>
           )}
@@ -34,7 +34,7 @@ export default function CartItem({ item }: Readonly<{ item: IProductCart }>) {
       </div>
 
       {/* Product Code */}
-      <div className="hidden md:block col-span-2 text-sm text-muted-foreground text-center">
+      <div className="hidden md:block col-span-2 text-sm text-muted-foreground text-center line-clamp-1">
         #{productCode}
       </div>
 
