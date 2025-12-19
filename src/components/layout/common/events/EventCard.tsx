@@ -77,7 +77,7 @@ export default function EventCard({ event }: { event: any }) {
         </div>
         {/* Content */}
         <div className="p-5 flex-1 space-y-4">
-          <div className="flex  flex-wrap gap-3 text-sm">
+          <div className="flex  flex-wrap gap-1.5 text-sm">
             <div className="flex items-center gap-2 rounded-full bg-muted px-4 py-2">
               <FaCalendar className="text-primary" />
               <span>{formatDate(event.eventDate, locale)}</span>
@@ -96,8 +96,7 @@ export default function EventCard({ event }: { event: any }) {
             {!isOrganizerDetails && (
               <div className="flex items-center gap-2 rounded-full bg-muted px-4 py-2">
                 <FaUserTie className="text-primary" />
-
-                {!isEventOrganizer ? (
+                {isEventOrganizer ? (
                   <span className="text-xs text-primary font-semibold">
                     {t("organizer")}
                   </span>
@@ -106,11 +105,6 @@ export default function EventCard({ event }: { event: any }) {
                     <span className="font-medium text-foreground">
                       {event.user?.firstName}
                     </span>
-                    {canAttend && (
-                      <span className="text-muted-foreground text-xs">
-                        {event.user?.email}
-                      </span>
-                    )}
                   </div>
                 )}
               </div>

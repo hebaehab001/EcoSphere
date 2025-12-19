@@ -164,7 +164,7 @@ export default function EventDetailsCard({
                   ) : (
                     <div className="flex flex-col text-sm">
                       <span className="font-medium text-foreground">
-                        {event.user?.name}
+                            {event.user?.firstName}
                       </span>
                       {canAttend && (
                         <span className="text-muted-foreground text-xs">
