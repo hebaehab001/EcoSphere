@@ -30,6 +30,7 @@ export default function ThemeBtn() {
               <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
               <span className="capitalize" suppressHydrationWarning={true}>
                 {mounted && theme
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   ? t("label", { theme: t(theme as any) })
                   : t("label", { theme: "" })}
               </span>
@@ -42,9 +43,6 @@ export default function ThemeBtn() {
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setTheme("dark")}>
             {t("dark")}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("system")}>
-            {t("system")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

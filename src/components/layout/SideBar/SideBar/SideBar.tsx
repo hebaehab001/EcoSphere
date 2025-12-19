@@ -112,7 +112,7 @@ export default function SideBar() {
     },
   ];
   // Event dashboard items.
-  const dashboardItems = [
+  const OrganizerItems = [
     {
       title: t("dashboard.overview"),
       url: "/organizer",
@@ -192,6 +192,7 @@ export default function SideBar() {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
+                      tooltip={item.title}
                       isActive={matchPathWithOptionalLocale(pathname, item.url)}
                     >
                       <Link href={item.url}>
@@ -210,10 +211,11 @@ export default function SideBar() {
             <SidebarGroupLabel>{t("groups.dashboard")}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {dashboardItems.map((item) => (
+                {OrganizerItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
+                      tooltip={item.title}
                       isActive={matchPathWithOptionalLocale(pathname, item.url)}
                     >
                       <Link href={item.url}>
@@ -236,6 +238,7 @@ export default function SideBar() {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
+                      tooltip={item.title}
                       isActive={matchPathWithOptionalLocale(pathname, item.url)}
                     >
                       <Link href={item.url}>
@@ -258,6 +261,7 @@ export default function SideBar() {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
+                      tooltip={item.title}
                       isActive={matchPathWithOptionalLocale(pathname, item.url)}
                     >
                       <Link href={item.url}>
@@ -282,6 +286,7 @@ export default function SideBar() {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
+                      tooltip={item.title}
                       isActive={matchPathWithOptionalLocale(pathname, item.url)}
                     >
                       <Link href={item.url}>
@@ -303,6 +308,7 @@ export default function SideBar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
+                  tooltip='favorite'
                   isActive={matchPathWithOptionalLocale(pathname, "/fav")}
                 >
                   <Link href="/fav">
@@ -317,6 +323,7 @@ export default function SideBar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
+                  tooltip='cart'
                   isActive={matchPathWithOptionalLocale(pathname, "/cart")}
                 >
                   <Link href="/cart">
@@ -337,6 +344,7 @@ export default function SideBar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
+                  tooltip='login'
                   isActive={matchPathWithOptionalLocale(pathname, "/auth")}
                 >
                   <Link href="/auth">
