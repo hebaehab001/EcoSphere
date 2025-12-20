@@ -193,7 +193,10 @@
       "yourTurn": "À votre tour",
       "pointsAdded": "{points} points ajoutés à vos EcoPoints !",
       "updatePoints": "Erreur lors de la mise à jour des EcoPoints. Veuillez réessayer.",
-      "loginForPoints": "Connectez-vous pour gagner des EcoPoints !"
+      "loginForPoints": "Connectez-vous pour gagner des EcoPoints !",
+      "limitReached": "Vous avez atteint votre limite quotidienne de 2 jeux. Revenez demain !",
+      "limitReachedDesc": "Rejoignez-nous demain pour gagner plus d'EcoPoints et tester à nouveau vos compétences !",
+      "remainingPlays": "Il vous reste {count} parties aujourd'hui."
     },
     "difficulty": {
       "easy": "Facile",
@@ -827,7 +830,8 @@
           "Support dédié 24/7",
           "Accès à tous les outils premium Écosphère"
         ],
-        "icon": "eco-pro"
+        "icon": "eco-pro",
+        "planKey": "pro_monthly"
       },
       {
         "title": "Formule Croissance",
@@ -841,7 +845,8 @@
           "Support prioritaire",
           "Accès aux outils d'éco-événements"
         ],
-        "icon": "growth"
+        "icon": "growth",
+        "planKey": "growth_monthly"
       }
     ]
   },

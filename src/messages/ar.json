@@ -192,7 +192,10 @@
       "yourTurn": "دورك",
       "pointsAdded": "{points} نقاط أضيفت إلى نقاط إيكو الخاصة بك!",
       "updatePoints": "خطأ في تحديث نقاط إيكو. يرجى المحاولة مرة أخرى.",
-      "loginForPoints": "سجل الدخول لكسب نقاط إيكو!"
+      "loginForPoints": "سجل الدخول لكسب نقاط إيكو!",
+      "limitReached": "لقد وصلت إلى الحد اليومي وهو مباراتان. عد غداً!",
+      "limitReachedDesc": "انضم إلينا غدًا لكسب المزيد من EcoPoints واختبار مهاراتك مرة أخرى!",
+      "remainingPlays": "لديك {count} محاولات متبقية اليوم."
     },
     "difficulty": {
       "easy": "سهل",
@@ -812,7 +815,8 @@
           "دعم قياسي",
           "شعار صديق للبيئة مرفق"
         ],
-        "icon": "leaf"
+        "icon": "leaf",
+        "planKey": "starter_monthly"
       },
 
       {
@@ -827,7 +831,8 @@
           "دعم مخصص 24/7",
           "الوصول لجميع أدوات الإيكوسفير الاحترافية"
         ],
-        "icon": "eco-pro"
+        "icon": "eco-pro",
+        "planKey": "pro_monthly"
       },
       {
         "title": "باقة النمو",
@@ -841,7 +846,8 @@
           "دعم أولوية",
           "الوصول لأدوات الفعاليات البيئية"
         ],
-        "icon": "growth"
+        "icon": "growth",
+        "planKey": "growth_monthly"
       }
     ]
   },

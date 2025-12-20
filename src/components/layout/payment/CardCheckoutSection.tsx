@@ -8,11 +8,13 @@ import { useTranslations } from "next-intl";
 
 interface Props {
   amount: number;
+  eventId?: string | null;
 }
 
-export function CardCheckoutSection({ amount }: Props) {
+export function CardCheckoutSection({ amount, eventId }: Props) {
   const t = useTranslations("Checkout.form");
-  const { clientSecret, loading, error } = usePaymentIntent(amount, true);
+  const { clientSecret, loading, error, onPaymentSuccess, orderId } =
+    usePaymentIntent(amount, true, eventId);
 
   if (loading || !clientSecret) {
     return (
@@ -33,7 +35,11 @@ export function CardCheckoutSection({ amount }: Props) {
 
   return (
     <StripeCheckoutProvider clientSecret={clientSecret}>
-      <CheckoutForm amount={amount} />
+      <CheckoutForm
+        amount={amount}
+        onSuccess={onPaymentSuccess}
+        orderId={orderId}
+      />
     </StripeCheckoutProvider>
   );
 }

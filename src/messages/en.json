@@ -192,7 +192,10 @@
       "yourTurn": "Your turn",
       "pointsAdded": "{points} points added to your EcoPoints!",
       "updatePoints": "Error updating EcoPoints. Please try again.",
-      "loginForPoints": "Login to earn EcoPoints!"
+      "loginForPoints": "Login to earn EcoPoints!",
+      "limitReached": "You've reached your daily limit of 2 games. Come back tomorrow!",
+      "limitReachedDesc": "Join us tomorrow to earn more EcoPoints and test your skills again!",
+      "remainingPlays": "You have {count} plays remaining today."
     },
     "difficulty": {
       "easy": "Easy",
@@ -649,21 +652,21 @@
       "emptySubtitle": "Please check back later for upcoming events"
     },
     "WhyEcosphere": {
-    "title": "Why Attend Events on Ecosphere?",
-    "subtitle": "Ecosphere helps you discover, explore, and attend events effortlessly with everything you need in one place.",
-    "card1": {
-      "title": "Centralized Event Discovery",
-      "description": "Find all upcoming events in one unified platform without searching multiple sources."
+      "title": "Why Attend Events on Ecosphere?",
+      "subtitle": "Ecosphere helps you discover, explore, and attend events effortlessly with everything you need in one place.",
+      "card1": {
+        "title": "Centralized Event Discovery",
+        "description": "Find all upcoming events in one unified platform without searching multiple sources."
+      },
+      "card2": {
+        "title": "Detailed Event Information",
+        "description": "View schedules, locations, organizers, and all event details before attending."
+      },
+      "card3": {
+        "title": "Easy Attendance & Tracking",
+        "description": "Join events easily and keep track of the events you plan to attend."
+      }
     },
-    "card2": {
-      "title": "Detailed Event Information",
-      "description": "View schedules, locations, organizers, and all event details before attending."
-    },
-    "card3": {
-      "title": "Easy Attendance & Tracking",
-      "description": "Join events easily and keep track of the events you plan to attend."
-    }
-  },
     "displayEvents": {
       "title": "My Events",
       "addEventBtn": "Add New Event",
@@ -814,7 +817,8 @@
           "Standard support",
           "Eco-friendly badge included"
         ],
-        "icon": "leaf"
+        "icon": "leaf",
+        "planKey": "starter_monthly"
       },
 
       {
@@ -829,7 +833,8 @@
           "24/7 dedicated support",
           "Access to all ecosphere premium tools"
         ],
-        "icon": "eco-pro"
+        "icon": "eco-pro",
+        "planKey": "pro_monthly"
       },
       {
         "title": "Growth Plan",
@@ -843,7 +848,8 @@
           "Priority support",
           "Access to eco-event tools"
         ],
-        "icon": "growth"
+        "icon": "growth",
+        "planKey": "growth_monthly"
       }
     ]
   },
