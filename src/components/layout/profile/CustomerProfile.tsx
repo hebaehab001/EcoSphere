@@ -12,23 +12,96 @@ import OrderHistoryEmptyState from "./OrderHistoryEmptyState";
 import { Edit, Eye, EyeOff } from "lucide-react";
 import { ChangePasswordSchema } from "@/frontend/schema/profile.schema";
 import { changeUserPassword, getUserData } from "@/frontend/api/Users";
+import { getUserOrders } from "@/frontend/api/Orders";
 import { User } from "@/types/UserTypes";
+import { IOrder } from "@/backend/features/orders/order.model";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 
 const OrderHistoryComponent = ({ user }: { user: User }) => {
-  const t = useTranslations("Profile.orderHistory");
-  return user.paymentHistory && user.paymentHistory.length > 0 ? (
+  const t = useTranslations("Profile.customer.orderHistory");
+  const [orders, setOrders] = useState<IOrder[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const data = await getUserOrders();
+        setOrders(data);
+      } catch (error) {
+        console.error("Failed to fetch orders", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrders();
+  }, []);
+
+  if (loading) {
+    return <div className="p-4 text-center">{t("loading")}</div>;
+  }
+
+  // If no orders found from API (or empty array)
+  if (!orders || orders.length === 0) {
+    return <OrderHistoryEmptyState />;
+  }
+
+  return (
     <div className="bg-card shadow rounded-lg p-6 border border-border">
       <h2 className="text-xl font-semibold mb-4 text-card-foreground">
-        Order History
+        {t("title")}
       </h2>
-      <p className="text-muted-foreground">
-        You have {user.paymentHistory.length} past order(s).
+      <p className="text-muted-foreground mb-4">
+        {t("orderCount", { count: orders.length })}
       </p>
+
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left">
+          <thead className="bg-muted/50 text-muted-foreground uppercase text-xs">
+            <tr>
+              <th className="px-4 py-3 rounded-tl-lg">{t("orderId")}</th>
+              <th className="px-4 py-3">{t("date")}</th>
+              <th className="px-4 py-3">{t("total")}</th>
+              <th className="px-4 py-3 rounded-tr-lg">{t("status")}</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border">
+            {orders.map((order) => (
+              <tr
+                key={order._id?.toString()}
+                className="hover:bg-muted/20 transition-colors"
+              >
+                <td className="px-4 py-3 font-mono font-medium">
+                  {order._id?.toString().slice(-8).toUpperCase()}
+                </td>
+                <td className="px-4 py-3">
+                  {new Date(order.createdAt).toLocaleDateString()}
+                </td>
+                <td className="px-4 py-3 font-semibold">
+                  ${order.orderPrice.toFixed(2)}
+                </td>
+                <td className="px-4 py-3">
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
+                    ${
+                      order.status === "completed"
+                        ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                        : order.status === "pending"
+                        ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
+                        : order.status === "canceled"
+                        ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
+                        : "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
+                    }`}
+                  >
+                    {order.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
-  ) : (
-    <OrderHistoryEmptyState />
   );
 };
 

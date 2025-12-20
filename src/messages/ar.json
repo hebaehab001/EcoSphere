@@ -495,11 +495,17 @@
     },
     "customer": {
       "role": "عميل",
-      "orderHistory": "سجل الطلبات",
-      "orderCount": "لديك {count} طلب سابق.",
-      "noOrders": "لا توجد طلبات بعد",
-      "noOrdersDescription": "ابدأ بإضافة المنتجات إلى طلباتك لعرضها هنا",
-      "browseOrders": "تصفح الطلبات",
+      "orderHistory": {
+        "title": "سجل الطلبات",
+        "orderCount": "لديك {count} طلب سابق.",
+        "noOrders": "لا توجد طلبات بعد",
+        "noOrdersDescription": "ابدأ بإضافة المنتجات إلى طلباتك لعرضها هنا",
+        "browseOrders": "تصفح الطلبات",
+        "orderId": "رقم الطلب",
+        "date": "التاريخ",
+        "total": "الإجمالي",
+        "status": "الحالة"
+      },
       "editModalTitle": "تعديل الملف الشخصي"
     },
     "toasts": {
@@ -539,7 +545,30 @@
       "hotline": "الخط الساخن",
       "editModalTitle": "تعديل ملف المتجر",
       "restaurantInformation": "معلومات المطعم",
-      "noDescription": "لا يوجد وصف متاح."
+      "noDescription": "لا يوجد وصف متاح.",
+      "orders": {
+        "title": "إدارة الطلبات",
+        "totalOrders": "إجمالي الطلبات",
+        "orderId": "رقم الطلب",
+        "customer": "العميل",
+        "date": "التاريخ",
+        "total": "الإجمالي",
+        "status": "الحالة",
+        "actions": "الإجراءات",
+        "noOrders": "لا توجد طلبات.",
+        "fetchError": "فشل تحميل الطلبات.",
+        "statusUpdated": "تم تحديث الحالة بنجاح.",
+        "updateError": "فشل تحديث الحالة.",
+        "changeStatus": "تغيير الحالة",
+        "statuses": {
+          "pending": "قيد الانتظار",
+          "paid": "تم الدفع",
+          "preparing": "جاري التجهيز",
+          "delivering": "جاري التوصيل",
+          "completed": "مكتمل",
+          "canceled": "ملغي"
+        }
+      }
     }
   },
   "Cart": {

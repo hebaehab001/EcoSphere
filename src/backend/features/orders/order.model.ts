@@ -10,6 +10,8 @@ export interface IOrder extends Document {
   stripePaymentIntentId?: string;
   paidAt?: Date;
   paymentProvider?: "stripe" | "paymob" | "fawry";
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const orderItemSchema = new Schema<IOrderItem>(
