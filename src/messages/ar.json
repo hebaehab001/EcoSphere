@@ -509,6 +509,20 @@
         "total": "الإجمالي",
         "status": "الحالة"
       },
+      "recyclingHistory": {
+        "title": "سجل إعادة التدوير",
+        "date": "التاريخ",
+        "items": "العناصر",
+        "itemsCount": "عناصر",
+        "weight": "الوزن (كجم)",
+        "carbonSaved": "الكربون المحفوظ",
+        "status": "الحالة",
+        "verified": "محقق",
+        "pending": "قيد الانتظار",
+        "noRecyclingOrders": "لا توجد طلبات إعادة تدوير بعد",
+        "noRecyclingOrdersDescription": "ابدأ بإعادة التدوير لرؤية تأثيرك البيئي هنا",
+        "browseRecycling": "ابدأ إعادة التدوير"
+      },
       "editModalTitle": "تعديل الملف الشخصي"
     },
     "toasts": {
@@ -762,11 +776,11 @@
         "titlePlaceholder": "اسم الفعالية",
         "type": "نوع الفعالية",
         "EventTypes": {
-    "environmental_seminar": "ندوة أو محاضرة بيئية",
-    "community_cleanup": "فعالية تنظيف مجتمعية",
-    "sustainable_brands_showcase": "عرض العلامات التجارية المستدامة",
-    "other": "أخرى"
-  },
+          "environmental_seminar": "ندوة أو محاضرة بيئية",
+          "community_cleanup": "فعالية تنظيف مجتمعية",
+          "sustainable_brands_showcase": "عرض العلامات التجارية المستدامة",
+          "other": "أخرى"
+        },
         "typePlaceholder": "اختر نوع الفعالية",
         "image": "صورة الفعالية",
         "description": "وصف قصير",

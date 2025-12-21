@@ -511,6 +511,20 @@
         "total": "Total",
         "status": "Status"
       },
+      "recyclingHistory": {
+        "title": "Recycling History",
+        "date": "Date",
+        "items": "Items",
+        "itemsCount": "items",
+        "weight": "Weight (kg)",
+        "carbonSaved": "Carbon Saved",
+        "status": "Status",
+        "verified": "Verified",
+        "pending": "Pending",
+        "noRecyclingOrders": "No recycling orders yet",
+        "noRecyclingOrdersDescription": "Start recycling to see your eco-impact here",
+        "browseRecycling": "Start Recycling"
+      },
       "editModalTitle": "Edit Profile"
     },
     "toasts": {

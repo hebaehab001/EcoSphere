@@ -504,6 +504,18 @@
       "noOrders": "Aucune commande pour le moment",
       "noOrdersDescription": "Ajoutez des produits à vos commandes pour les voir ici",
       "browseOrders": "Voir les commandes",
+      "recyclingHistoryTitle": "Historique du Recyclage",
+      "recyclingHistoryDate": "Date",
+      "recyclingHistoryItems": "Articles",
+      "recyclingHistoryItemsCount": "articles",
+      "recyclingHistoryWeight": "Poids (kg)",
+      "recyclingHistoryCarbonSaved": "Carbone Économisé",
+      "recyclingHistoryStatus": "Statut",
+      "recyclingHistoryVerified": "Vérifié",
+      "recyclingHistoryPending": "En attente",
+      "recyclingHistoryNoRecyclingOrders": "Aucune commande de recyclage pour le moment",
+      "recyclingHistoryNoRecyclingOrdersDescription": "Commencez le recyclage pour voir votre impact écologique ici",
+      "recyclingHistoryBrowseRecycling": "Commencer le Recyclage",
       "editModalTitle": "Modifier le profil"
     },
     "toasts": {
@@ -756,7 +768,7 @@
         "title": "Titre de l'Événement",
         "titlePlaceholder": "Nom de l'Événement",
         "type": "Type d'Événement",
-         "EventTypes": {
+        "EventTypes": {
           "environmental_seminar": "Séminaire / Conférence environnementale",
           "community_cleanup": "Événement de nettoyage communautaire",
           "sustainable_brands_showcase": "Présentation de marques durables",
