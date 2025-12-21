@@ -200,7 +200,8 @@
     "difficulty": {
       "easy": "سهل",
       "medium": "متوسط",
-      "hard": "صعب"
+      "hard": "صعب",
+      "points": "نقطة"
     },
     "actions": {
       "playAgain": "العب مجددًا",
