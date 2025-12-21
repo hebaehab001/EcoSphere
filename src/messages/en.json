@@ -200,7 +200,8 @@
     "difficulty": {
       "easy": "Easy",
       "medium": "Medium",
-      "hard": "Hard"
+      "hard": "Hard",
+      "points": "Points"
     },
     "actions": {
       "playAgain": "Play Again",

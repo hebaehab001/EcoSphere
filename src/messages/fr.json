@@ -201,7 +201,8 @@
     "difficulty": {
       "easy": "Facile",
       "medium": "Moyen",
-      "hard": "Difficile"
+      "hard": "Difficile",
+      "points": "Points"
     },
     "actions": {
       "playAgain": "Rejouer",
