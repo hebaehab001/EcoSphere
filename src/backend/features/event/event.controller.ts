@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { IEvent } from "../user/user.model";
+import { IEvent } from "./event.model";
 import type { IEventService } from "./event.service";
 import { EventResponse, mapEventToEventData } from "./events.types";
 
@@ -16,7 +16,7 @@ class EventController {
   }
 
   async getEvent(id: string, eventId: string): Promise<EventResponse> {
-    const response = await this.eventService.getEvent(id, eventId);
+    const response = await this.eventService.getEventById(id, eventId);
     return mapEventToEventData(response);
   }
 
