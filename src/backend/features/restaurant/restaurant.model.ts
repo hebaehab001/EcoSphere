@@ -1,10 +1,29 @@
 import { Document, model, models, Schema, Types } from "mongoose";
 import bcrypt from "bcrypt";
 
+export type ShopCategory =
+  | "Supermarket"
+  | "Hypermarket"
+  | "Grocery"
+  | "Bakery"
+  | "Cafe"
+  | "Other";
+
+export type MenuItemCategory =
+  | "Fruits"
+  | "Vegetables"
+  | "Meat"
+  | "Dairy"
+  | "Bakery"
+  | "Beverages"
+  | "Snacks"
+  | "Other";
+
 export interface IRating extends Document {
   userId: string;
   rate: number;
-  review?: string;
+  review: string;
+  orderId?: string;
 }
 
 export interface IMenuItem extends Document {
@@ -18,13 +37,14 @@ export interface IMenuItem extends Document {
   sustainabilityScore?: number;
   sustainabilityReason?: string;
   availableOnline: boolean;
-  itemRating?: Types.DocumentArray<IRating>;
+  category: MenuItemCategory;
 }
 
 export interface IRestaurant extends Document {
-  name: string; // needed
+  name: string;
   email: string;
   password: string;
+  category: ShopCategory;
   location: string;
   workingHours: string;
   phoneNumber: string;
@@ -40,7 +60,7 @@ export interface IRestaurant extends Document {
   };
   createdAt?: Date;
   updatedAt?: Date;
-  isHidden: boolean; // needed
+  isHidden: boolean;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -48,9 +68,10 @@ export const ratingSchema = new Schema<IRating>(
   {
     userId: { type: String, required: true },
     rate: { type: Number, required: true },
-    review: { type: String, required: false },
+    review: { type: String, required: true },
+    orderId: { type: String, ref: "Order", required: false },
   },
-  { _id: false },
+  { timestamps: true },
 );
 
 export const menuItemSchema = new Schema<IMenuItem>({
@@ -64,7 +85,20 @@ export const menuItemSchema = new Schema<IMenuItem>({
   sustainabilityScore: { type: Number, required: false },
   sustainabilityReason: { type: String, required: false },
   availableOnline: { type: Boolean, default: true },
-  itemRating: { type: [ratingSchema], default: [] },
+  category: {
+    type: String,
+    enum: [
+      "Fruits",
+      "Vegetables",
+      "Meat",
+      "Dairy",
+      "Beverages",
+      "Bakery",
+      "Snacks",
+      "Other",
+    ],
+    required: true,
+  },
 });
 
 const restaurantSchema = new Schema<IRestaurant>(
@@ -85,6 +119,18 @@ const restaurantSchema = new Schema<IRestaurant>(
     stripeCustomerId: { type: String, required: false },
     menus: { type: [menuItemSchema], default: [] },
     restaurantRating: { type: [ratingSchema], default: [] },
+    category: {
+      type: String,
+      enum: [
+        "Supermarket",
+        "Grocery",
+        "Hypermarket",
+        "Cafe",
+        "Bakery",
+        "Other",
+      ],
+      required: true,
+    },
   },
   { timestamps: true },
 );
