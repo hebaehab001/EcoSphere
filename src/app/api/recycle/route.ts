@@ -22,7 +22,6 @@ export const GET = async () => {
 
 export const POST = async (req: NextRequest) => {
   const data = (await req.json()) as RecycleRowData;
-  console.log(data);
   try {
     const response = await rootContainer
       .resolve(RecycleController)
