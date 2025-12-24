@@ -47,6 +47,7 @@ export class ProductRepository implements IProductRepository {
       page = 1,
       limit = 10,
       search = "",
+      category,
       sortBy = "title",
       sortOrder = "asc",
     } = options ?? {};
@@ -57,6 +58,7 @@ export class ProductRepository implements IProductRepository {
       title: "title",
       price: "price",
       rating: "itemRating",
+      sustainabilityScore: "sustainabilityScore",
     };
 
     const sortField = SORT_FIELDS_MAP[sortBy] || "title";
@@ -73,6 +75,7 @@ export class ProductRepository implements IProductRepository {
           title: "$menus.title",
           subtitle: "$menus.subtitle",
           price: "$menus.price",
+          category: "$menus.category",
           avatar: "$menus.avatar",
           availableOnline: "$menus.availableOnline",
           sustainabilityScore: "$menus.sustainabilityScore",
@@ -83,9 +86,14 @@ export class ProductRepository implements IProductRepository {
 
       {
         $match: {
-          $or: [
-            { title: { $regex: search, $options: "i" } },
-            { subtitle: { $regex: search, $options: "i" } },
+          $and: [
+            {
+              $or: [
+                { title: { $regex: search, $options: "i" } },
+                { subtitle: { $regex: search, $options: "i" } },
+              ],
+            },
+            ...(category ? [{ category }] : []),
           ],
         },
       },
@@ -98,6 +106,7 @@ export class ProductRepository implements IProductRepository {
           title: { $first: "$title" },
           subtitle: { $first: "$subtitle" },
           price: { $first: "$price" },
+          category: { $first: "$category" },
           avatar: { $first: "$avatar" },
           availableOnline: { $first: "$availableOnline" },
           sustainabilityScore: { $first: "$sustainabilityScore" },
@@ -167,6 +176,7 @@ export class ProductRepository implements IProductRepository {
       page = 1,
       limit = 10,
       search = "",
+      category,
       sortBy = "title",
       sortOrder = "asc",
     } = options ?? {};
@@ -177,6 +187,7 @@ export class ProductRepository implements IProductRepository {
       title: "title",
       price: "price",
       rating: "itemRating",
+      sustainabilityScore: "sustainabilityScore",
     };
 
     const sortField = SORT_FIELDS_MAP[sortBy] || "title";
@@ -193,6 +204,7 @@ export class ProductRepository implements IProductRepository {
           title: "$menus.title",
           subtitle: "$menus.subtitle",
           price: "$menus.price",
+          category: "$menus.category",
           avatar: "$menus.avatar",
           availableOnline: "$menus.availableOnline",
           sustainabilityScore: "$menus.sustainabilityScore",
@@ -202,10 +214,14 @@ export class ProductRepository implements IProductRepository {
       },
       {
         $match: {
-          $or: [
-            { title: { $regex: search, $options: "i" } },
-            { subtitle: { $regex: search, $options: "i" } },
-            // Add description if it exists in the schema, though subtitle seems to be the one used for description in this context
+          $and: [
+            {
+              $or: [
+                { title: { $regex: search, $options: "i" } },
+                { subtitle: { $regex: search, $options: "i" } },
+              ],
+            },
+            ...(category ? [{ category }] : []),
           ],
         },
       },

@@ -26,12 +26,18 @@ export const GET = async (
     ? parseInt(searchParams.get("limit")!)
     : undefined;
   const search = searchParams.get("search") || undefined;
+  const category = (searchParams.get("category") as any) || undefined;
+  const sortBy = (searchParams.get("sortBy") as any) || undefined;
+  const sortOrder = (searchParams.get("sortOrder") as any) || undefined;
 
   try {
     const result = await controller.getByRestaurantId(id, {
       page,
       limit,
       search,
+      category,
+      sortBy,
+      sortOrder,
     });
     return ok(result);
   } catch (error) {
