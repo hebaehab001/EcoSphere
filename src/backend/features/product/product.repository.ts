@@ -186,8 +186,15 @@ export class ProductRepository implements IProductRepository {
     const skip = (page - 1) * limit;
 
     const pipeline: PipelineStage[] = [
-      { $match: { _id: new mongoose.Types.ObjectId(restaurantId) } },
+      // 1️⃣ Filter by restaurant ID
+      {
+        $match: { _id: new mongoose.Types.ObjectId(restaurantId) },
+      },
+
+      // 2️⃣ Unwind menus
       { $unwind: "$menus" },
+
+      // 3️⃣ Project only needed fields
       {
         $project: {
           _id: "$menus._id",
@@ -200,31 +207,25 @@ export class ProductRepository implements IProductRepository {
           availableOnline: "$menus.availableOnline",
           sustainabilityScore: "$menus.sustainabilityScore",
           sustainabilityReason: "$menus.sustainabilityReason",
-          itemRating: "$menus.itemRating",
           category: "$menus.category",
-        },
-      },
-      {
-        $addFields: {
-          itemRatingAvg: {
-            $cond: [
-              {
-                $and: [
-                  { $isArray: "$itemRating" },
-                  { $gt: [{ $size: "$itemRating" }, 0] },
-                ],
-              },
-              { $avg: "$itemRating.rate" },
-              0,
-            ],
-          },
+          itemRating: "$menus.itemRating",
         },
       },
     ];
 
-    // Build match conditions
+    // 4️⃣ Sorting
+    if (sort === "priceLow") {
+      pipeline.push({ $sort: { price: 1, title: 1 } });
+    } else if (sort === "priceHigh") {
+      pipeline.push({ $sort: { price: -1, title: 1 } });
+    } else {
+      pipeline.push({ $sort: { title: 1 } });
+    }
+
+    // 5️⃣ Optional search & category filters
     const matchConditions: any[] = [];
-    if (search && search.trim() !== "") {
+
+    if (search.trim()) {
       matchConditions.push({
         $or: [
           { title: { $regex: search, $options: "i" } },
@@ -233,37 +234,15 @@ export class ProductRepository implements IProductRepository {
       });
     }
 
-    if (category && category !== "default") {
-      matchConditions.push({
-        category: { $regex: new RegExp(`^${category}$`, "i") },
-      });
+    if (category !== "default") {
+      matchConditions.push({ category });
     }
 
     if (matchConditions.length > 0) {
       pipeline.push({ $match: { $and: matchConditions } });
     }
 
-    // Sorting logic
-    let sortStage: { [key: string]: 1 | -1 } = { title: 1 };
-    switch (sort) {
-      case "highestRating":
-        sortStage = { itemRatingAvg: -1, title: 1 };
-        break;
-      case "lowestRating":
-        sortStage = { itemRatingAvg: 1, title: 1 };
-        break;
-      case "priceHigh":
-        sortStage = { price: -1, title: 1 };
-        break;
-      case "priceLow":
-        sortStage = { price: 1, title: 1 };
-        break;
-      default:
-        sortStage = { title: 1 };
-        break;
-    }
-    pipeline.push({ $sort: sortStage });
-
+    // 6️⃣ Pagination
     pipeline.push({
       $facet: {
         metadata: [{ $count: "total" }],
@@ -272,8 +251,8 @@ export class ProductRepository implements IProductRepository {
     });
 
     const result = await RestaurantModel.aggregate(pipeline).exec();
-    const data = result[0]?.data || [];
-    const total = result[0]?.metadata[0]?.total || 0;
+    const data = result[0]?.data ?? [];
+    const total = result[0]?.metadata[0]?.total ?? 0;
 
     return {
       data,
