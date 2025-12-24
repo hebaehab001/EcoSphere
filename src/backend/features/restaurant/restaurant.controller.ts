@@ -1,7 +1,10 @@
 import { inject, injectable } from "tsyringe";
 import type { IRestaurantService } from "./restaurant.service";
 import { IRestaurant } from "./restaurant.model";
-import { mapResponseToIShop, RestaurantPageOptions } from "./dto/restaurant.dto";
+import {
+  mapResponseToIShop,
+  RestaurantPageOptions,
+} from "./dto/restaurant.dto";
 import { IShop } from "@/types/ShopTypes";
 
 @injectable()
@@ -52,6 +55,13 @@ class RestaurantController {
   async getById(id: string): Promise<IShop> {
     const restaurant = await this.restaurantService.getById(id);
     return mapResponseToIShop(restaurant);
+  }
+
+  async getTopRated(limit?: number): Promise<IShop[]> {
+    const restaurants = await this.restaurantService.getTopRatedRestaurants(
+      limit
+    );
+    return restaurants.map(mapResponseToIShop);
   }
 
   async updateById(id: string, data: Partial<IRestaurant>): Promise<IShop> {
