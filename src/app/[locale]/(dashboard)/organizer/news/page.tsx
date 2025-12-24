@@ -1,9 +1,11 @@
-import React from 'react'
+import NewsDahsLayout from "@/components/layout/Dashboard/news/NewsDahsLayout";
 
 const page = () => {
   return (
-    <div>page</div>
-  )
-}
+    <div>
+      <NewsDahsLayout />
+    </div>
+  );
+};
 
-export default page
+export default page;
