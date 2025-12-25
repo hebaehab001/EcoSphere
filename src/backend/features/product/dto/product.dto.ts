@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { IMenuItem } from "../../restaurant/restaurant.model";
+import { IMenuItem, MenuItemCategory } from "../../restaurant/restaurant.model";
 import { IProduct } from "@/types/ProductType";
 
 // Single unified response type - always includes restaurant context
@@ -22,7 +22,7 @@ export const mapResponseToIProduct = (res: ProductResponse): IProduct => {
     productSubtitle: res.subtitle,
     productDescription: "", // res.description is not available in ProductResponse
     availableOnline: res.availableOnline,
-    sustainabilityScore: res.sustainabilityScore,
+    sustainabilityScore: res.sustainabilityScore || 0,
     sustainabilityReason: res.sustainabilityReason,
     category: res.category,
   };
@@ -32,6 +32,7 @@ export interface CreateProductDTO {
   title: string;
   subtitle: string;
   price: number;
+  category: MenuItemCategory;
   avatar?: {
     key: string;
     url?: string;
@@ -48,12 +49,17 @@ export interface ProductPageOptions {
   page?: number;
   limit?: number;
   search?: string;
+<<<<<<< HEAD
   sort?:
     | "default"
     | "priceLow"
     | "priceHigh"
     | "sustainabilityLow"
     | "sustainabilityHigh";
+=======
+  sort?: "default" | "priceLow" | "priceHigh" | "price" | "sustainabilityScore";
+  sortOrder?: "asc" | "desc";
+>>>>>>> 39586735f91437c8f566711397a949c0a1c0c912
   category?: string;
 }
 

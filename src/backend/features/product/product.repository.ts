@@ -75,11 +75,11 @@ export class ProductRepository implements IProductRepository {
           title: "$menus.title",
           subtitle: "$menus.subtitle",
           price: "$menus.price",
+          category: "$menus.category",
           avatar: "$menus.avatar",
           availableOnline: "$menus.availableOnline",
           sustainabilityScore: "$menus.sustainabilityScore",
           sustainabilityReason: "$menus.sustainabilityReason",
-          category: "$menus.category",
           itemRating: "$menus.itemRating",
         },
       },
@@ -187,22 +187,28 @@ export class ProductRepository implements IProductRepository {
       page = 1,
       limit = 10,
       search = "",
-      sort = "default",
-      category = "default",
+      category,
+      sort = "price",
+      sortOrder = "asc",
     } = options ?? {};
 
     const skip = (page - 1) * limit;
 
+    const SORT_FIELDS_MAP: Record<string, string> = {
+      price: "price",
+      sustainabilityScore: "sustainabilityScore",
+    };
+
+    const sortField = SORT_FIELDS_MAP[sort] ?? "price";
+    const sortDirection = sortOrder === "desc" ? -1 : 1;
+
     const pipeline: PipelineStage[] = [
-      // 1️⃣ Filter by restaurant ID
       {
-        $match: { _id: new mongoose.Types.ObjectId(restaurantId) },
+        $match: {
+          _id: new mongoose.Types.ObjectId(restaurantId),
+        },
       },
-
-      // 2️⃣ Unwind menus
       { $unwind: "$menus" },
-
-      // 3️⃣ Project only needed fields
       {
         $project: {
           _id: "$menus._id",
@@ -211,12 +217,36 @@ export class ProductRepository implements IProductRepository {
           title: "$menus.title",
           subtitle: "$menus.subtitle",
           price: "$menus.price",
+          category: "$menus.category",
           avatar: "$menus.avatar",
           availableOnline: "$menus.availableOnline",
           sustainabilityScore: "$menus.sustainabilityScore",
           sustainabilityReason: "$menus.sustainabilityReason",
-          category: "$menus.category",
           itemRating: "$menus.itemRating",
+        },
+      },
+      {
+        $match: {
+          $and: [
+            {
+              $or: [
+                { title: { $regex: search, $options: "i" } },
+                { subtitle: { $regex: search, $options: "i" } },
+              ],
+            },
+            ...(category ? [{ category }] : []),
+          ],
+        },
+      },
+      {
+        $sort: {
+          [sortField]: sortDirection,
+        },
+      },
+      {
+        $facet: {
+          metadata: [{ $count: "total" }],
+          data: [{ $skip: skip }, { $limit: limit }],
         },
       },
     ];
@@ -263,6 +293,7 @@ export class ProductRepository implements IProductRepository {
     });
 
     const result = await RestaurantModel.aggregate(pipeline).exec();
+
     const data = result[0]?.data ?? [];
     const total = result[0]?.metadata[0]?.total ?? 0;
 
