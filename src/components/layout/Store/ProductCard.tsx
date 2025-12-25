@@ -112,7 +112,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
     return "bg-red-500/60 text-white";
   };
 
-  console.log(availableOnline);
 
   return (
     <div
@@ -209,7 +208,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
         <div className=" flex gap-3 text-2xl ">
           <button
-            className={`myBtnPrimary rounded-tl-none! rounded-br-none! w-full  mx-auto ${
+            className={`myBtnPrimary rounded-tl-none! rounded-br-none! w-full  mx-auto text-nowrap text-base! ${
               !availableOnline ? "cursor-not-allowed! opacity-50" : " cursor-pointer!"
             }`}
             onClick={handleCart}
