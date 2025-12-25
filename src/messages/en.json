@@ -58,9 +58,9 @@
       },
       "dashboard": {
         "overview": "OverView",
-        "addEvent": "Add Event",
-        "browseEvents": "Browse Events",
-        "eventDetails": "Event Details",
+        "mangeevent": "Manage Event",
+        "upcomingevents": "upcoming events",
+        "history": "History",
         "products": "Products",
         "orders": "Orders",
         "shops": "Shops",
@@ -736,8 +736,6 @@
       "title": "Dashboard Overview",
       "quickActions": "Quick Actions",
       "createNewEvent": "Create new Event",
-      "viewAllEvents": "View Your events",
-      "browseEvents": "Browse Events",
       "keyMetrics": "Key Metrics",
       "realTimeData": "Real-time data",
       "totalTicketSales": "Total Ticket Sales",
@@ -745,6 +743,7 @@
       "confirmedAttendees": "Confirmed Attendees",
       "activeEvents": "Active Events",
       "upcomingEvents": "upcoming events",
+      "history":"History",
       "viewAll": "view all",
       "manage": "Manage",
       "noUpcomingEvents": "No upcoming events found."
@@ -776,8 +775,10 @@
       "title": "My Events",
       "addEventBtn": "Add New Event",
       "UpComingEvents": "Upcoming Events",
-      "PastEvents": "Past Events",
+      "history": "History",
       "noEvents": "No events found",
+      "noupcomingEvents": "No Upcoming events found",
+      "nohistory": "No history events found",
       "EventCard": {
         "organizer": "You are the organizer",
         "status": {
