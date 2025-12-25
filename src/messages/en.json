@@ -881,7 +881,10 @@
     },
     "card": {
       "removedFromFavorites": "Removed from favorites",
-      "addToCart": "Add to cart"
+      "addToCart": "Add to cart",
+      "removeFromCart": "Remove from cart",
+      "addedToCart": "Added to cart",
+      "removedFromCart": "Removed from cart"
     },
     "view": {
       "grid": "Grid View",

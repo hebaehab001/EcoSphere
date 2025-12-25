@@ -879,7 +879,10 @@
     },
     "card": {
       "removedFromFavorites": "تمت الإزالة من المفضلات",
-      "addToCart": "أضف إلى السلة"
+      "addToCart": "أضف إلى السلة",
+      "removeFromCart": "إزالة من السلة",
+      "addedToCart": "تمت إضافة المنتج إلى السلة",
+      "removedFromCart": "تمت إزالة المنتج من السلة"
     },
     "view": {
       "grid": "عرض الشبكة",
