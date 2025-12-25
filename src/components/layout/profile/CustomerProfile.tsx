@@ -321,7 +321,7 @@ const RecyclingHistoryComponent = ({ id }: { id: string }) => {
                           {new Date(entry.createdAt).toLocaleDateString()}
                         </td>
                         <td className="px-4 py-3">
-                          {new Date(entry.updatedAt).toLocaleDateString()}
+                          {new Date(entry.updatedAt!).toLocaleDateString()}
                         </td>
                         <td className="px-4 py-3">
                           {entry.recycleItems?.length || 0} {t("itemsCount")}
