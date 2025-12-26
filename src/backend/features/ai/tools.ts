@@ -849,29 +849,12 @@ export const AI_TOOLS = [
           },
           status: {
             type: "string",
-            enum: ["pending", "approved", "completed", "rejected"],
-            description: "New status for the request",
+            enum: ["pending", "review", "rejected", "processing", "completed"],
+            description:
+              "New status for the request (pending, review, rejected, processing, completed)",
           },
         },
         required: ["requestId", "status"],
-      },
-    },
-  },
-  {
-    type: "function",
-    function: {
-      name: "assignRecyclingRequest",
-      description:
-        "Assign a recycling request to a recycleMan. Use when recycleMan wants to take responsibility for a request. Requires recycleMan authentication.",
-      parameters: {
-        type: "object",
-        properties: {
-          requestId: {
-            type: "string",
-            description: "ID of the recycling request to assign",
-          },
-        },
-        required: ["requestId"],
       },
     },
   },

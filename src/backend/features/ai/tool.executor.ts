@@ -390,25 +390,11 @@ export class ToolExecutor {
           await this.recycleRepo.updateRecycleEntry(args.requestId, {
             status: args.status,
             isVerified: args.status === "completed",
-          });
-
-          return {
-            success: true,
-            message: `Recycling request ${args.requestId} updated to ${args.status}`,
-          };
-
-        case "assignRecyclingRequest":
-          if (!session?.userId || session.userRole !== "recycleMan")
-            throw new Error("RECYCLEMAN_AUTH_REQUIRED");
-
-          await this.recycleRepo.updateRecycleEntry(args.requestId, {
-            assignedTo: session.userId,
-            status: "approved",
           } as any);
 
           return {
             success: true,
-            message: "Recycling request assigned to you",
+            message: `Recycling request ${args.requestId} updated to ${args.status}`,
           };
 
         default:
@@ -452,7 +438,6 @@ export class ToolExecutor {
       "deleteEvent",
       // RecycleMan tools
       "updateRecyclingRequestStatus",
-      "assignRecyclingRequest",
     ];
     return authRequiredTools.includes(toolName);
   }
@@ -503,11 +488,7 @@ export class ToolExecutor {
     }
 
     // Check recycleMan auth
-    if (
-      ["updateRecyclingRequestStatus", "assignRecyclingRequest"].includes(
-        toolName
-      )
-    ) {
+    if (["updateRecyclingRequestStatus"].includes(toolName)) {
       if (!session.userId || session.userRole !== "recycleMan") {
         throw new Error("RECYCLEMAN_AUTH_REQUIRED");
       }
