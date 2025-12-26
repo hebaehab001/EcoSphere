@@ -73,15 +73,15 @@ const RecycleAgentTable = () => {
 
     // optimistic add (temporary id)
     const tempId = `temp-${Date.now()}`;
-    const tempAgent = {
+    const tempAgent: RecycleAgent = {
       id: tempId,
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
       phoneNumber: formData.phoneNumber,
       birthDate: formData.birthDate,
-      type: "recycleAgent",
-      agnetType: "independent",
+      role: "recycleAgent" as UserType,
+      agentType: "independent",
       isActive: true,
     };
 
