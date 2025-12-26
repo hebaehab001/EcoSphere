@@ -17,39 +17,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { EventType } from '@/backend/features/event/event.model';
 
-const parseEventDate = (dateStr: string) => {
-    // Supports YYYY-MM-DD or DD-MM-YYYY
-    if (dateStr.includes('-')) {
-        const parts = dateStr.split('-').map(Number);
-        if (parts[0] > 31) {
-            return new Date(parts[0], parts[1] - 1, parts[2]);
-        } else {
-            return new Date(parts[2], parts[1] - 1, parts[0]);
-        }
-    }
-    return new Date(dateStr);
-};
-
 export const getEventStartDateTime = (event: any) => {
-    const date = parseEventDate(event.eventDate);
-    if (event.startTime) {
-        const [hours, minutes] = event.startTime.split(':').map(Number);
-        date.setHours(hours, minutes, 0, 0);
-    } else {
-        date.setHours(0, 0, 0, 0);
-    }
-    return date;
+    return new Date(
+        `${event.eventDate.split("T")[0]}T${event.startTime ?? "00:00"}`
+    );
 };
 
 export const getEventEndDateTime = (event: any) => {
-    const date = parseEventDate(event.eventDate);
-    if (event.endTime) {
-        const [hours, minutes] = event.endTime.split(':').map(Number);
-        date.setHours(hours, minutes, 0, 0);
-    } else {
-        date.setHours(23, 59, 59, 999);
-    }
-    return date;
+    return new Date(
+        `${event.eventDate.split("T")[0]}T${event.endTime ?? "23:59"}`
+    );
 };
 
 export default function EventsHistory({ events }: EventProps) {
@@ -109,13 +86,13 @@ export default function EventsHistory({ events }: EventProps) {
             </div>
 
             {/* Filters */}
-            <div className="grid grid-cols-4 gap-3 items-center w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 gap-3 items-center w-full">
                 {/* Type */}
                 <Select key={`type-${resetKey}`} onValueChange={(v) => setTypeFilter(v as EventType)}>
-                    <SelectTrigger className="h-10 w-full rounded-full">
+                    <SelectTrigger className="h-10 w-full rounded-full px-4 rtl:flex-row-reverse">
                         <SelectValue placeholder={t("eventType")} />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="rtl:text-right">
                         <SelectItem value="environmental_seminar">{t("environmental_seminar")}</SelectItem>
                         <SelectItem value="community_cleanup">{t("community_cleanup")}</SelectItem>
                         <SelectItem value="sustainable_brands_showcase">{t("sustainable_brands_showcase")}</SelectItem>
@@ -125,10 +102,10 @@ export default function EventsHistory({ events }: EventProps) {
 
                 {/* Date */}
                 <Select key={`date-${resetKey}`} onValueChange={(v) => setDateFilter(v as any)}>
-                    <SelectTrigger className="h-10 w-full rounded-full">
+                    <SelectTrigger className="h-10 w-full rounded-full px-4 rtl:flex-row-reverse">
                         <SelectValue placeholder={t("date")} />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="rtl:text-right">
                         <SelectItem value="today">{t("today")}</SelectItem>
                         <SelectItem value="this_week">{t("thisWeek")}</SelectItem>
                         <SelectItem value="this_month">{t("thisMonth")}</SelectItem>
@@ -137,10 +114,10 @@ export default function EventsHistory({ events }: EventProps) {
 
                 {/* Price */}
                 <Select key={`price-${resetKey}`} onValueChange={(v) => setPriceFilter(v as any)}>
-                    <SelectTrigger className="h-10 w-full rounded-full">
+                    <SelectTrigger className="h-10 w-full rounded-full px-4 rtl:flex-row-reverse">
                         <SelectValue placeholder={t("price")} />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="rtl:text-right">
                         <SelectItem value="free">{t("free")}</SelectItem>
                         <SelectItem value="paid">{t("paid")}</SelectItem>
                     </SelectContent>

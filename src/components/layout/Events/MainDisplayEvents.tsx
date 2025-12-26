@@ -190,13 +190,13 @@ export default function MainDisplayEvents({ events }: Readonly<EventProps>) {
       </div>
 
       {/* Filters */}
-      <div className="grid grid-cols-4 gap-3 items-center w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 items-center w-full">
         {/* Event Type */}
         <Select key={`type-${resetKey}`} value={typeFilter} onValueChange={(v) => setTypeFilter(v as EventType)}>
-          <SelectTrigger className="h-10 rounded-full w-full px-4">
+          <SelectTrigger className="h-10 rounded-full w-full px-4 rtl:flex-row-reverse">
             <SelectValue placeholder={t("eventType")} />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent >
             <SelectItem value="environmental_seminar">{t("environmental_seminar")}</SelectItem>
             <SelectItem value="community_cleanup">{t("community_cleanup")}</SelectItem>
             <SelectItem value="sustainable_brands_showcase">{t("sustainable_brands_showcase")}</SelectItem>
@@ -206,10 +206,10 @@ export default function MainDisplayEvents({ events }: Readonly<EventProps>) {
 
         {/* Date */}
         <Select key={`date-${resetKey}`} value={dateFilter} onValueChange={(v) => setDateFilter(v as any)}>
-          <SelectTrigger className="h-10 rounded-full w-full px-4">
+          <SelectTrigger className="h-10 rounded-full w-full px-4 rtl:flex-row-reverse">
             <SelectValue placeholder={t("date")} />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rtl:text-right">
             <SelectItem value="today">{t("today")}</SelectItem>
             <SelectItem value="this_week">{t("thisWeek")}</SelectItem>
             <SelectItem value="this_month">{t("thisMonth")}</SelectItem>
@@ -218,11 +218,11 @@ export default function MainDisplayEvents({ events }: Readonly<EventProps>) {
 
         {/* Price */}
         <Select key={`price-${resetKey}`} value={priceFilter} onValueChange={(v) => setPriceFilter(v as any)}>
-          <SelectTrigger className="h-10 rounded-full w-full px-4">
+          <SelectTrigger className="h-10 rounded-full w-full px-4  rtl:flex-row-reverse">
             <SelectValue placeholder={t("price")} />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="free">{t("free")}</SelectItem>
+          <SelectContent className=" text-right">
+            <SelectItem  value="free">{t("free")}</SelectItem>
             <SelectItem value="paid">{t("paid")}</SelectItem>
           </SelectContent>
         </Select>
@@ -243,7 +243,7 @@ export default function MainDisplayEvents({ events }: Readonly<EventProps>) {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-5 gap-6">
         {filteredEvents.map((event) => (
           <EventCard key={event._id} event={event} />
         ))}
