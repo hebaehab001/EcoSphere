@@ -17,34 +17,40 @@ export class OrderController {
   }
 
   async handleStripeEvent(event: Stripe.Event) {
-    if (event.type === "payment_intent.succeeded") {
-      const paymentIntent = event.data.object as Stripe.PaymentIntent;
-      console.log("✅ Payment succeeded:", paymentIntent.id);
+    // Handle checkout session completed - this fires when payment succeeds
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object as Stripe.Checkout.Session;
+      console.log("✅ Checkout session completed:", session.id);
+
+      // Only process if payment was successful
+      if (session.payment_status !== "paid") {
+        console.log("⏳ Payment not yet confirmed, skipping stock decrease");
+        return;
+      }
 
       // Extract metadata
-      const userId = paymentIntent.metadata.userId;
-      const restaurantId = paymentIntent.metadata.restaurantId;
-      const items = JSON.parse(paymentIntent.metadata.items || "[]");
+      const metadata = session.metadata;
+      if (!metadata) {
+        console.error("❌ Missing metadata in checkout session");
+        return;
+      }
 
-      if (!userId || !items || items.length === 0) {
-        console.error("❌ Missing metadata in payment intent");
+      const items = JSON.parse(metadata.items || "[]");
+
+      if (!items || items.length === 0) {
+        console.error("❌ No items found in metadata");
         return;
       }
 
       try {
-        // Create order
-        await this.orderService.createOrder(userId, {
-          items,
-          userId,
-          paymentMethod: "stripe",
-        });
-
-        // Decrease stock for each item
-        await this.orderService.decreaseStockForOrder(items, restaurantId);
-
-        console.log("✅ Order created and stock decreased successfully");
+        // Decrease stock for each item (order already created in PaymentService)
+        await this.orderService.decreaseStockForOrder(items);
+        console.log(
+          "✅ Stock decreased successfully for order:",
+          metadata.orderId
+        );
       } catch (error) {
-        console.error("❌ Error processing payment success:", error);
+        console.error("❌ Error decreasing stock:", error);
       }
     }
   }
@@ -97,5 +103,53 @@ export class OrderController {
   }
   async getRevenueByDateRange(startDate: string, endDate: string) {
     return await this.orderService.getRevenueByDateRange(startDate, endDate);
+  }
+
+  /**
+   * Confirm order payment and decrease stock
+   * Called from payment success page as webhook fallback for local development
+   * Uses atomic update to prevent double processing from React Strict Mode
+   */
+  async confirmOrderAndDecreaseStock(
+    orderId: string
+  ): Promise<{ success: boolean; message: string }> {
+    try {
+      // Atomically update status from pending to paid
+      // This prevents race conditions when called twice (React Strict Mode)
+      const updatedOrder = await this.orderService.atomicConfirmOrder(orderId);
+
+      if (!updatedOrder) {
+        // Either order not found OR already processed
+        console.log(
+          "⏩ Order already processed or not found, skipping stock decrease"
+        );
+        return {
+          success: true,
+          message: "Order already confirmed or not found",
+        };
+      }
+
+      // Prepare items for stock decrease
+      const items = updatedOrder.items.map((item: any) => ({
+        id: item.productId || item.id,
+        quantity: item.quantity,
+        restaurantId: item.restaurantId,
+      }));
+
+      // Debug logging
+      console.log(
+        "📦 Order items for stock decrease:",
+        JSON.stringify(items, null, 2)
+      );
+
+      // Decrease stock
+      await this.orderService.decreaseStockForOrder(items);
+      console.log("✅ Stock decreased for order:", orderId);
+
+      return { success: true, message: "Order confirmed and stock decreased" };
+    } catch (error) {
+      console.error("❌ Error confirming order:", error);
+      return { success: false, message: "Failed to confirm order" };
+    }
   }
 }

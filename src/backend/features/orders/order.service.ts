@@ -33,6 +33,7 @@ export interface IOrderService {
     startDate: string,
     endDate: string
   ): Promise<RevenuePerDate[]>;
+  atomicConfirmOrder(orderId: string): Promise<IOrder | null>;
 }
 
 @injectable()
@@ -229,6 +230,20 @@ export class OrderService implements IOrderService {
     endDate: string
   ): Promise<RevenuePerDate[]> {
     return this.orderRepository.revenueFilteredByDate(startDate, endDate);
+  }
+
+  /**
+   * Atomically confirm order - updates status from 'pending' to 'paid' in a single operation.
+   * Returns the order ONLY if it was successfully updated (was pending).
+   * Returns null if order doesn't exist or was already processed.
+   * This prevents double stock decrease from React Strict Mode calling useEffect twice.
+   */
+  async atomicConfirmOrder(orderId: string): Promise<IOrder | null> {
+    return await this.orderRepository.atomicUpdateOrderStatus(
+      orderId,
+      "pending", // Only update if current status is pending
+      "paid" // Update to paid
+    );
   }
 
   async decreaseStockForOrder(

@@ -65,7 +65,7 @@ const ProductDetailsCard = ({ product }: { product: IProduct }) => {
       dispatch(
         addItem({
           ...product,
-          quantity: 1, // Start with 1 when adding to cart
+          quantity: count, // Use the selected count from quantity selector
           maxQuantity: product.quantity, // Set available stock as max
         })
       );
