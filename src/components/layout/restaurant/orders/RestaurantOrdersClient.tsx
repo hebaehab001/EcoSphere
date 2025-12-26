@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getRestaurantOrders, updateOrderStatus } from "@/frontend/api/Orders";
 import { IOrder } from "@/backend/features/orders/order.model";
 import { OrderStatus } from "@/backend/features/orders/order.types";
