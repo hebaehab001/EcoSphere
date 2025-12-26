@@ -254,7 +254,7 @@ export default function EventOverview({ events }: EventProps) {
           <h2 className="capitalize font-bold text-2xl mb-2 text-foreground">
             {t("upcomingEvents")}
           </h2>
-          <Link href="/organizer/details">
+          <Link href="/organizer/upcomingEvents">
             <h4 className="text-muted-foreground underline text-md">
               {t("viewAll")}
             </h4>

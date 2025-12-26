@@ -7,12 +7,18 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
 import EventCard from "./EventCard";
 import { useTranslations } from "next-intl";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function MainDisplayEvents({ events }: Readonly<EventProps>) {
   const t = useTranslations("Events.MainDisplayEvents");
-  console.log(events);
-
   const [searchQuery, setSearchQuery] = useState("");
+  const [priceFilter, setPriceFilter] = useState<"all" | "free" | "paid">("all");
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -22,19 +28,36 @@ export default function MainDisplayEvents({ events }: Readonly<EventProps>) {
 
   const filteredEvents = events
     .filter((event) => event.isAccepted === true)
-    .filter((event) => {
-      const query = searchQuery.toLowerCase();
-      return event.name.toLowerCase().includes(query);
-    })
+    .filter((event) =>
+      event.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     .filter((event) => new Date(event.eventDate) >= now)
+    .filter((event) => {
+      if (priceFilter === "free") return event.ticketPrice === 0;
+      if (priceFilter === "paid") return event.ticketPrice > 0;
+      return true;
+    })
     .sort(
       (a, b) =>
         new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime()
     );
 
+
+
   return (
-    <>
-      <div className="w-full flex justify-center md:justify-end">
+    <div className="flex flex-col gap-4 py-5">
+      <div className="w-full gap-4 flex justify-center md:justify-end">
+        {/* Price Filter Select */}
+        <Select value={priceFilter} onValueChange={(value) => setPriceFilter(value as "all" | "free" | "paid")}>
+          <SelectTrigger className="w-full md:w-45">
+            <SelectValue placeholder={t("filterByPrice")} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{t("all")}</SelectItem>
+            <SelectItem value="free">{t("free")}</SelectItem>
+            <SelectItem value="paid">{t("paid")}</SelectItem>
+          </SelectContent>
+        </Select>
         <ButtonGroup className="rtl:flex-row-reverse w-[80%] md:w-fit">
           <Input
             placeholder={t("searchPlaceholder")}
@@ -62,6 +85,6 @@ export default function MainDisplayEvents({ events }: Readonly<EventProps>) {
           <p>{t("emptySubtitle")}</p>
         </div>
       )}
-    </>
+    </div>
   );
 }

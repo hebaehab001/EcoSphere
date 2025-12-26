@@ -687,7 +687,7 @@
       "confirmedAttendees": "Confirmed Attendees",
       "activeEvents": "Active Events",
       "upcomingEvents": "upcoming events",
-      "history":"History",
+      "history": "History",
       "viewAll": "view all",
       "manage": "Manage",
       "noUpcomingEvents": "No upcoming events found."
@@ -696,6 +696,10 @@
       "title": "Browse Events",
       "search": "Search",
       "searchPlaceholder": "Search events...",
+      "filterByPrice": "Filter by price",
+      "all": "All",
+      "free": "Free",
+      "paid": "Paid",
       "emptyTitle": "No upcoming events found",
       "emptySubtitle": "Please check back later for upcoming events"
     },
