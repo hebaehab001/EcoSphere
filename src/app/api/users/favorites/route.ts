@@ -28,15 +28,7 @@ export const GET = async (): Promise<NextResponse<ApiResponse<IProduct[]>>> => {
       favoritesIds as string[]
     );
 
-    console.log("[API /users/favorites] Returning", result.length, "favorites");
-    if (result.length > 0) {
-      console.log("[API /users/favorites] Sample favorite:", {
-        id: result[0].id,
-        productName: result[0].productName,
-        productImg: result[0].productImg || "EMPTY",
-        hasImg: !!result[0].productImg,
-      });
-    }
+    console.log(result, "from route");
     return ok(result);
   } catch (error) {
     console.error(error);
@@ -60,12 +52,24 @@ export const PATCH = async (
   }
 
   try {
-    const { favoritesIds } = await controller.updateFavorites(session.id, ids);
+    let result;
+    if (Array.isArray(ids)) {
+      // Syncing multiple favorites (e.g., from Guest session)
+      const { favoritesIds } = await controller.saveFavorites(session.id, ids);
+      result = await controller.getFavoriteMenuItems(favoritesIds as string[]);
+    } else if (ids === "clear") {
+      // Clearing all favorites
+      const { favoritesIds } = await controller.clearFavorites(session.id);
+      result = await controller.getFavoriteMenuItems(favoritesIds as string[]);
+    } else {
+      // Toggling a single favorite
+      const { favoritesIds } = await controller.updateFavorites(
+        session.id,
+        ids as string
+      );
+      result = await controller.getFavoriteMenuItems(favoritesIds as string[]);
+    }
 
-    const result = await controller.getFavoriteMenuItems(
-      favoritesIds as string[]
-    );
-    console.log(result, "form route")
     return ok(result);
   } catch (error) {
     console.error(error);
