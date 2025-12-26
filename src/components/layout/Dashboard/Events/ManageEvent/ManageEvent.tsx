@@ -44,7 +44,9 @@ import z from "zod";
 import { useTranslations } from "next-intl";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function ManageEvent({initialData,}: Readonly<{ initialData?: any }>) {
+export default function ManageEvent({
+  initialData,
+}: Readonly<{ initialData?: any }>) {
   const t = useTranslations("Events.Manage");
   const tEventTypes = useTranslations("Events.Manage.fields.EventTypes");
   const router = useRouter();
@@ -124,7 +126,7 @@ export default function ManageEvent({initialData,}: Readonly<{ initialData?: any
         await PostEvent(formData);
         toast.success(t("successCreate"));
       }
-      router.push("/organizer/upcominEvents");
+      router.push("/organizer/upcomingEvents");
     } catch (err) {
       console.error(err);
       toast.error(t("error"));
