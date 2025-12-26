@@ -25,6 +25,8 @@ export const mapResponseToIProduct = (res: ProductResponse): IProduct => {
     sustainabilityScore: res.sustainabilityScore || 0,
     sustainabilityReason: res.sustainabilityReason,
     category: res.category,
+    quantity: res.quantity,
+    inStock: res.inStock,
   };
 };
 
@@ -33,6 +35,7 @@ export interface CreateProductDTO {
   subtitle: string;
   price: number;
   category: MenuItemCategory;
+  quantity?: number; // Optional - defaults to 1 in schema
   avatar?: {
     key: string;
     url?: string;
@@ -113,6 +116,23 @@ export function buildProductsPipeline({
       sustainabilityScore: "$menus.sustainabilityScore",
       sustainabilityReason: "$menus.sustainabilityReason",
       itemRating: "$menus.itemRating",
+    },
+  });
+
+  pipeline.push({
+    $group: {
+      _id: "$_id", // menu item id
+      restaurantId: { $first: "$restaurantId" },
+      restaurantName: { $first: "$restaurantName" },
+      title: { $first: "$title" },
+      subtitle: { $first: "$subtitle" },
+      price: { $first: "$price" },
+      category: { $first: "$category" },
+      avatar: { $first: "$avatar" },
+      availableOnline: { $first: "$availableOnline" },
+      sustainabilityScore: { $first: "$sustainabilityScore" },
+      sustainabilityReason: { $first: "$sustainabilityReason" },
+      itemRating: { $first: "$itemRating" },
     },
   });
 
