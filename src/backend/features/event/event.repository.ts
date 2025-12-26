@@ -5,7 +5,10 @@ import { DBInstance } from "@/backend/config/dbConnect";
 import { Types } from "mongoose";
 
 export interface IEventRepository {
-  getEvents(): Promise<IEvent[]>;
+  getEvents(
+    isAdmin?: boolean,
+    status?: "accepted" | "rejected" | "pending"
+  ): Promise<IEvent[]>;
   getEvent(id: string, eventId: string): Promise<IEvent>;
   getEventsByUserId(id: string): Promise<IEvent[]>;
   createEvent(id: string, data: IEvent): Promise<IEvent>;
@@ -31,16 +34,31 @@ export interface IEventRepository {
 
 @injectable()
 class EventRepository {
-  async getEvents(): Promise<IEvent[]> {
+  async getEvents(
+    isAdmin: boolean = false,
+    status?: "accepted" | "rejected" | "pending"
+  ): Promise<IEvent[]> {
     await DBInstance.getConnection();
 
-    return EventModel.find({
+    const query: any = {
       eventDate: { $gte: new Date() },
-      isAccepted: true,
-    })
-      .populate("user", "firstName phoneNumber email")
-      .lean()
-      .exec();
+    };
+
+    if (isAdmin) {
+      if (status === "pending") {
+        query.isEventNew = true;
+      } else if (status === "accepted") {
+        query.isAccepted = true;
+        query.isEventNew = false;
+      } else if (status === "rejected") {
+        query.isAccepted = false;
+        query.isEventNew = false;
+      }
+    } else {
+      query.isAccepted = true;
+    }
+
+    return EventModel.find(query).lean().exec();
   }
 
   async getEvent(userId: string, eventId: string): Promise<IEvent> {
@@ -48,7 +66,7 @@ class EventRepository {
 
     const event = await EventModel.findOne({
       _id: eventId,
-      user: userId,
+      owner: userId,
     })
       .lean()
       .exec();
@@ -63,15 +81,15 @@ class EventRepository {
   async getEventsByUserId(userId: string): Promise<IEvent[]> {
     await DBInstance.getConnection();
 
-    return EventModel.find({ user: userId }).lean().exec();
+    return EventModel.find({ owner: userId }).lean().exec();
   }
 
-  async createEvent(userId: string, data: IEvent): Promise<IEvent> {
+  async createEvent(id: string, data: IEvent): Promise<IEvent> {
     await DBInstance.getConnection();
 
     const event = await EventModel.create({
       ...data,
-      user: userId,
+      owner: id,
     });
 
     return event.toObject();
@@ -81,7 +99,7 @@ class EventRepository {
     await DBInstance.getConnection();
 
     const event = await EventModel.findOneAndUpdate(
-      { _id: data._id, user: userId },
+      { _id: data._id, owner: userId },
       { ...data, updatedAt: new Date() },
       { new: true }
     )
@@ -100,7 +118,7 @@ class EventRepository {
 
     const event = await EventModel.findOneAndDelete({
       _id: eventId,
-      user: userId,
+      owner: userId,
     })
       .lean()
       .exec();
