@@ -17,8 +17,6 @@ import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 
 export default function EventCard({ event }: { event: any }) {
-  console.log(event);
-  
   const t = useTranslations("Events.displayEvents.EventCard");
   const locale = useLocale();
   const { data: session } = useSession();

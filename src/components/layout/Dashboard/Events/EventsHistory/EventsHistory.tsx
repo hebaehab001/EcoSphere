@@ -103,9 +103,9 @@ export default function EventsHistory({ events }: EventProps) {
                     placeholder={t("searchPlaceholder")}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-11 rounded-l-full"
+                    className="h-11 ltr:rounded-l-full rtl:rounded-r-full"
                 />
-                <Button className="h-11 rounded-r-full px-6">{t("search")}</Button>
+                <Button className="h-11 ltr:rounded-r-full ltr:rounded-l-none rtl:rounded-l-full rtl:rounded-r-none  px-15">{t("search")}</Button>
             </div>
 
             {/* Filters */}

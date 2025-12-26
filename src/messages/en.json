@@ -791,13 +791,27 @@
     "MainDisplayEvents": {
       "title": "Browse Events",
       "search": "Search",
+      "upcomingEvents": "Upcoming Events",
       "searchPlaceholder": "Search events...",
       "filterByPrice": "Filter by price",
       "all": "All",
       "free": "Free",
       "paid": "Paid",
       "emptyTitle": "No upcoming events found",
-      "emptySubtitle": "Please check back later for upcoming events"
+      "emptySubtitle": "Please check back later for upcoming events",
+      "eventType": "Event Type",
+      "date": "Date",
+      "price": "Price",
+      "clearFilters": "Clear Filters",
+      "filterByType": "Filter by Type",
+      "filterByDate": "Filter by Date",
+      "today": "Today",
+      "thisWeek": "This Week",
+      "thisMonth": "This Month",
+      "environmental_seminar": "Environmental Seminar",
+      "community_cleanup": "Community Cleanup",
+      "sustainable_brands_showcase": "Sustainable Brands Showcase",
+      "other": "Other"
     },
     "WhyEcosphere": {
       "title": "Why Attend Events on Ecosphere?",
