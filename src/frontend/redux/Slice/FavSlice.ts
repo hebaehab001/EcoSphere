@@ -14,25 +14,17 @@ const initialState: FavState = {
   status: "idle",
 };
 
-export const getFavorites = createAsyncThunk(
-  "fav/getFavorites",
-  async (_, { getState }) => {
-    const state = getState() as RootState;
+export const getFavorites = createAsyncThunk("fav/getFavorites", async (_) => {
+  const res = await fetch("/api/users/favorites", {
+    credentials: "include",
+  });
 
-    if (!state.user.isLoggedIn) {
-      return state.fav.favProducts;
-    }
+  if (!res.ok) throw new Error("Failed to fetch favorites");
 
-    const res = await fetch("/api/users/favorites", {
-      credentials: "include",
-    });
-
-    if (!res.ok) throw new Error("Failed to fetch favorites");
-
-    const { data } = await res.json();
-    return data ?? [];
-  }
-);
+  const { data } = await res.json();
+  console.log(data);
+  return data;
+});
 
 export const syncGuestFavorites = createAsyncThunk(
   "fav/syncGuestFavorites",
@@ -87,7 +79,7 @@ const FavSlice = createSlice({
       })
       .addCase(getFavorites.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.favProducts = action.payload || [];
+        state.favProducts = action.payload;
       })
       .addCase(getFavorites.rejected, (state) => {
         state.status = "failed";
