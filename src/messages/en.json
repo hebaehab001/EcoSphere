@@ -748,6 +748,7 @@
       "securedByStripe": "Payments secured by Stripe"
     },
     "verification": {
+      "orderId": "Order ID",
       "successTitle": "Payment Confirmed",
       "successDesc": "Thank you for contributing to a greener future.",
       "transactionId": "Transaction ID",

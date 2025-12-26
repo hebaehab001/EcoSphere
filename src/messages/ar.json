@@ -1373,5 +1373,40 @@
         "deleteError": "تعذر حذف الوصفة"
       }
     }
+  },
+  "Checkout": {
+    "page": {
+      "title": "الدفع",
+      "payWithCard": "الدفع بالبطاقة",
+      "payWithCash": "الدفع عند الاستلام",
+      "somethingWentWrong": "حدث خطأ ما",
+      "youWillPay": "ستدفع",
+      "directlyToCourier": "مباشرة للمندوب عند التسليم.",
+      "confirmOrder": "تأكيد الطلب"
+    },
+    "form": {
+      "initializing": "جار تهيئة الدفع الآمن...",
+      "securePayment": "دفع آمن",
+      "securePaymentDesc": "أتمم عملية الشراء بأمان.",
+      "errorTitle": "خطأ",
+      "unexpectedError": "حدث خطأ غير متوقع.",
+      "processing": "جار المعالجة...",
+      "pay": "ادفع {amount}",
+      "securedByStripe": "الدفع مؤمن بواسطة Stripe"
+    },
+    "verification": {
+      "orderId": "رقم الطلب",
+      "successTitle": "تم الدفع بنجاح",
+      "successDesc": "شكراً لمساهمتك في مستقبل أخضر.",
+      "transactionId": "رقم العملية",
+      "totalAmount": "المبلغ الإجمالي",
+      "returnHome": "العودة للرئيسية",
+      "downloadReceipt": "تحميل الإيصال",
+      "failedTitle": "فشل الدفع",
+      "failedDesc": "واجهنا مشكلة في معالجة دفعتك. لم يتم خصم أي أموال.",
+      "errorCode": "رمز الخطأ: {code}",
+      "cardDeclined": "تم رفض البطاقة. يرجى التحقق من تفاصيل بطاقتك أو تجربة طريقة دفع أخرى.",
+      "tryAgain": "حاول مرة أخرى"
+    }
   }
 }
