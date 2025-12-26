@@ -22,7 +22,7 @@ export interface IRestaurantService {
     options?: RestaurantPageOptions
   ): Promise<PaginatedRestaurantResponse | IRestaurant[]>;
   getById(id: string): Promise<IRestaurant>;
-  getTopRatedRestaurants(limit?: number): Promise<IRestaurant[]>;
+  getFirstRestaurants(limit?: number): Promise<IRestaurant[]>;
   updateById(id: string, data: Partial<IRestaurant>): Promise<IRestaurant>;
   deleteById(id: string): Promise<IRestaurant>;
 }
@@ -89,8 +89,8 @@ class RestaurantService implements IRestaurantService {
     return this.populateAvatar(restaurants);
   }
 
-  async getTopRatedRestaurants(limit: number = 15): Promise<IRestaurant[]> {
-    const restaurants = await this.restaurantRepository.getTopRatedRestaurants(
+  async getFirstRestaurants(limit: number = 15): Promise<IRestaurant[]> {
+    const restaurants = await this.restaurantRepository.getFirstRestaurants(
       limit
     );
     return this.populateAvatar(restaurants);

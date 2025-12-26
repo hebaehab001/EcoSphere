@@ -57,10 +57,8 @@ class RestaurantController {
     return mapResponseToIShop(restaurant);
   }
 
-  async getTopRated(limit?: number): Promise<IShop[]> {
-    const restaurants = await this.restaurantService.getTopRatedRestaurants(
-      limit
-    );
+  async getFirst(limit: number = 15): Promise<IShop[]> {
+    const restaurants = await this.restaurantService.getFirstRestaurants(limit);
     return restaurants.map(mapResponseToIShop);
   }
 

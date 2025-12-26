@@ -23,7 +23,7 @@ export interface IRestaurantRepository {
   ): Promise<PaginatedRestaurantResponse | IRestaurant[]>;
   getById(id: string): Promise<IRestaurant>;
   getRestaurantsByIdes(restaurantIds: string[]): Promise<IRestaurant[]>;
-  getTopRatedRestaurants(limit?: number): Promise<IRestaurant[]>;
+  getFirstRestaurants(limit?: number): Promise<IRestaurant[]>;
   // Find a restaurant by its Stripe customer id (used by subscription flow)
   getRestaurantByStripeId(
     stripeCustomerId: string
@@ -140,41 +140,17 @@ class RestaurantRepository {
       .exec();
   }
 
-  async getTopRatedRestaurants(limit: number = 15): Promise<IRestaurant[]> {
+  async getFirstRestaurants(limit: number = 15): Promise<IRestaurant[]> {
     await DBInstance.getConnection();
 
-    const pipeline: any[] = [
-      // Filter out hidden restaurants
-      { $match: { isHidden: false } },
-      // Calculate average rating
-      {
-        $addFields: {
-          restaurantRatingAvg: {
-            $cond: [
-              { $gt: [{ $size: "$restaurantRating" }, 0] },
-              { $avg: "$restaurantRating.rate" },
-              0,
-            ],
-          },
-        },
-      },
-      // Sort by rating (highest first)
-      { $sort: { restaurantRatingAvg: -1 } },
-      // Limit to top N
-      { $limit: limit },
-      // Project only needed fields
-      {
-        $project: {
-          _id: 1,
-          name: 1,
-          avatar: 1,
-          restaurantRatingAvg: 1,
-        },
-      },
-    ];
+    // Simply get the first N non-hidden restaurants
+    const restaurants = await RestaurantModel.find({ isHidden: false })
+      .select("_id name avatar")
+      .limit(limit)
+      .lean<IRestaurant[]>()
+      .exec();
 
-    const result = await RestaurantModel.aggregate(pipeline).exec();
-    return result;
+    return restaurants;
   }
 
   // New helper: find restaurant by Stripe customer id so subscription webhooks

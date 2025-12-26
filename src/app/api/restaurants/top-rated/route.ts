@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import "@/backend/config/container";
 import { container } from "tsyringe";
 import RestaurantController from "@/backend/features/restaurant/restaurant.controller";
 
@@ -20,7 +21,7 @@ export async function GET(req: NextRequest) {
     }
 
     const restaurantController = container.resolve(RestaurantController);
-    const restaurants = await restaurantController.getTopRated(limit);
+    const restaurants = await restaurantController.getFirst(limit);
 
     return NextResponse.json(
       {
@@ -29,17 +30,16 @@ export async function GET(req: NextRequest) {
           id: restaurant._id,
           name: restaurant.name,
           image: restaurant.avatar?.url || null,
-          rating: (restaurant as any).restaurantRatingAvg || 0,
         })),
       },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error fetching top-rated restaurants:", error);
+    console.error("Error fetching restaurants:", error);
     return NextResponse.json(
       {
         success: false,
-        error: "Failed to fetch top-rated restaurants",
+        error: "Failed to fetch restaurants",
       },
       { status: 500 }
     );

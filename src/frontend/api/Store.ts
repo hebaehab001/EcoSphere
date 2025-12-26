@@ -30,7 +30,7 @@ export const getProducts = async (params?: GetProductsParams) => {
   return data;
 };
 
-export const getTopRatedStores = async (limit: number = 15) => {
+export const getStores = async (limit: number = 15) => {
   const url = `${process.env.NEXT_PUBLIC_APP_URL}/api/restaurants/top-rated?limit=${limit}`;
 
   const response = await fetch(url, {
@@ -42,7 +42,7 @@ export const getTopRatedStores = async (limit: number = 15) => {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch top-rated stores");
+    throw new Error("Failed to fetch stores");
   }
 
   const data = await response.json();

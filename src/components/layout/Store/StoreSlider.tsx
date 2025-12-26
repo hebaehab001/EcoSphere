@@ -6,13 +6,12 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import BasicAnimatedWrapper from "../common/BasicAnimatedWrapper";
-import { getTopRatedStores } from "@/frontend/api/Store";
+import { getStores } from "@/frontend/api/Store";
 
 type StoreData = {
   id: string;
   name: string;
   image: string | null;
-  rating: number;
 };
 
 // Static store images for fallback (same as before)
@@ -47,11 +46,11 @@ const StoreSlider = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchTopRatedStores = useCallback(async () => {
+  const fetchStores = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await getTopRatedStores(15);
+      const response = await getStores(15);
       if (response.success && response.data) {
         setStores(response.data);
       } else {
@@ -59,15 +58,15 @@ const StoreSlider = () => {
       }
     } catch (err) {
       setError(t("error"));
-      console.error("Error fetching top-rated stores:", err);
+      console.error("Error fetching stores:", err);
     } finally {
       setLoading(false);
     }
   }, [t]);
 
   useEffect(() => {
-    fetchTopRatedStores();
-  }, [fetchTopRatedStores]);
+    fetchStores();
+  }, [fetchStores]);
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -80,7 +79,7 @@ const StoreSlider = () => {
   };
 
   const handleRetry = () => {
-    fetchTopRatedStores();
+    fetchStores();
   };
 
   const handleStoreClick = (storeId: string) => {
