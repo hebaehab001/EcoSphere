@@ -8,7 +8,7 @@ export interface IRecycleService {
   getRecycleEntryById(id: string): Promise<RecycleResponse>;
   updateRecycleEntry(
     id: string,
-    data: Partial<IRecycle>
+    data: Partial<IRecycle>,
   ): Promise<RecycleResponse>;
   deleteRecycleEntry(id: string): Promise<RecycleResponse>;
   listRecycleEntries(): Promise<RecycleResponse[]>;
@@ -16,7 +16,7 @@ export interface IRecycleService {
   analyzeImages(files: Blob[]): Promise<any>;
   calculateCarbonFootprint(items: any[]): Promise<number>;
   calculateManualCarbon(
-    items: { type: string; amount: number }[]
+    items: { type: string; amount: number }[],
   ): Promise<any>;
 }
 
@@ -24,7 +24,7 @@ export interface IRecycleService {
 export class RecycleService implements IRecycleService {
   constructor(
     @inject("RecycleRepository")
-    private readonly recycleRepository: IRecycleRepository
+    private readonly recycleRepository: IRecycleRepository,
   ) {}
 
   async createRecycleEntry(data: Partial<IRecycle>): Promise<RecycleResponse> {
@@ -39,7 +39,7 @@ export class RecycleService implements IRecycleService {
 
   async updateRecycleEntry(
     id: string,
-    data: Partial<IRecycle>
+    data: Partial<IRecycle>,
   ): Promise<RecycleResponse> {
     const response = await this.recycleRepository.updateRecycleEntry(id, data);
     return mapRecycleToResponse(response);
@@ -57,9 +57,8 @@ export class RecycleService implements IRecycleService {
   }
 
   async getRecycleEntriesByEmail(email: string): Promise<RecycleResponse[]> {
-    const response = await this.recycleRepository.getRecycleEntriesByEmail(
-      email
-    );
+    const response =
+      await this.recycleRepository.getRecycleEntriesByEmail(email);
     const mappedData = response.map((item) => mapRecycleToResponse(item));
     return mappedData;
   }
@@ -125,7 +124,7 @@ export class RecycleService implements IRecycleService {
         });
 
         return counts;
-      })
+      }),
     );
 
     const aggregatedCounts: Record<string, number> = {};
@@ -163,7 +162,6 @@ export class RecycleService implements IRecycleService {
 
       // Add to dominant key
       aggregatedCounts[maxKey!] += unknownTotal;
-    
     }
 
     const items = Object.entries(aggregatedCounts).map(([key, count]) => {
@@ -180,7 +178,7 @@ export class RecycleService implements IRecycleService {
 
     const totalWeight = items.reduce(
       (sum, item) => sum + item.estimatedWeight,
-      0
+      0,
     );
     const estimatedCarbonSaved = await this.calculateCarbonFootprint(items);
 
@@ -192,7 +190,7 @@ export class RecycleService implements IRecycleService {
   }
 
   async calculateManualCarbon(
-    items: { type: string; amount: number }[]
+    items: { type: string; amount: number }[],
   ): Promise<any> {
     // Map frontend 'amount' (which is weight in kg) to 'estimatedWeight' for the calculation
     const formattedItems = items.map((item) => ({
@@ -203,11 +201,10 @@ export class RecycleService implements IRecycleService {
 
     const totalWeight = formattedItems.reduce(
       (sum, item) => sum + item.estimatedWeight,
-      0
+      0,
     );
-    const estimatedCarbonSaved = await this.calculateCarbonFootprint(
-      formattedItems
-    );
+    const estimatedCarbonSaved =
+      await this.calculateCarbonFootprint(formattedItems);
 
     return {
       items: formattedItems,
@@ -240,7 +237,7 @@ export class RecycleService implements IRecycleService {
           year: 2025,
           source_lca_activity: "cradle_to_gate",
           data_version: "^29",
-          // @ts-expect-error
+          // @ts-expect-error - This is a specific requirement for this activity_id
           allowed_data_quality_flags: ["notable_methodological_variance"],
         };
       } else if (type.includes("glass")) {
@@ -303,13 +300,13 @@ export class RecycleService implements IRecycleService {
                 weight_unit: "kg",
               },
             }),
-          }
+          },
         );
 
         if (!response.ok) {
           const errText = await response.text();
           console.warn(
-            `Climatiq API Error for ${type}: ${response.status} - ${errText}`
+            `Climatiq API Error for ${type}: ${response.status} - ${errText}`,
           );
           throw new Error("API_FAIL");
         }
