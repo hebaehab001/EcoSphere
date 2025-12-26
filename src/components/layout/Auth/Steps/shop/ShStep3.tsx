@@ -7,11 +7,10 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as Z from "zod";
-import { useTranslations } from 'next-intl';
-
+import { useTranslations } from "next-intl";
 
 const ShStep3 = () => {
-  const t = useTranslations('Auth.steps.shopStep3');
+  const t = useTranslations("Auth.steps.shopStep3");
   const dispatch = useDispatch();
 
   const form = useForm<Z.infer<typeof Step3ShopSchema>>({
@@ -32,7 +31,7 @@ const ShStep3 = () => {
       dispatch(saveStep3Data(value));
     });
     return () => subscription.unsubscribe();
-  }, [form.watch, dispatch]);
+  }, [form, dispatch]);
 
   useEffect(() => {
     dispatch(setStepValid({ step: 3, valid: form.formState.isValid }));
@@ -50,7 +49,7 @@ const ShStep3 = () => {
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <p className="text-2xl md:text-3xl font-bold text-center text-secondary-foreground">
-          {t('title')}
+          {t("title")}
         </p>
 
         {/* Logo upload */}
@@ -71,7 +70,7 @@ const ShStep3 = () => {
               />
             )}
           /> */}
-              {/* <div className="flex flex-col items-center gap-4">
+          {/* <div className="flex flex-col items-center gap-4">
                 <div className="relative w-32 h-32 rounded-full overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors">
                   {previewUrl ? (
                     <Image
@@ -136,7 +135,7 @@ const ShStep3 = () => {
         <div>
           <input
             type="text"
-            placeholder={t('location')}
+            placeholder={t("location")}
             className="myInput"
             {...register("location")}
           />
@@ -150,7 +149,7 @@ const ShStep3 = () => {
         <div>
           <input
             type="text"
-            placeholder={t('workingHours')}
+            placeholder={t("workingHours")}
             className="myInput"
             {...register("workingHours")}
           />
