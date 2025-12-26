@@ -1,5 +1,7 @@
 import { ISubEvent } from "@/types/EventTypes";
 import { IEvent } from "./event.model";
+import { IUser } from "../user/user.model";
+import { IRestaurant } from "../restaurant/restaurant.model";
 
 export type EventResponse = {
   _id: string;
@@ -17,7 +19,11 @@ export type EventResponse = {
   attenders?: string[];
   isAccepted: boolean;
   isEventNew: boolean;
-  user?: string;
+  user?: {
+    _id: string;
+    email: string;
+    name: string;
+  };
 };
 
 export const mapEventToEventData = (event: IEvent): EventResponse => {
@@ -25,7 +31,7 @@ export const mapEventToEventData = (event: IEvent): EventResponse => {
     _id: event._id.toString(),
     name: event.name,
     type: event.type,
-    avatar: JSON.parse(JSON.stringify(event.avatar)),
+    avatar: event.avatar ? JSON.parse(JSON.stringify(event.avatar)) : undefined,
     description: event.description,
     locate: event.locate,
     eventDate: event.eventDate.toISOString(),
@@ -37,6 +43,22 @@ export const mapEventToEventData = (event: IEvent): EventResponse => {
     attenders: event.attenders?.map(String),
     isAccepted: event.isAccepted,
     isEventNew: event.isEventNew,
-    user: event.owner,
+    user: event.user
+      ? {
+          _id: (event.owner || (event.user as any)?._id)?.toString() || "",
+          email: event.user.email,
+          name:
+            (event.user as any).name ||
+            `${(event.user as any).firstName} ${(event.user as any).lastName}`,
+        }
+      : undefined,
   };
+};
+
+export type EventResponsePopulated = EventResponse;
+
+export const mapEventToEventDataWithUser = (
+  event: IEvent
+): EventResponsePopulated => {
+  return mapEventToEventData(event);
 };

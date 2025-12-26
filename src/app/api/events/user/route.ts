@@ -88,9 +88,7 @@ export const POST = organizerOnly(
       }
 
       return ok(
-        await rootContainer
-          .resolve(EventController)
-          .createEvent({ id: user.id, role: user.role }, body),
+        await rootContainer.resolve(EventController).createEvent(user.id, body),
       );
     } catch (error) {
       console.error(error);

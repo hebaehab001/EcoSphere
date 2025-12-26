@@ -7,6 +7,7 @@ export const mapResponseToIShop = (res: RestaurantResponse): IShop => {
   return {
     _id: `${res._id}`,
     name: res.name,
+    email: res.email,
     location: res.location,
     workingHours: res.workingHours,
     phoneNumber: res.phoneNumber,
@@ -36,6 +37,8 @@ export const mapResponseToIShop = (res: RestaurantResponse): IShop => {
     restaurantRating: res.restaurantRating
       ? JSON.parse(JSON.stringify(res.restaurantRating))
       : [],
+    isHidden: res.isHidden,
+    subscribed: res.subscribed,
   };
 };
 
@@ -72,6 +75,7 @@ export interface RestaurantPageOptions {
     | "bakery"
     | "cafe"
     | "other";
+  status?: "all" | "visible" | "hidden";
 }
 
 export interface PaginatedRestaurantResponse {

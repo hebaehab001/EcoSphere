@@ -1,4 +1,6 @@
 import { Document, models, model, Schema } from "mongoose";
+import { IUser } from "../user/user.model";
+import { IRestaurant } from "../restaurant/restaurant.model";
 
 export type EventType =
   | "environmental_seminar"
@@ -12,6 +14,15 @@ export interface ISection extends Document {
   startTime: string;
   endTime: string;
 }
+
+export type IEventPopulated = IEvent & {
+  user: {
+    email: string;
+    name?: string;
+    firstName?: string;
+    lastName?: string;
+  };
+};
 
 export interface IEvent extends Document {
   name: string;
@@ -34,6 +45,7 @@ export interface IEvent extends Document {
   isAccepted: boolean;
   isEventNew: boolean;
   owner: string;
+  user?: IUser | IRestaurant;
 }
 
 export const sectionsSchema = new Schema<ISection>(
@@ -43,7 +55,7 @@ export const sectionsSchema = new Schema<ISection>(
     startTime: { type: String, required: true },
     endTime: { type: String, required: true },
   },
-  { _id: false }
+  { _id: false },
 );
 
 export const eventSchema = new Schema<IEvent>(
@@ -81,8 +93,12 @@ export const eventSchema = new Schema<IEvent>(
       type: String,
       required: true,
     },
+    user: {
+      type: Object,
+      required: false,
+    },
   },
-  { _id: true, timestamps: true }
+  { _id: true, timestamps: true },
 );
 
 export const EventModel = models.Event || model<IEvent>("Event", eventSchema);

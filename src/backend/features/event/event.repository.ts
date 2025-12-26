@@ -5,13 +5,13 @@ import { DBInstance } from "@/backend/config/dbConnect";
 import { Types } from "mongoose";
 
 export interface IEventRepository {
-  getEvents(): Promise<IEvent[]>;
+  getEvents(
+    isAdmin?: boolean,
+    status?: "accepted" | "rejected" | "pending"
+  ): Promise<IEvent[]>;
   getEvent(id: string, eventId: string): Promise<IEvent>;
   getEventsByUserId(id: string): Promise<IEvent[]>;
-  createEvent(
-    user: { id: string; role: string },
-    data: IEvent
-  ): Promise<IEvent>;
+  createEvent(id: string, data: IEvent): Promise<IEvent>;
   updateEvent(id: string, data: Partial<IEvent>): Promise<IEvent>;
   deleteEvent(id: string, eventId: string): Promise<IEvent>;
   acceptEvent(id: string, eventId: string): Promise<IEvent>;
@@ -22,15 +22,31 @@ export interface IEventRepository {
 
 @injectable()
 class EventRepository {
-  async getEvents(): Promise<IEvent[]> {
+  async getEvents(
+    isAdmin: boolean = false,
+    status?: "accepted" | "rejected" | "pending"
+  ): Promise<IEvent[]> {
     await DBInstance.getConnection();
 
-    return EventModel.find({
+    const query: any = {
       eventDate: { $gte: new Date() },
-      isAccepted: true,
-    })
-      .lean()
-      .exec();
+    };
+
+    if (isAdmin) {
+      if (status === "pending") {
+        query.isEventNew = true;
+      } else if (status === "accepted") {
+        query.isAccepted = true;
+        query.isEventNew = false;
+      } else if (status === "rejected") {
+        query.isAccepted = false;
+        query.isEventNew = false;
+      }
+    } else {
+      query.isAccepted = true;
+    }
+
+    return EventModel.find(query).lean().exec();
   }
 
   async getEvent(userId: string, eventId: string): Promise<IEvent> {
@@ -56,25 +72,18 @@ class EventRepository {
     return EventModel.find({ owner: userId }).lean().exec();
   }
 
-  async createEvent(
-    user: { id: string; role: string },
-    data: IEvent
-  ): Promise<IEvent> {
+  async createEvent(id: string, data: IEvent): Promise<IEvent> {
     await DBInstance.getConnection();
 
     const event = await EventModel.create({
       ...data,
-      owner: user.id,
-      ownerModel: user.role === "organizer" ? "User" : "Restaurant",
+      owner: id,
     });
 
     return event.toObject();
   }
 
-  async updateEvent(
-    userId: string,
-    data: Partial<IEvent>
-  ): Promise<IEvent> {
+  async updateEvent(userId: string, data: Partial<IEvent>): Promise<IEvent> {
     await DBInstance.getConnection();
 
     const event = await EventModel.findOneAndUpdate(

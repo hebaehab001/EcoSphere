@@ -1,7 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { IEvent } from "./event.model";
 import type { IEventService } from "./event.service";
-import { EventResponse, mapEventToEventData } from "./events.types";
+import {
+  EventResponse,
+  mapEventToEventData,
+  EventResponsePopulated,
+  mapEventToEventDataWithUser,
+} from "./events.types";
 
 @injectable()
 class EventController {
@@ -9,9 +14,14 @@ class EventController {
     @inject("IEventService") private readonly eventService: IEventService
   ) {}
 
-  async getEvents(): Promise<EventResponse[]> {
-    const response = await this.eventService.getEvents();
-    const mappedData = response.map(mapEventToEventData);
+  async getEvents(
+    isAdmin?: boolean,
+    status?: "accepted" | "rejected" | "pending"
+  ): Promise<EventResponsePopulated[]> {
+    const response = await this.eventService.getEvents(isAdmin, status);
+    const mappedData = response.map((event) =>
+      mapEventToEventDataWithUser(event)
+    );
     return mappedData;
   }
 
@@ -22,15 +32,12 @@ class EventController {
 
   async getEventsByUserId(id: string): Promise<EventResponse[]> {
     const response = await this.eventService.getEventsByUserId(id);
-    const mappedData = response.map(mapEventToEventData);
+    const mappedData = response.map((event) => mapEventToEventData(event));
     return mappedData;
   }
 
-  async createEvent(
-    user: { id: string; role: string },
-    event: IEvent
-  ): Promise<EventResponse> {
-    const response = await this.eventService.createEvent(user, event);
+  async createEvent(id: string, event: IEvent): Promise<EventResponse> {
+    const response = await this.eventService.createEvent(id, event);
     return mapEventToEventData(response);
   }
 
