@@ -44,16 +44,21 @@ export const syncGuestFavorites = createAsyncThunk(
 
 export const toggleFavoriteAsync = createAsyncThunk(
   "fav/toggleFavoriteAsync",
-  async (product: IProduct) => {
-    const res = await fetch("/api/users/favorites", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ ids: product.id }),
-    });
+  async (product: IProduct, { getState }) => {
+    const state = getState() as RootState;
+    const { isLoggedIn } = state.user;
 
-    if (!res.ok) {
-      throw new Error("Failed to toggle favorite");
+    if (isLoggedIn) {
+      const res = await fetch("/api/users/favorites", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ ids: product.id }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to toggle favorite");
+      }
     }
 
     return product;
