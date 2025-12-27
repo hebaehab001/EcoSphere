@@ -546,7 +546,6 @@
 				"title": "Shop Details",
 				"location": "Enter shop location",
 				"workingHours": "e.g., Mon-Fri 9:00 AM - 6:00 PM",
-
 				"selectCategory": "Select a category",
 				"categories": {
 					"supermarket": "Supermarket",
@@ -1414,7 +1413,6 @@
 			}
 		}
 	},
-
 	"Metrics": {
 		"title": "Our Impact",
 		"subtitle": "Key Metrics",
