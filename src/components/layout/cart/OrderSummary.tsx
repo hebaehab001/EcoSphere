@@ -65,9 +65,14 @@ export default function OrderSummary() {
   };
 
   const cashOnDelivery = () =>
-    createOrder(mapCartItemsToIOrderItems(Object.values(cartItems)))
+    createOrder(
+      mapCartItemsToIOrderItems(Object.values(cartItems)),
+      "cashOnDelivery",
+      "preparing",
+    )
       .then(() => {
-        fetch("/api");
+        router.push("/profile");
+        dispatch(clearCart());
       })
       .catch((err) => console.error(err));
 

@@ -6,6 +6,7 @@ import {
   BestSailingProduct,
   TopCustomers,
   DailySales,
+  mapOrderToEmailOrder,
   RevenuePerDate,
   OrderStatus,
   CreateOrderDTO,
@@ -15,6 +16,7 @@ import { IOrder } from "./order.model";
 import type { IUserService } from "../user/user.service";
 import type { IEventService } from "../event/event.service";
 import Stripe from "stripe";
+import { sendOrderReceivedEmail } from "@/backend/utils/mailer";
 
 export interface IOrderService {
   createOrder(userId: string, orderData: CreateOrderDTO): Promise<IOrder>;
@@ -116,7 +118,16 @@ export class OrderService implements IOrderService {
       // status will be default (e.g. PENDING)
     };
 
-    const order = await this.orderRepository.makeOrder(orderNewData);
+    const [order, user] = await Promise.all([
+      this.orderRepository.makeOrder(orderNewData),
+      this.userService.getById(userId),
+    ]);
+    await sendOrderReceivedEmail(
+      user.email,
+      user.firstName,
+      mapOrderToEmailOrder(userCart.items),
+    );
+    // await this.decreaseStockForOrder(order.items, `${order.restaurantId}`);
 
     return order;
   }
@@ -285,10 +296,4 @@ export class OrderService implements IOrderService {
       }
     }
   }
-
-  // private getCartTotal = (items: IProductCart[]) =>
-  // 	items.reduce(
-  // 		(sum, { productPrice, quantity }) => sum + productPrice * quantity,
-  // 		0
-  // 	);
 }
