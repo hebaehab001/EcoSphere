@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/select";
 import { EventType } from "@/backend/features/event/event.model";
 import BasicAnimatedWrapper from "../common/BasicAnimatedWrapper";
+import { TbCalendarEvent } from "react-icons/tb";
+import EventCardSkeleton from "../common/events/EventCardSkeleton";
 
 const parseEventDate = (dateStr: string) => {
   if (dateStr.includes("-")) {
@@ -43,7 +45,7 @@ const getEventStartDateTime = (event: any) => {
 
 export default function MainDisplayEvents({ events }: Readonly<EventProps>) {
   const t = useTranslations("Events.MainDisplayEvents");
-
+  const [isLoading, setIsLoading] = useState(true);
   const [resetKey, setResetKey] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [priceFilter, setPriceFilter] = useState<"free" | "paid" | undefined>(
@@ -94,6 +96,10 @@ export default function MainDisplayEvents({ events }: Readonly<EventProps>) {
       (a, b) =>
         getEventStartDateTime(a).getTime() - getEventStartDateTime(b).getTime()
     );
+
+  React.useEffect(() => {
+    if (events) setIsLoading(false);
+  }, [events]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -188,20 +194,40 @@ export default function MainDisplayEvents({ events }: Readonly<EventProps>) {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-5 gap-6">
-        {filteredEvents.map((event,index) => (
-          <BasicAnimatedWrapper key={event._id} index={index}>
-            <EventCard  event={event} />
-          </BasicAnimatedWrapper>
-        ))}
-      </div>
-
-      {filteredEvents.length === 0 && (
-        <div className="text-center w-full p-8 rounded-xl shadow-md text-muted-foreground border-2 border-primary">
-          <p>{t("emptyTitle")}</p>
-          <p>{t("emptySubtitle")}</p>
+      {/* Display Events */}
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-5 gap-6 items-stretch">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <BasicAnimatedWrapper key={index} index={index}>
+              <EventCardSkeleton />
+            </BasicAnimatedWrapper>
+          ))}
         </div>
-      )}
+      ) : (filteredEvents.length === 0 ? (
+        <div className="flex items-center justify-center md:p-20 p-5 bg-primary/10 rounded-xl mt-10 my-10">
+          <div className="text-center max-w-md px-6">
+            <div className="mb-4 inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/20 ">
+              <TbCalendarEvent className="w-10 h-10 text-primary" />
+            </div>
+
+            <h2 className="text-2xl font-semibold text-foreground mb-2">
+              {t("title")}
+            </h2>
+
+            <p className="text-secondary-foreground ">{t("emptyTitle")}</p>
+            <p className="text-secondary-foreground mb-6">{t("emptySubtitle")}</p>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-5 gap-6">
+          {filteredEvents.map((event, index) => (
+            <BasicAnimatedWrapper key={event._id} index={index}>
+              <EventCard event={event} />
+            </BasicAnimatedWrapper>
+          ))}
+        </div>
+      ))
+      }
     </div>
   );
 }

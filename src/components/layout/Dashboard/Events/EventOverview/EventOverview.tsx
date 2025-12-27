@@ -9,12 +9,13 @@ import { MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { EventListItemProps, EventProps, MetricData } from "@/types/EventTypes";
-import React from "react";
+import React, { useState } from "react";
 import { formatDate, formatTime } from "@/frontend/utils/Event";
 import { useLocale } from "next-intl";
 import { LuHistory } from "react-icons/lu";
 import BasicAnimatedWrapper from "@/components/layout/common/BasicAnimatedWrapper";
-import { motion } from "framer-motion";
+import { TbCalendarEvent } from "react-icons/tb";
+import EventListCardSkeleton from "./EventListCardSkeleton";
 const MetricCard: React.FC<MetricData> = ({ title, value, change }) => {
   const isPositive = change && change.startsWith("+");
 
@@ -133,6 +134,10 @@ const EventListItem: React.FC<EventListItemProps> = ({
 };
 export default function EventOverview({ events }: EventProps) {
   const t = useTranslations("Events.overview");
+  const [isLoading, setIsLoading] = useState(true);
+  React.useEffect(() => {
+    if (events) setIsLoading(false);
+  }, [events]);
 
   const totalTicketSales =
     events?.reduce((acc, event) => acc + (event.attenders?.length || 0), 0) ||
@@ -272,33 +277,50 @@ export default function EventOverview({ events }: EventProps) {
             </h4>
           </Link>
         </div>
-        <div className="flex flex-col gap-2">
-          {sortedAndLimitedEvents.length! > 0 ? (
-            sortedAndLimitedEvents!.map((event,index) => (
-              <BasicAnimatedWrapper key={event._id} index={index}>
-                <EventListItem
-                  _id={event._id}
-                  name={event.name}
-                  eventDate={event.eventDate}
-                  startTime={event.startTime}
-                  endTime={event.endTime}
-                  locate={event.locate}
-                  avatar={
-                    typeof event.avatar?.url === "string"
-                      ? event.avatar?.url
-                      : "/events/defaultImgEvent.png"
-                  }
-                />
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-5 gap-6 items-stretch">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <BasicAnimatedWrapper key={index} index={index}>
+                <EventListCardSkeleton />
               </BasicAnimatedWrapper>
-            ))
-          ) : (
-            <div className="text-center p-8 h-full rounded-xl shadow-md text-muted-foreground border-2 border-primary">
-              {t("noUpcomingEvents")}
+            ))}
+          </div>
+        ) : (
+          sortedAndLimitedEvents.length! == 0 ? (
+            <div className="flex items-center justify-center md:p-20 p-5 bg-primary/10 rounded-xl ">
+              <div className="text-center max-w-md px-6">
+                <div className="mb-4 inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/20 ">
+                  <TbCalendarEvent className="w-10 h-10 text-primary" />
+                </div>
+                <h2 className="text-2xl font-semibold text-foreground mb-2">
+                  {t("noUpcomingEvents")}
+                </h2>
+              </div>
             </div>
-          )}
-        </div>
-      </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {sortedAndLimitedEvents!.map((event, index) => (
+                <BasicAnimatedWrapper key={event._id} index={index}>
+                  <EventListItem
+                    _id={event._id}
+                    name={event.name}
+                    eventDate={event.eventDate}
+                    startTime={event.startTime}
+                    endTime={event.endTime}
+                    locate={event.locate}
+                    avatar={
+                      typeof event.avatar?.url === "string"
+                        ? event.avatar?.url
+                        : "/events/defaultImgEvent.png"
+                    }
+                  />
+                </BasicAnimatedWrapper>
+              ))}
+            </div>
 
+          ))}
+
+      </div>
     </div>
   );
 }

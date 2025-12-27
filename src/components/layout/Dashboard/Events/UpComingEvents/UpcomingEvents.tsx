@@ -17,6 +17,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { EventType } from "@/backend/features/event/event.model";
 import BasicAnimatedWrapper from "@/components/layout/common/BasicAnimatedWrapper";
+import EventCardSkeleton from "@/components/layout/common/events/EventCardSkeleton";
+import { TbCalendarEvent } from "react-icons/tb";
 
 export const getEventStartDateTime = (event: any) => {
   return new Date(
@@ -32,7 +34,7 @@ export const getEventEndDateTime = (event: any) => {
 
 export default function UpcomingEvents({ events }: Readonly<EventProps>) {
   const t = useTranslations("Events.displayEvents");
-
+  const [isLoading, setIsLoading] = useState(true);
   const [resetKey, setResetKey] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<EventType | undefined>(
@@ -87,6 +89,10 @@ export default function UpcomingEvents({ events }: Readonly<EventProps>) {
       (a, b) =>
         getEventStartDateTime(a).getTime() - getEventStartDateTime(b).getTime()
     );
+
+  React.useEffect(() => {
+    if (events) setIsLoading(false);
+  }, [events]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -183,24 +189,44 @@ export default function UpcomingEvents({ events }: Readonly<EventProps>) {
       </div>
 
       {/* Upcoming Events */}
-      {upcomingEvents.length > 0 ? (
+
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-5 gap-6 items-stretch">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <BasicAnimatedWrapper key={index} index={index}>
+              <EventCardSkeleton />
+            </BasicAnimatedWrapper>
+          ))}
+        </div>
+      ) : (upcomingEvents.length == 0 ? (
+        <div className="flex items-center justify-center md:p-20 p-5 bg-primary/10 rounded-xl mt-10 my-10">
+          <div className="text-center max-w-md px-6">
+            <div className="mb-4 inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/20 ">
+              <TbCalendarEvent className="w-10 h-10 text-primary" />
+            </div>
+
+            <h2 className="text-2xl font-semibold text-foreground mb-2">
+              {t("UpComingEvents")}
+            </h2>
+
+            <p className="text-secondary-foreground mb-4">{t("noupcomingEvents")}</p>
+              <Link href="/organizer/manage" className="px-20! myBtnPrimary w-full  mx-auto">
+              {t("addEventBtn")}
+            </Link>
+          </div>
+        </div>
+      ) : (
+
         <section className="space-y-4 pt-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-80">
-            {upcomingEvents.map((event,index) => (
+            {upcomingEvents.map((event, index) => (
               <BasicAnimatedWrapper key={event._id} index={index}>
-                <EventCard  event={event} />
+                <EventCard event={event} />
               </BasicAnimatedWrapper>
             ))}
           </div>
         </section>
-      ) : (
-        <div className="text-center w-full p-8 rounded-xl shadow-md text-muted-foreground border-2 border-primary space-y-4">
-          <p className="mb-3">{t("noupcomingEvents")}</p>
-          <Button asChild className="capitalize">
-            <Link href="/organizer/manage">{t("addEventBtn")}</Link>
-          </Button>
-        </div>
-      )}
+      ))}
     </div>
   );
 }
