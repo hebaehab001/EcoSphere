@@ -20,6 +20,11 @@ export default function AddAttendBtn({
 
   const handleAddEvent = async () => {
     try {
+      if (!userId) {
+        toast.error(t("notLoggedIn"));
+        router.push("/auth");
+        return;
+      }
       if (!isFree) {
         const response = await fetch("/api/payment/ticket", {
           method: "POST",

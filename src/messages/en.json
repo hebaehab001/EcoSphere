@@ -881,13 +881,17 @@
         "ticketPrice": "Ticket Price",
         "free": "Free",
         "schedule": "Schedule",
-        "organizer": "You are the organizer"
+        "organizer": "You are the organizer",
+        "liveActionsDisabled": "Actions are disabled while the event is live",
+        "report": "Report",
+        "totalRevenue": "Total Revenue"
       },
       "AddAttendBtn": {
         "join": "Join Event",
         "joined": "Joined",
         "success": "You have successfully joined the event",
-        "error": "Something went wrong"
+        "error": "Something went wrong",
+        "notLoggedIn": "You must log in first"
       },
       "editBtn": "Edit Event",
       "DeleteEventBtn": {

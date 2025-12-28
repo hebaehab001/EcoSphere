@@ -31,13 +31,10 @@ export default function EventCard({ event }: { event: any }) {
 
   // --- Route flags ---
   const isEventsPage = routeSegment === "events";
-  const isOrganizerUpcoming =
-    routeSegment === "organizer" && secondSegment === "upcomingEvents";
-  const isOrganizerHistory =
-    routeSegment === "organizer" && secondSegment === "history";
-
+  const isOrganizerUpcoming = routeSegment === "organizer" && secondSegment === "upcomingEvents";
+  const isOrganizerHistory = routeSegment === "organizer" && secondSegment === "history";
   const statusStyles: Record<EventStatus, string> = {
-    approved: "bg-green-600 text-white",
+    approved: "bg-primary text-white",
     pending: "bg-yellow-500 text-white",
     rejected: "bg-red-600 text-white",
   };
@@ -54,16 +51,35 @@ export default function EventCard({ event }: { event: any }) {
   // LIVE only if approved AND time matches
   const isLiveNow = event.isAccepted && start <= now && end >= now;
 
+  const showLiveBadge = isLiveNow && (isEventsPage || isOrganizerUpcoming);
+
+  const showStatusBadge =
+    isOrganizerUpcoming && !isLiveNow;
+
+
+  const liveCardBorder = isLiveNow
+    ? "border-red-600 ring-2 ring-red-500/60 "
+    : "border-primary/20";
+
   const status: EventStatus = event.isAccepted
     ? "approved"
     : event.isEventNew
-    ? "pending"
-    : "rejected";
+      ? "pending"
+      : "rejected";
 
-  const badgeClass = isLiveNow
+  const badgeText = showLiveBadge
+    ? t("status.live")
+    : showStatusBadge
+      ? t(`status.${status}`)
+      : null;
+
+
+  const badgeClass = showLiveBadge
     ? "bg-red-600 text-white animate-pulse"
-    : statusStyles[status];
-
+    : showStatusBadge
+      ? statusStyles[status]
+      : "";
+      
   return (
     <div className="col-span-1 flex h-full justify-center">
       <div
